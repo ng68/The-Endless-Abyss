@@ -66,6 +66,7 @@ export default {
   methods: Object.assign(
     {
       async onSubmit(evt) {
+        
         evt.preventDefault()
         if (!this.username || !this.password) {
           this.$toast.open({

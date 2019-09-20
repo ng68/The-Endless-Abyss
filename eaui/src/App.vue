@@ -6,7 +6,7 @@
 </template>
 
 <script>
-
+import 'buefy/dist/buefy.css'
 export default {
   name: 'app',
   components: {
@@ -16,6 +16,8 @@ export default {
 </script>
 
 <style>
+
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
