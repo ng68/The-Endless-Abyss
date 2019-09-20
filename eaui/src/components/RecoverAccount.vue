@@ -32,36 +32,12 @@
                     />
                   </div>
                 </div>
-                <label for="">Password Again</label>
-                <div class="field">
-                  <div class="control">
-                    <input
-                      v-model="passwordAgain"
-                      v-model.trim="login.passwordAgain"
-                      type="password"
-                      class="passwordAgain input"
-                      qa-login="passwordAgain"
-                    />
-                  </div>
-                </div>
-                <label for="">Email</label>
-                <div class="field">
-                  <div class="control">
-                    <input
-                      v-model="email"
-                      v-model.trim="login.email"
-                      type="text"
-                      class="email input"
-                      qa-login="email"
-                    />
-                  </div>
-                </div>
                 <button
                   class="button is-block is-info is-fullwidth mt50"
-                  qa-login="Creat Account"
+                  qa-login="login"
                   @click="onSubmit"
                 >
-                  Create Account
+                  Login
                 </button>
               </form>
             </div>
@@ -73,16 +49,14 @@
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: 'CreateAccount',
+  name: 'Login',
   components: {
 
   },
 
   data: () => ({
-    email: '',
     username: '',
     password: '',
-    passwordAgain: '',
     login: {}
   }),
 
@@ -93,28 +67,21 @@ export default {
       async onSubmit(evt) {
         
         evt.preventDefault()
-        if (!this.username || !this.password || !this.email || !this.passwordAgain) {
+        if (!this.username || !this.password) {
           this.$toast.open({
             duration: 5000,
-            message: 'Please fill the form compleatly',
+            message: 'Please add a username and password',
             position: 'is-bottom',
             type: 'is-danger'
           })
-        } else if (this.username !== this.usernameAgain) {
-            this.$toast.open({
-                duration: 5000,
-                message: 'Your passwords do not match',
-                position: 'is-bottom',
-                type: 'is-danger'
-            })
-        } else { 
-            try {
+        } else {
+          try {
             await this.authenticateUser(this.login)
             this.$router.push({ name: 'Home', query: { tab: 'sut', page: 1 } })
           } catch (e) {
             this.$toast.open({
               duration: 5000,
-              message: 'Sorry That Username is taken, Please Try Another',
+              message: 'Incorrect login. Please try again',
               position: 'is-bottom',
               type: 'is-danger'
             })

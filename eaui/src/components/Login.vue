@@ -1,5 +1,3 @@
-<!-- Copyright 2019, Edge Case Research, Inc. -->
-<!-- Confidential -->
 <template>
   <div id="login">
     <div class="box">
