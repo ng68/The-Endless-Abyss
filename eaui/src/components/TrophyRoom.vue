@@ -4,53 +4,9 @@
       <h1>Trophy Room</h1>
     </div>
     <div class='trophy-case'>
-      <div class='trophy'>
-        <img class='trophy-image' src="{{ trophy[0].title }}">
-        <span class='trophy-text'>
-          {{ trophy[0].title }}
-        </span>
-      </div>
-      <div class='trophy'>
-        <img class='trophy-image' src="{{ trophy[1].title }}">
-        <div class='trophy-text'>
-          {{ trophy[1].title }}
-        </div>
-      </div>
-      <div class='trophy'>
-        <img class='trophy-image' src="{{ trophy[2].title }}">
-        <div class='trophy-text'>
-          {{ trophy[2].title }}
-        </div>
-      </div>
-      <div class='trophy'>
-        <img class='trophy-image' src="{{ trophy[3].title }}">
-        <div class='trophy-text'>
-          {{ trophy[3].title }}
-        </div>
-      </div>
-      <div class='trophy'>
-        <img class='trophy-image' src="{{ trophy[4].title }}">
-        <div class='trophy-text'>
-          {{ trophy[4].title }}
-        </div>
-      </div>
-      <div class='trophy'>
-        <img class='trophy-image' src="{{ trophy[5].title }}">
-        <div class='trophy-text'>
-          {{ trophy[5].title }}
-        </div>
-      </div>
-      <div class='trophy'>
-        <img class='trophy-image' src="{{ trophy[6].title }}">
-        <div class='trophy-text'>
-          {{ trophy[6].title }}
-        </div>
-      </div>
-      <div class='trophy'>
-        <img class='trophy-image' src="{{ trophy[7].img }}">
-        <div class='trophy-text'>
-          {{ trophy[7].title }}
-        </div>
+      <div class='trophy' v-for="trophy in trophies">
+        <img class='trophy-image' src="{{ trophy.img }}">
+        <span class='trophy-text'>{{ trophy.title }}</span>
       </div>
     </div>
   </div>
@@ -58,7 +14,20 @@
 
 <script>
 export default {
-  name: 'Trophies'
+  name: 'TrophyRoom',
+
+  data: () => ({
+    trophies: []
+  }),
+
+  computed: Object.assign(
+    {
+      getTrophies() {
+        this.trophies = this.getTrophies();
+      }
+    },
+    mapGetters(['user'])
+  ),
 }
 </script>
 
@@ -73,6 +42,8 @@ export default {
 .trophy {
   display: flex;
   flex-flow: column nowrap;
+  display: -webkit-flex; /* Safari */
+  -webkit-flex-flow: column nowrap; /* Safari 6.1+ */
   justify-content: space-between;
   justify-content: center;
   padding-left: 10px;
