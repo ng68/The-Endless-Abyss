@@ -5,51 +5,51 @@
     </div>
     <div class='trophy-case'>
       <div class='trophy'>
-        <img class='trophy-image' src="../assets/simple_trophy.png">
+        <img class='trophy-image' src="{{ trophy[0].title }}">
         <span class='trophy-text'>
-          Trophy 1
+          {{ trophy[0].title }}
         </span>
       </div>
       <div class='trophy'>
-        <img class='trophy-image' src="../assets/simple_trophy.png">
+        <img class='trophy-image' src="{{ trophy[1].title }}">
         <div class='trophy-text'>
-          Trophy 2
+          {{ trophy[1].title }}
         </div>
       </div>
       <div class='trophy'>
-        <img class='trophy-image' src="../assets/simple_trophy.png">
+        <img class='trophy-image' src="{{ trophy[2].title }}">
         <div class='trophy-text'>
-          Trophy 3
+          {{ trophy[2].title }}
         </div>
       </div>
       <div class='trophy'>
-        <img class='trophy-image' src="../assets/simple_trophy.png">
+        <img class='trophy-image' src="{{ trophy[3].title }}">
         <div class='trophy-text'>
-          Trophy 4
+          {{ trophy[3].title }}
         </div>
       </div>
       <div class='trophy'>
-        <img class='trophy-image' src="../assets/simple_trophy.png">
+        <img class='trophy-image' src="{{ trophy[4].title }}">
         <div class='trophy-text'>
-          Trophy 5
+          {{ trophy[4].title }}
         </div>
       </div>
       <div class='trophy'>
-        <img class='trophy-image' src="../assets/simple_trophy.png">
+        <img class='trophy-image' src="{{ trophy[5].title }}">
         <div class='trophy-text'>
-          Trophy 6
+          {{ trophy[5].title }}
         </div>
       </div>
       <div class='trophy'>
-        <img class='trophy-image' src="../assets/simple_trophy.png">
+        <img class='trophy-image' src="{{ trophy[6].title }}">
         <div class='trophy-text'>
-          Trophy 7
+          {{ trophy[6].title }}
         </div>
       </div>
       <div class='trophy'>
-        <img class='trophy-image' src="../assets/simple_trophy.png">
+        <img class='trophy-image' src="{{ trophy[7].img }}">
         <div class='trophy-text'>
-          Trophy 8
+          {{ trophy[7].title }}
         </div>
       </div>
     </div>
