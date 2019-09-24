@@ -24,7 +24,7 @@ app.post("/url", (req, res, next) => {
 });
 
 app.get("/url", (req, res, next) => {
-    res.json(["Cool", "World"]);
+    res.json(["Cool", "Cole"]);
 });
 
 app.listen(process.env.PORT, () => {
