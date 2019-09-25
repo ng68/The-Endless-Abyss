@@ -17,16 +17,58 @@ con.connect(function(err) {
   console.log("Connected to database!");
 });
 
-app.post("/url", (req, res, next) => {
+//Handling login
+app.post("/login", (req, res, next) => {
     var obj = req.body;
-    console.log(obj.Hello);
-    res.json(["Tony","Lisa","Michael","Ginger","Food"]);
+    var username = obj.username;
+    var password = obj.password;
+    //Check if credentials are correct
 });
 
-app.get("/url", (req, res, next) => {
-    res.json(["HIHELLO", "Cole"]);
+//Handling creating new account
+app.post("/newuser", (req, res, next) => {
+  var obj = req.body;
+  var username = obj.username;
+  var password = obj.password;
+  var email = obj.email;
+  //Do check for email/username already existing and return error message
+
+  //Else encrypt password and store in database and return success message
+  res.json(["Tony","Lisa","Michael","Ginger","Food"]);
 });
 
-app.listen(process.env.PORT, () => {
+//Giving high score info on entire leaderboard
+app.get("/score", (req, res, next) => {
+  
+});
+
+//Giving high score info on specific user
+app.post("/score", (req, res, next) => {
+  
+});
+
+//Change email
+app.post("/changeemail", (req, res, next) => {
+  
+});
+
+//Change password
+app.post("/changepassword", (req, res, next) => {
+  
+});
+
+//Change username
+app.post("/changeusername", (req, res, next) => {
+  
+});
+
+//Get list of trophies earned
+app.get("/trophies", (req, res, next) => {
+  
+});
+
+
+//Host
+app.listen(process.env.PORT || 3000, () => {
  console.log("Server running");
 });
