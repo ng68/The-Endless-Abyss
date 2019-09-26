@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import App from './App.vue'
 import Login from './components/Login'
 import CreateAccount from './components/CreateAccount'
+import RecoverAccount from './components/RecoverAccount'
 import HelloWorld from './components/HelloWorld'
 import Buefy from 'buefy'
 
@@ -14,7 +15,8 @@ const routes = [
   { path: '/helloworld', name: 'HelloWorld', component: HelloWorld },
   { path: '/createaccount', name: 'CreateAccount', component: CreateAccount },
   { path: '/login', name: 'Login', component: Login},
-  { path: '/', components: 'HelloWorld'}
+  { path: '/recoveraccount', name: 'RecoverAccount', component: RecoverAccount},
+  { path: '/', name: 'Login', components: 'Login'}
 ]
 
 const router = new VueRouter({

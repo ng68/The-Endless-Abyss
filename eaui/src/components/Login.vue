@@ -38,11 +38,19 @@
                 >
                   Login
                 </button>
-                <button class="button is-block is-info is-fullwidth mt50"
+                <button 
+                  class="button is-block is-info is-fullwidth mt50"
                   qa-login="login"
                   @click="onCreateAccount"
                 >
                   Create Account
+                </button>
+                <button
+                  class="button is-block is-info is-fullwidth mt50"
+                  qa-login="login"
+                  @click="onForgotPassword"
+                >
+                  Forgot Your Password
                 </button>
               </form>
             </div>
@@ -95,6 +103,9 @@ export default {
       },
       async onCreateAccount() {
         this.$router.push({ name: 'CreateAccount' })
+      },
+      async onForgotPassword() {
+        this.$router.push({ name: 'RecoverAccount' })
       }
     },
 
