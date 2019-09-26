@@ -4,7 +4,7 @@
       <h1>Trophy Room</h1>
     </div>
     <div class='trophy-case'>
-      <div class='trophy' v-for="trophy in trophies">
+      <div class='trophy' v-for="trophy in trophies" title="{{ trophy.description }}">
         <img class='trophy-image' src="{{ trophy.img }}">
         <span class='trophy-text'>{{ trophy.title }}</span>
       </div>
