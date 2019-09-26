@@ -41,6 +41,19 @@ const actions = {
         const user = resp.data
         commit(types.STORE_USER, user)
       })
+  },
+  createUser(createPlayload) {
+    return Api()
+      .get('/api/createuser/', { createPlayload })
+      .then(resp => {
+        if (!resp) {
+          throw new Error()
+        }
+        const data = resp.data
+        window.localStorage.setItem('jwtToken', data.token)
+
+        commit(type.STORE_USER, createPlayload)
+      })
   }
 }
 

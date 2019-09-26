@@ -38,6 +38,12 @@
                 >
                   Login
                 </button>
+                <button class="button is-block is-info is-fullwidth mt50"
+                  qa-login="login"
+                  @click="onCreateAccount"
+                >
+                  Create Account
+                </button>
               </form>
             </div>
   </div>
@@ -86,8 +92,13 @@ export default {
             })
           }
         }
+      },
+      async onCreateAccount() {
+        this.$router.push({ name: 'CreateAccount' })
       }
     },
+
+
     mapActions(['authenticateUser'])
   )
 }
