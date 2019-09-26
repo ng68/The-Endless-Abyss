@@ -3,16 +3,16 @@
   <div id="login">
     <div class="box">
               <div class="welcomeHeader">
-                <h1>Login</h1>
+                <h1>Account Recovery</h1>
                 <small>You risk entering the Abyss!</small>
               </div>
               <form>
-                <label for="">Username</label>
+                <label for="">email</label>
                 <div class="field">
                   <div class="control">
                     <input
-                      v-model="username"
-                      v-model.trim="login.username"
+                      v-model="email"
+                      v-model.trim="login.email"
                       type="text"
                       class="username input"
                       qa-login="username"
@@ -20,24 +20,12 @@
                     />
                   </div>
                 </div>
-                <label for="">Password</label>
-                <div class="field">
-                  <div class="control">
-                    <input
-                      v-model="password"
-                      v-model.trim="login.password"
-                      type="password"
-                      class="password input"
-                      qa-login="password"
-                    />
-                  </div>
-                </div>
                 <button
                   class="button is-block is-info is-fullwidth mt50"
-                  qa-login="login"
+                  qa-login="reset"
                   @click="onSubmit"
                 >
-                  Login
+                  Reset
                 </button>
               </form>
             </div>
@@ -55,8 +43,7 @@ export default {
   },
 
   data: () => ({
-    username: '',
-    password: '',
+    email: '',
     login: {}
   }),
 
@@ -67,10 +54,10 @@ export default {
       async onSubmit(evt) {
         
         evt.preventDefault()
-        if (!this.username || !this.password) {
+        if (!this.email) {
           this.$toast.open({
             duration: 5000,
-            message: 'Please add a username and password',
+            message: 'Please add an email',
             position: 'is-bottom',
             type: 'is-danger'
           })
@@ -89,7 +76,7 @@ export default {
         }
       }
     },
-    mapActions(['authenticateUser'])
+    mapActions(['recoverUser'])
   )
 }
 </script>
