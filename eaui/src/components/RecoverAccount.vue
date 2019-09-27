@@ -7,7 +7,7 @@
                 <small>You risk entering the Abyss!</small>
               </div>
               <form>
-                <label for="">email</label>
+                <!-- <label for="">Email</label> -->
                 <div class="field">
                   <div class="control">
                     <input
@@ -17,6 +17,7 @@
                       class="username input"
                       qa-login="username"
                       autofocus
+                      placeholder="Email Address"
                     />
                   </div>
                 </div>
@@ -25,7 +26,7 @@
                   qa-login="reset"
                   @click="onSubmit"
                 >
-                  Reset
+                  Send Recovery Email
                 </button>
               </form>
             </div>
@@ -80,4 +81,17 @@ export default {
   )
 }
 </script>
+
+<style scoped>
+
+form {
+  width: 300px;
+  margin: auto;
+}
+
+.welcomeHeader {
+  margin-bottom: 12px;
+}
+
+</style>
 
