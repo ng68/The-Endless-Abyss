@@ -18,6 +18,11 @@ con.connect(function(err) {
   console.log("Connected to database!");
 });
 
+//Host
+app.listen(process.env.PORT || 3000, () => {
+  console.log("Server running");
+ });
+
 //Handling creating new account
 app.post("/newuser", (req, res, next) => {
     var obj = req.body;
@@ -105,10 +110,4 @@ app.post("/changeusername", (req, res, next) => {
 //Get list of trophies earned
 app.get("/trophies", (req, res, next) => {
   
-});
-
-
-//Host
-app.listen(process.env.PORT || 3000, () => {
- console.log("Server running");
 });
