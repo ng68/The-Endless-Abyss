@@ -1,13 +1,14 @@
 import * as types from '../mutation-types'
 import Vue from 'vue'
-import Api from '../../services/Api'
-import jsonwebtoken from 'jsonwebtoken'
+import axios from 'axios'
+import url from '../../url'
 
 const getDefaultState = () => {
   return {
     user: null
   }
 }
+
 
 const state = getDefaultState()
 
@@ -16,51 +17,55 @@ const getters = {
 }
 
 const actions = {
-  storeUser({ commit }, storeUserPayload) {
-    commit(types.STORE_USER, storeUserPayload)
+  storeUser(storeUserPayload) {
+    
   },
   //Used for login
-  authenticateUser({ commit }, loginPayload) {
-    return Api()
-      .get('/api/auth/v1/authenticate/', { auth: loginPayload })
-      .then(resp => {
-        if (!resp) {
-          throw new Error()
-        }
-        const data = resp.data
-        window.localStorage.setItem('jwtToken', data.token)
-        window.localStorage.setItem('username', loginPayload.username)
+  authenticateUser( loginPayload ) {
+    console.log("hello from auth")
+    let requestURL = url + '/login'
+    /*axios({
+      method: 'POST',
+      url: requestURL,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data: {
+        "username": loginPayload.username,
+        "password": loginPayload.password
+      }
+    })*/
+    
+    axios.post(requestURL, {
+      username: loginPayload.username,
+      password: loginPayload.password
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    }
+    
+    )
 
-        commit(types.STORE_USER, loginPayload)
-      })
+    /*
+    const header = {
+        'Content-Type': 'application/json'
+    }
+    axios.post(requestURL, loginPayload, {
+        headers: header
+    })*/
   },
   // currently only used to change a user's password
-  updateUser({ commit }, updateUserPayload) {
-    return Api()
-      .put(`/api/auth/v1/account/${updateUserPayload.username}`, updateUserPayload)
-      .then(resp => {
-        const user = resp.data
-        commit(types.STORE_USER, user)
-      })
+  updateUser(updateUserPayload) {
+
   },
   //Used for creating a new user
   createUser(createPlayload) {
-    return Api()
-      .get('/api/createuser/', { createPlayload })
-      .then(resp => {
-        if (!resp) {
-          throw new Error()
-        }
-        const data = resp.data
-        window.localStorage.setItem('jwtToken', data.token)
-
-        commit(type.STORE_USER, createPlayload)
-      })
+   
   },
   //Used for reseting passwords
   recoverUser(recoverPayload) {
-    return Api()
-      .put(`/api/recoveruser/${recoverPayload}`, recoverPayload)
+
   }
 }
 

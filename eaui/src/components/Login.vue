@@ -78,7 +78,9 @@ export default {
   methods: Object.assign(
     {
       async onSubmit(evt) {
-        
+        alert('hello')
+        this.login.username = this.username
+        this.login.password = this.password
         evt.preventDefault()
         if (!this.username || !this.password) {
           this.$toast.open({
@@ -89,8 +91,9 @@ export default {
           })
         } else {
           try {
-            await this.authenticateUser(this.login)
-            this.$router.push({ name: 'Home', query: { tab: 'sut', page: 1 } })
+            console.log('prior to authUser')
+            await this.authenticateUser(this.username, this.password)
+            //this.$router.push({ name: 'Home', query: { tab: 'sut', page: 1 } })
           } catch (e) {
             this.$toast.open({
               duration: 5000,
