@@ -21,7 +21,6 @@ con.connect(function(err) {
 //Handling creating new account
 app.post("/newuser", (req, res, next) => {
     var obj = req.body;
-    console.log(obj);
     var username = obj.username;
     var password = obj.password;
     var email = obj.email;
@@ -46,7 +45,6 @@ app.post("/newuser", (req, res, next) => {
             sql = "INSERT INTO User (email, username, password) VALUES ('" + email + "', '" + username  + "', '" + password + "')";
             con.query(sql, function(err, result3) {
                 if (err) throw err;
-                console.log("1 record inserted!");
                 res.json("Success");
             });
           }
