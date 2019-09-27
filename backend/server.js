@@ -123,10 +123,14 @@ app.post("/changepassword", (req, res, next) => {
   con.query(sql, function(err, result) {
     if (err) throw err;
     if (result.length > 0) {
-      var check = JSON.stringify(result).password;
+      var check = result[0].password;
+      console.log(check);
       if (check == password) {
         sql = "UPDATE User SET password = '" + newPassword + "' WHERE username = '" + username + "'";
-        res.json("Success");
+        con.query(sql, function(err, result) {
+          if (err) throw err;
+          res.json("Success");
+        });
       }else {
         res.json("Password is incorrect.");
       }
