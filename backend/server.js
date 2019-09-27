@@ -22,8 +22,11 @@ con.connect(function(err) {
 app.post("/newuser", (req, res, next) => {
     var obj = req.body;
     var username = obj.user.username;
+    console.log(username);
     var password = obj.user.password;
+    console.log(password);
     var email = obj.user.email;
+    console.log(email);
     var sql;
 
     //Encrypt email and password
