@@ -2,6 +2,7 @@ var express = require("express");
 var bodyParser = require('body-parser');
 var app = express();
 var mysql = require('mysql');
+var cryptJS = require('crypto-js');
 
 app.use(bodyParser.json());
 
@@ -22,12 +23,13 @@ con.connect(function(err) {
 app.post("/newuser", (req, res, next) => {
     var obj = req.body;
     var username = obj.username;
-    var password = obj.password;
+    var passwordTemp = obj.password;
     var email = obj.email;
     var sql;
 
     //Encrypt email and password
-    
+    var password = cryptJS.SHA256(passwordTemp);
+
     //Check to see if email already exists
     sql = "SELECT * FROM User WHERE email = '" + email + "'";
     con.query(sql, function(err, result) {
@@ -57,9 +59,10 @@ app.post("/newuser", (req, res, next) => {
 app.post("/login", (req, res, next) => {
   var obj = req.body;
   var username = obj.username;
-  var password = obj.password;
+  var passwordTemp = obj.password;
   var sql;
   //Decrypt password
+  var password = cryptJS.SHA256(passwordTemp);
 
   //Do check for email/username and password
   sql = "SELECT * FROM User WHERE (username = '" + username + "') AND (password = '" + password + "')";
@@ -73,7 +76,7 @@ app.post("/login", (req, res, next) => {
   });
 });
 
-//Recover password
+//Recover password (In progress)
 app.post("/recovery", (req, res, next) => {
   var obj = req.body;
   var email = obj.email;
@@ -115,8 +118,13 @@ app.post("/score", (req, res, next) => {
 app.post("/changepassword", (req, res, next) => {
   var obj = req.body;
   var username = obj.username;
-  var password = obj.password;
-  var newPassword = obj.newPassword;
+  var passwordTemp = obj.password;
+  var newPasswordTemp = obj.newPassword;
+
+  //Encrypt email and password
+  var password = cryptJS.SHA256(passwordTemp);
+  var newPassword = cryptJS.SHA256(newPasswordTemp);
+
   var sql = "SELECT password FROM User WHERE username = '" + username + "'";
   con.query(sql, function(err, result) {
     if (err) throw err;
@@ -141,8 +149,12 @@ app.post("/changepassword", (req, res, next) => {
 app.post("/changeusername", (req, res, next) => {
   var obj = req.body;
   var username = obj.username;
-  var password = obj.password;
+  var passwordTemp = obj.password;
   var newUsername = obj.newUsername;
+
+  //Encrypt password
+  var password = cryptJS.SHA256(passwordTemp);
+
   var sql = "SELECT password FROM User WHERE username = '" + username + "'";
   con.query(sql, function(err, result) {
     if (err) throw err;
