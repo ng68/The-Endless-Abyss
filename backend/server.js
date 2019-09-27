@@ -170,6 +170,14 @@ app.post("/changeusername", (req, res, next) => {
             sql = "UPDATE User SET username = '" + newUsername + "' WHERE username = '" + username + "'";
             con.query(sql, function(err, result) {
               if (err) throw err;
+              sql = "UPDATE UserTrophies SET username = '" + newUsername + "' WHERE username = '" + username + "'";
+              con.query(sql, function(err, result) {
+                if (err) throw err;
+                sql = "UPDATE Scores SET username = '" + newUsername + "' WHERE username = '" + username + "'";
+                con.query(sql, function(err, result) {
+                  if (err) throw err;
+                });
+              });
               res.json("Success");
             });
           }
@@ -194,6 +202,36 @@ app.post("/trophies", (req, res, next) => {
   });
 });
 
+//Add trophy earned
+app.post("/addtrophytest", (req, res, next) => {
+  var obj = req.body;
+  var username = obj.username;
+  var trophyID = obj.trophyID;
+  var sql = "INSERT INTO UserTrophies (trophy, username) VALUES ('" + trophyID + "', '" + username  + "')";
+  con.query(sql, function(err, result) {
+    if (err) throw err;
+    res.json("Success");
+  });
+});
+
+//Delete test entries
+app.post("/deletetest", (req, res, next) => {
+  var obj = req.body;
+  var username = obj.username;
+  var sql = "DELETE FROM User WHERE username = '" + username + "'";
+  con.query(sql, function(err, result) {
+    if (err) throw err;
+    sql = "DELETE FROM UserTrophies WHERE username = '" + username + "'";
+    con.query(sql, function(err, result) {
+      if (err) throw err;
+      sql = "DELETE FROM Scores WHERE username = '" + username + "'";
+      con.query(sql, function(err, result) {
+        if (err) throw err;
+        res.json("Success");
+      });
+    });
+  });
+});
 
 //Host
 app.listen(process.env.PORT || 3000, () => {
