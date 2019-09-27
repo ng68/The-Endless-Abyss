@@ -78,11 +78,19 @@ app.post("/login", (req, res, next) => {
 //Recover password
 app.post("/recovery", (req, res, next) => {
   var obj = req.body;
-  var email = obj.username;
+  var email = obj.email;
 
   //Decrypt email
 
-  var sql = "";
+  var sql = "SELECT password FROM User WHERE email = '" + email + "'";
+  con.query(sql, function(err, result) {
+    if (err) throw err;
+    if (result.length > 0) {
+      res.json(result);
+    }else {
+      res.json("Failure");
+    }
+  });
 });
 
 //Giving high score info on entire leaderboard
