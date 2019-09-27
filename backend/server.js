@@ -21,9 +21,9 @@ con.connect(function(err) {
 //Handling creating new account
 app.post("/newuser", (req, res, next) => {
     var obj = req.body;
-    var username = obj.user.username;
-    var password = obj.user.password;
-    var email = obj.user.email;
+    var username = obj.username;
+    var password = obj.password;
+    var email = obj.email;
     var sql;
 
     //Encrypt email and password
@@ -57,8 +57,8 @@ app.post("/newuser", (req, res, next) => {
 //Handling login
 app.post("/login", (req, res, next) => {
   var obj = req.body;
-  var username = obj.user.username;
-  var password = obj.user.password;
+  var username = obj.username;
+  var password = obj.password;
   var sql;
   //Decrypt password
 
@@ -77,7 +77,7 @@ app.post("/login", (req, res, next) => {
 //Recover password
 app.post("/recovery", (req, res, next) => {
   var obj = req.body;
-  var email = obj.user.username;
+  var email = obj.username;
 
   //Decrypt email
 
@@ -96,7 +96,7 @@ app.get("/score", (req, res, next) => {
 //Giving high score info on specific user
 app.post("/score", (req, res, next) => {
   var obj = req.body;
-  var username = obj.user.username;
+  var username = obj.username;
   var sql = "SELECT * FROM Scores WHERE username = '" + username + "'ORDER BY score DESC";
   con.query(sql, function(err, result) {
     if (err) throw err;
@@ -117,7 +117,7 @@ app.post("/changeusername", (req, res, next) => {
 //Get list of trophies earned
 app.get("/trophies", (req, res, next) => {
   var obj = req.body;
-  var username = obj.user.username;
+  var username = obj.username;
   var sql = "SELECT trophy FROM UserTrophies WHERE username = '" + username + "' ORDER BY trophy ASC";
 });
 
