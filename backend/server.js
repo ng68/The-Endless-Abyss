@@ -76,17 +76,32 @@ app.post("/login", (req, res, next) => {
 
 //Recover password
 app.post("/recovery", (req, res, next) => {
-  
+  var obj = req.body;
+  var email = obj.user.username;
+
+  //Decrypt email
+
+  var sql = "";
 });
 
 //Giving high score info on entire leaderboard
 app.get("/score", (req, res, next) => {
-  
+  var sql = "SELECT * FROM Scores ORDER BY score DESC";
+  con.query(sql, function(err, result) {
+    if (err) throw err;
+    res.json(result);
+  });
 });
 
 //Giving high score info on specific user
 app.post("/score", (req, res, next) => {
-  
+  var obj = req.body;
+  var username = obj.user.username;
+  var sql = "SELECT * FROM Scores WHERE username = '" + username + "'ORDER BY score DESC";
+  con.query(sql, function(err, result) {
+    if (err) throw err;
+    res.json(result);
+  });
 });
 
 //Change password
@@ -101,7 +116,9 @@ app.post("/changeusername", (req, res, next) => {
 
 //Get list of trophies earned
 app.get("/trophies", (req, res, next) => {
-  
+  var obj = req.body;
+  var username = obj.user.username;
+  var sql = "SELECT trophy FROM UserTrophies WHERE username = '" + username + "' ORDER BY trophy ASC";
 });
 
 
