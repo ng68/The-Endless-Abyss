@@ -38,11 +38,11 @@
                 <div class="field">
                   <div class="control">
                     <input
-                      v-model="passwordAgain"
-                      v-model.trim="login.passwordAgain"
+                      v-model="confirmPassword"
+                      v-model.trim="login.confirmPassword"
                       type="password"
-                      class="passwordAgain input"
-                      qa-login="passwordAgain"
+                      class="confirmPassword input"
+                      qa-login="confirmPassword"
                       placeholder="Confirm Password"
                     />
                   </div>
@@ -86,7 +86,7 @@ export default {
     email: '',
     username: '',
     password: '',
-    passwordAgain: '',
+    confirmPassword: '',
     login: {}
   }),
 
@@ -97,14 +97,14 @@ export default {
       async onSubmit(evt) {
         
         evt.preventDefault()
-        if (!this.username || !this.password || !this.email || !this.passwordAgain) {
+        if (!this.username || !this.password || !this.email || !this.confirmPassword) {
           this.$toast.open({
             duration: 5000,
             message: 'Please fill the form completely',
             position: 'is-bottom',
             type: 'is-danger'
           })
-        } else if (this.password !== this.passwordAgain) {
+        } else if (this.password !== this.confirmPassword) {
             this.$toast.open({
                 duration: 5000,
                 message: 'Your passwords do not match',

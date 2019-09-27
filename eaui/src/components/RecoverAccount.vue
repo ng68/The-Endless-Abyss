@@ -38,7 +38,7 @@
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: 'Login',
+  name: 'RecoverAccount',
   components: {
 
   },
