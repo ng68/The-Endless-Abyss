@@ -207,7 +207,7 @@ app.post("/addtrophytest", (req, res, next) => {
   var obj = req.body;
   var username = obj.username;
   var trophyID = obj.trophyID;
-  var sql = "INSERT INTO UserTrophies (trophy, username) VALUES ('" + trophyID + "', '" + username  + "')";
+  var sql = "INSERT INTO UserTrophies (trophy, username) VALUES (" + trophyID + ", '" + username  + "')";
   con.query(sql, function(err, result) {
     if (err) throw err;
     res.json("Success");
