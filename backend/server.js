@@ -233,6 +233,17 @@ app.post("/deletetest", (req, res, next) => {
   });
 });
 
+app.post("/addscoretest", (req, res, next) => {
+  var obj = req.body;
+  var username = obj.username;
+  var score = obj.score;
+  var sql = "INSERT INTO Scores (username, score) VALUES ('" + username + "', " + score + ")";
+  con.query(sql, function(err, result) {
+    if (err) throw err;
+    res.json("Success");
+  });
+});
+
 //Host
 app.listen(process.env.PORT || 3000, () => {
  console.log("Server running");
