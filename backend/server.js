@@ -115,7 +115,26 @@ app.post("/score", (req, res, next) => {
 
 //Change password
 app.post("/changepassword", (req, res, next) => {
-  
+  var obj = req.body;
+  var username = obj.username;
+  var password = obj.password;
+  var newPassword = obj.newPassword;
+  var sql = "SELECT password FROM User WHERE username = '" + username + "'";
+  con.query(sql, function(err, result) {
+    if (err) throw err;
+    if (result.length > 0) {
+      var check = JSON.stringify(result).password;
+      if (check == password) {
+        sql = "UPDATE User SET password = '" + newPassword + "' WHERE username = '" + username + "'";
+        res.json("Success");
+      }else {
+        res.json("Password is incorrect.");
+      }
+    }else {
+      res.json("Username does not exist.");
+    }
+    
+  });
 });
 
 //Change username
