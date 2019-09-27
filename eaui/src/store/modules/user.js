@@ -19,6 +19,7 @@ const actions = {
   storeUser({ commit }, storeUserPayload) {
     commit(types.STORE_USER, storeUserPayload)
   },
+  //Used for login
   authenticateUser({ commit }, loginPayload) {
     return Api()
       .get('/api/auth/v1/authenticate/', { auth: loginPayload })
@@ -41,6 +42,25 @@ const actions = {
         const user = resp.data
         commit(types.STORE_USER, user)
       })
+  },
+  //Used for creating a new user
+  createUser(createPlayload) {
+    return Api()
+      .get('/api/createuser/', { createPlayload })
+      .then(resp => {
+        if (!resp) {
+          throw new Error()
+        }
+        const data = resp.data
+        window.localStorage.setItem('jwtToken', data.token)
+
+        commit(type.STORE_USER, createPlayload)
+      })
+  },
+  //Used for reseting passwords
+  recoverUser(recoverPayload) {
+    return Api()
+      .put(`/api/recoveruser/${recoverPayload}`, recoverPayload)
   }
 }
 
