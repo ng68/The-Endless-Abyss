@@ -124,7 +124,6 @@ app.post("/changepassword", (req, res, next) => {
     if (err) throw err;
     if (result.length > 0) {
       var check = result[0].password;
-      console.log(check);
       if (check == password) {
         sql = "UPDATE User SET password = '" + newPassword + "' WHERE username = '" + username + "'";
         con.query(sql, function(err, result) {
@@ -137,13 +136,41 @@ app.post("/changepassword", (req, res, next) => {
     }else {
       res.json("Username does not exist.");
     }
-    
   });
 });
 
 //Change username
 app.post("/changeusername", (req, res, next) => {
-  
+  var obj = req.body;
+  var username = obj.username;
+  var password = obj.password;
+  var newUsername = obj.newUsername;
+  var sql = "SELECT password FROM User WHERE username = '" + username + "'";
+  con.query(sql, function(err, result) {
+    if (err) throw err;
+    if (result.length > 0) {
+      var check = result[0].password;
+      if (check == password) {
+        sql = "SELECT * FROM User WHERE username = '" + newUsername + "'";
+        con.query(sql, function(err, result) {
+          if (err) throw err;
+          if(result.length > 0) {
+            res.json("Username already exists");
+          }else {
+            sql = "UPDATE User SET username = '" + newUsername + "' WHERE username = '" + username + "'";
+            con.query(sql, function(err, result) {
+              if (err) throw err;
+              res.json("Success");
+            });
+          }
+        });
+      }else {
+        res.json("Password is incorrect.");
+      }
+    }else {
+      res.json("Username does not exist.");
+    }
+  });
 });
 
 //Get list of trophies earned
