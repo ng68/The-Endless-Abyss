@@ -116,7 +116,7 @@ app.post("/changeusername", (req, res, next) => {
 });
 
 //Get list of trophies earned
-app.get("/trophies", (req, res, next) => {
+app.post("/trophies", (req, res, next) => {
   var obj = req.body;
   var username = obj.username;
   var sql = "SELECT trophy FROM UserTrophies WHERE username = '" + username + "' ORDER BY trophy ASC";
