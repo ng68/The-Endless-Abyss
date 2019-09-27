@@ -26,6 +26,7 @@ app.listen(process.env.PORT || 3000, () => {
 //Handling creating new account
 app.post("/newuser", (req, res, next) => {
     var obj = req.body;
+    console.log(body);
     var username = obj.user.username;
     console.log(username);
     var password = obj.user.password;
