@@ -14,6 +14,8 @@ const state = getDefaultState()
 
 const getters = {
   user: state => state.user,
+  username: state => state.user.username,
+  trophies: state => state.user.trophies,
 }
 
 const actions = {

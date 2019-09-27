@@ -3,11 +3,11 @@
   <div id="login">
     <div class="box">
               <div class="welcomeHeader">
-                <h1>Login</h1>
+                <h1>Register</h1>
                 <small>You risk entering the Abyss!</small>
               </div>
               <form>
-                <label for="">Username</label>
+                <!-- <label for="">Username</label> -->
                 <div class="field">
                   <div class="control">
                     <input
@@ -17,10 +17,11 @@
                       class="username input"
                       qa-login="username"
                       autofocus
+                      placeholder="Username"
                     />
                   </div>
                 </div>
-                <label for="">Password</label>
+                <!-- <label for="">Password</label> -->
                 <div class="field">
                   <div class="control">
                     <input
@@ -29,10 +30,11 @@
                       type="password"
                       class="password input"
                       qa-login="password"
+                      placeholder="Password"
                     />
                   </div>
                 </div>
-                <label for="">Password Again</label>
+                <!-- <label for="">Confirm Password</label> -->
                 <div class="field">
                   <div class="control">
                     <input
@@ -41,10 +43,11 @@
                       type="password"
                       class="passwordAgain input"
                       qa-login="passwordAgain"
+                      placeholder="Confirm Password"
                     />
                   </div>
                 </div>
-                <label for="">Email</label>
+                <!-- <label for="">Email</label> -->
                 <div class="field">
                   <div class="control">
                     <input
@@ -53,6 +56,7 @@
                       type="text"
                       class="email input"
                       qa-login="email"
+                      placeholder="Email Address"
                     />
                   </div>
                 </div>
@@ -96,11 +100,11 @@ export default {
         if (!this.username || !this.password || !this.email || !this.passwordAgain) {
           this.$toast.open({
             duration: 5000,
-            message: 'Please fill the form compleatly',
+            message: 'Please fill the form completely',
             position: 'is-bottom',
             type: 'is-danger'
           })
-        } else if (this.username !== this.usernameAgain) {
+        } else if (this.password !== this.passwordAgain) {
             this.$toast.open({
                 duration: 5000,
                 message: 'Your passwords do not match',
@@ -127,3 +131,20 @@ export default {
 }
 </script>
 
+<style scoped>
+
+form {
+  width: 300px;
+  margin: auto;
+}
+
+.button {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.welcomeHeader {
+  margin-bottom: 12px;
+}
+
+</style>

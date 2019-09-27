@@ -3,10 +3,10 @@
     <div class="box">
               <div class="welcomeHeader">
                 <h1>Login</h1>
-                <small>You risk entering the Abyss!</small>
+                <small>You are now entering the Abyss!</small>
               </div>
               <form>
-                <label for="">Username</label>
+                <!-- <label for="">Username</label> -->
                 <div class="field">
                   <div class="control">
                     <input
@@ -16,10 +16,11 @@
                       class="username input"
                       qa-login="username"
                       autofocus
+                      placeholder="Username"
                     />
                   </div>
                 </div>
-                <label for="">Password</label>
+                <!-- <label for="">Password</label> -->
                 <div class="field">
                   <div class="control">
                     <input
@@ -28,9 +29,16 @@
                       type="password"
                       class="password input"
                       qa-login="password"
+                      placeholder="Password"
                     />
                   </div>
                 </div>
+                <a
+                  qa-login="login"
+                  @click="onForgotPassword"
+                >
+                  Forgot Your Password?
+                </a>
                 <button
                   class="button is-block is-info is-fullwidth mt50"
                   qa-login="login"
@@ -38,20 +46,12 @@
                 >
                   Login
                 </button>
-                <button 
-                  class="button is-block is-info is-fullwidth mt50"
+                <span>Don't have an account?</span><a 
                   qa-login="login"
                   @click="onCreateAccount"
                 >
-                  Create Account
-                </button>
-                <button
-                  class="button is-block is-info is-fullwidth mt50"
-                  qa-login="login"
-                  @click="onForgotPassword"
-                >
-                  Forgot Your Password
-                </button>
+                  Sign Up
+                </a>
               </form>
             </div>
   </div>
@@ -117,4 +117,26 @@ export default {
   )
 }
 </script>
+
+<style scoped>
+
+form {
+  width: 300px;
+  margin: auto;
+}
+
+.button {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+a {
+  text-decoration: underline;
+}
+
+.welcomeHeader {
+  margin-bottom: 12px;
+}
+
+</style>
 
