@@ -16,7 +16,7 @@ const routes = [
   { path: '/createaccount', name: 'CreateAccount', component: CreateAccount },
   { path: '/login', name: 'Login', component: Login},
   { path: '/recoveraccount', name: 'RecoverAccount', component: RecoverAccount},
-  { path: '/', name: 'Login', components: 'Login'}
+  { path: '/', name: 'Login', component: Login}
 ]
 
 const router = new VueRouter({
