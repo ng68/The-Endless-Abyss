@@ -96,7 +96,7 @@ export default {
         if (!this.username || !this.password || !this.email || !this.passwordAgain) {
           this.$toast.open({
             duration: 5000,
-            message: 'Please fill the form compleatly',
+            message: 'Please fill the form completely',
             position: 'is-bottom',
             type: 'is-danger'
           })
