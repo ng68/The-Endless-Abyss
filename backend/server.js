@@ -21,6 +21,7 @@ con.connect(function(err) {
 //Handling creating new account
 app.post("/newuser", (req, res, next) => {
     var obj = req.body;
+    console.log(obj);
     var username = obj.username;
     var password = obj.password;
     var email = obj.email;
@@ -119,6 +120,10 @@ app.get("/trophies", (req, res, next) => {
   var obj = req.body;
   var username = obj.username;
   var sql = "SELECT trophy FROM UserTrophies WHERE username = '" + username + "' ORDER BY trophy ASC";
+  con.query(sql, function(err, result) {
+    if (err) throw err;
+    res.json(result);
+  });
 });
 
 
