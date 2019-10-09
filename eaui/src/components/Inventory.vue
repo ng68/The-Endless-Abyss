@@ -1,10 +1,12 @@
 <template>
-  <div class="column">
-    <h1>Inventory</h1>
-    <div class="row item" v-for="item in items" v-bind:key="item.id">
-      <img>
-      <span :title="item.description">{{item.name}}</span>
-    </div>
+  <div>
+    <h2>Inventory</h2>
+    <ul class="inventory">
+      <li class="row item" v-for="item in items" v-bind:key="item.id">
+        <img>
+        <span :title="item.description">{{item.name}}</span>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -36,3 +38,26 @@ export default {
   })
 }
 </script>
+
+<style scoped>
+
+
+
+.inventory {
+  text-align: left;
+}
+
+ul {
+  border-style: solid;
+}
+
+li {
+  background: darkgrey;
+  padding: 3px;
+}
+
+li:nth-child(odd) {
+  background: silver;
+}
+
+</style>

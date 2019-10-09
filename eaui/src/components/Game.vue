@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row game-screen">
     <div class="column site-screen">
       <component v-bind:is="currentSite" class="site"></component>
       <button @click="cycleSite">New Site</button>
@@ -65,6 +65,10 @@ export default {
 
 <style scoped>
 
+.game-screen {
+  height: 95vh;
+}
+
 .row {
   display: flex;
 }
@@ -73,8 +77,14 @@ export default {
   flex: 75%;
 }
 
+.site-screen {
+  border-style: solid;
+}
+
 .inventory {
   flex: 25%;
+  border-style: solid;
+  border-left: 0px;
 }
 
 </style>
