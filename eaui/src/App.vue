@@ -22,11 +22,11 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin: 20px;
 }
 
 html {
-  background-color: #a9a9a9;
+  background-color: gray;
 }
 
 </style>
