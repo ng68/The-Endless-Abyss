@@ -47,8 +47,10 @@ const actions = {
     }
     axios(options)
       .then(response =>{
-        if(response.data === "success"){
-          state.loggedin = true;
+        console.log(response.data)
+        if(response.data === "Success"){
+          commit(types.STORE_LOGGED_IN, true)
+          console.log("state of logged in: " + state.loggedin)
         }
       })
     
@@ -68,15 +70,29 @@ const actions = {
   },
   //Used for creating a new user
   createUser(createPlayload) {
-   let requestURL = url + '/create'
-    
-    axios.post(requestURL, {
-      createPlayload
-    }, {
+    console.log(createPlayload.username + " username")
+    let requestURL = url + '/create'
+
+    var axios = require('axios')
+
+    const options = {
+      url: requestURL,
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+      },
+      data: {
+        username: createPlayload.username,
+        password: createPlayload.password,
+        email: createPlayload.email
       }
-    })
+    }
+    axios(options)
+      .then(response =>{
+        if(response.data === "success"){
+          state.loggedin = true;
+        }
+      })
 
   },
   //Used for reseting passwords
@@ -97,6 +113,9 @@ const actions = {
 const mutations = {
   [types.STORE_USER](state, storeUserPayload) {
     Vue.set(state, 'user', storeUserPayload)
+  },
+  [types.STORE_LOGGED_IN](state, storeUserPayload) {
+    Vue.set(state, 'loggedin', storeUserPayload)
   },
 }
 

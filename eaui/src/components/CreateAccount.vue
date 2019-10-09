@@ -113,8 +113,8 @@ export default {
             })
         } else { 
             try {
-            await this.authenticateUser(this.login)
-            this.$router.push({ name: 'Home', query: { tab: 'sut', page: 1 } })
+            await this.createUser(this.login)
+            this.$router.push({ name: 'Home' })
           } catch (e) {
             this.$toast.open({
               duration: 5000,
@@ -126,7 +126,7 @@ export default {
         }
       }
     },
-    mapActions(['recoverUser'])
+    mapActions(['createUser'])
   )
 }
 </script>
