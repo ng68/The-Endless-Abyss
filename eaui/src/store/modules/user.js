@@ -4,11 +4,11 @@ import axios from 'axios'
 import url from '../../url'
 
 
-
-
 const getDefaultState = () => {
   return {
-    user: null
+    user: null,
+    loggedin: false,
+    tester: 'the store is working'
   }
 }
 
@@ -17,6 +17,8 @@ const state = getDefaultState()
 
 const getters = {
   user: state => state.user,
+  tester: state => state.tester,
+  loggedin: state => state.loggedin,
   username: state => state.user.username,
   trophies: state => state.user.trophies,
 }
@@ -26,15 +28,11 @@ const actions = {
     
   },
   //Used for login
-  authenticateUser( loginPayload ) {
-    
-    console.log("hello from auth")
+  authenticateUser({ commit }, loginPayload ) {
     
     let requestURL = url + '/login'
 
-    console.log(loginPayload.username)
-
-   var axios = require('axios')
+    var axios = require('axios')
 
     const options = {
       url: requestURL,
@@ -43,13 +41,15 @@ const actions = {
         'Content-Type': 'application/json',
       },
       data: {
-        username: 'Hello',
-        password: 'World'
+        username: loginPayload.username,
+        password: loginPayload.password
       }
     }
     axios(options)
       .then(response =>{
-        console.log(response.data)
+        if(response.data === "success"){
+          state.loggedin = true;
+        }
       })
     
   },

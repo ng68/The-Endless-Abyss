@@ -78,11 +78,9 @@ export default {
   methods: Object.assign(
     {
       async onSubmit(evt) {
-        alert('hello')
-        this.login.username = this.username
-        this.login.password = this.password
-        console.log(this.login.username + "this is login")
-        console.log(this.login.password + "this is passowrd")
+        console.log("this is testers value: " + this.tester())
+        console.log(this.login.username + ": this is login")
+        console.log(this.login.password + ": this is passowrd")
         evt.preventDefault()
         if (!this.username || !this.password) {
           this.$toast.open({
@@ -93,9 +91,18 @@ export default {
           })
         } else {
           try {
-            console.log('prior to authUser')
-            await this.authenticateUser(this.username, this.password)
-            this.$router.push({ name: 'Home' })
+            console.log('prior to authUser: ' + this.login.username)
+            await this.authenticateUser(this.login)
+            if (this.loggenin())
+              this.$router.push({ name: 'Home' })
+            else {
+              this.$toast.open({
+              duration: 5000,
+              message: 'Incorrect login. Please try again',
+              position: 'is-bottom',
+              type: 'is-danger'
+            })
+            }
           } catch (e) {
             this.$toast.open({
               duration: 5000,
@@ -114,7 +121,7 @@ export default {
       }
     },
 
-
+    mapGetters(['tester','loggedin']),
     mapActions(['authenticateUser'])
   )
 }
