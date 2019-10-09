@@ -1,7 +1,12 @@
 <template>
-  <div>
-    <component v-bind:is="currentSite" class="site"></component>
-    <button @click="cycleSite">New Site</button>
+  <div class="row">
+    <div class="column site-screen">
+      <component v-bind:is="currentSite" class="site"></component>
+      <button @click="cycleSite">New Site</button>
+    </div>
+    <div class="column inventory">
+      <inventory></inventory>
+    </div>
   </div>
 </template>
 
@@ -9,6 +14,9 @@
 
 // import { mapActions, mapGetters } from "vuex";
 
+import Inventory from './Inventory'
+
+// Import Sites
 import Tavern from './sites/Tavern'
 import Trader from './sites/Trader'
 import Campfire from './sites/Campfire'
@@ -40,6 +48,7 @@ export default {
     }
   },
   components: {
+    Inventory,
     Tavern,
     Trader,
     Campfire,
@@ -47,8 +56,25 @@ export default {
     Trapdoor,
     Levers,
     Chest,
-    Goblin
+    Goblin,
   }
 };
 
 </script>
+
+
+<style scoped>
+
+.row {
+  display: flex;
+}
+
+.site-screen {
+  flex: 75%;
+}
+
+.inventory {
+  flex: 25%;
+}
+
+</style>
