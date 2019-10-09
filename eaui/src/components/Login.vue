@@ -81,6 +81,8 @@ export default {
         alert('hello')
         this.login.username = this.username
         this.login.password = this.password
+        console.log(this.login.username + "this is login")
+        console.log(this.login.password + "this is passowrd")
         evt.preventDefault()
         if (!this.username || !this.password) {
           this.$toast.open({
@@ -93,7 +95,7 @@ export default {
           try {
             console.log('prior to authUser')
             await this.authenticateUser(this.username, this.password)
-            //this.$router.push({ name: 'Home', query: { tab: 'sut', page: 1 } })
+            this.$router.push({ name: 'Home' })
           } catch (e) {
             this.$toast.open({
               duration: 5000,

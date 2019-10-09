@@ -3,6 +3,9 @@ import Vue from 'vue'
 import axios from 'axios'
 import url from '../../url'
 
+
+
+
 const getDefaultState = () => {
   return {
     user: null
@@ -24,49 +27,69 @@ const actions = {
   },
   //Used for login
   authenticateUser( loginPayload ) {
+    
     console.log("hello from auth")
+    
     let requestURL = url + '/login'
-    /*axios({
-      method: 'POST',
+
+    console.log(loginPayload.username)
+
+   var axios = require('axios')
+
+    const options = {
       url: requestURL,
+      method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       data: {
-        "username": loginPayload.username,
-        "password": loginPayload.password
+        username: 'Hello',
+        password: 'World'
       }
-    })*/
+    }
+    axios(options)
+      .then(response =>{
+        console.log(response.data)
+      })
+    
+  },
+  // currently only used to change a user's password
+  updateUser(updateUserPayload) {
+    let requestURL = url + '/update'
     
     axios.post(requestURL, {
-      username: loginPayload.username,
-      password: loginPayload.password
+      updateUserPayload
     }, {
       headers: {
         'Content-Type': 'application/json',
       }
-    }
-    
-    )
-
-    /*
-    const header = {
-        'Content-Type': 'application/json'
-    }
-    axios.post(requestURL, loginPayload, {
-        headers: header
-    })*/
-  },
-  // currently only used to change a user's password
-  updateUser(updateUserPayload) {
+    })
 
   },
   //Used for creating a new user
   createUser(createPlayload) {
-   
+   let requestURL = url + '/create'
+    
+    axios.post(requestURL, {
+      createPlayload
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+
   },
   //Used for reseting passwords
   recoverUser(recoverPayload) {
+    let requestURL = url + '/recover'
+    
+    axios.post(requestURL, {
+      recoverPayload
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
 
   }
 }
