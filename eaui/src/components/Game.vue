@@ -66,7 +66,7 @@ export default {
 <style scoped>
 
 .game-screen {
-  height: 95vh;
+  height: 86vh;
 }
 
 .row {
