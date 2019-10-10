@@ -2,8 +2,9 @@
   <div>
     <ul>
       <li><a @click="onHome">Home</a></li>
-      <!-- <li><a href="#leaderboard">Leaderboard</a></li> -->
       <li><a @click="onTrophies">Trophies</a></li>
+      <li><a @click="onLeaderboard">Leaderboard</a></li>
+      <li><a @click="onLogOut">Log Out</a></li>
     </ul>
   </div>
 </template>
@@ -18,6 +19,12 @@ export default {
     },
     async onTrophies() {
       this.$router.push({ name: 'TrophyRoom' })
+    },
+    async onLeaderboard() {
+      this.$router.push({ name: 'Leaderboard' })
+    },
+    async onLogOut() {
+      this.$router.push({ name: 'Login' })
     },
   })
 }
@@ -59,5 +66,9 @@ li.router-link-active {
   background-color: #4CAF50;
   color: white;
 }
+
+ul { overflow:auto; }
+li { float:left; }
+li:last-child { float:right; }
 
 </style>

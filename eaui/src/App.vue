@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Navigation></Navigation>
+    <Navigation v-if="['Login', 'CreateAccount'].indexOf($route.name) == -1"></Navigation>
     <router-view></router-view>
   </div>
 </template>
@@ -15,6 +15,7 @@ export default {
     Navigation,
   }
 }
+
 </script>
 
 <style>
