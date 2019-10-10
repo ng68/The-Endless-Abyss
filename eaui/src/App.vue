@@ -1,17 +1,21 @@
 <template>
   <div id="app">
+    <Navigation v-if="['Login', 'CreateAccount'].indexOf($route.name) == -1"></Navigation>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
 import 'buefy/dist/buefy.css'
+import Navigation from './components/Navigation'
+
 export default {
   name: 'app',
   components: {
-    
+    Navigation,
   }
 }
+
 </script>
 
 <style>
