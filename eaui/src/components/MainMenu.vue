@@ -35,7 +35,7 @@
 
 <script>
 
-import { mapActions, mapGetters } from 'vuex'
+// import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'MainMenu',
@@ -51,10 +51,10 @@ export default {
 
   methods: Object.assign(
     {
-      // async onNewGame() {
+      async onNewGame() {
       //   //TODO: New Game data
-      //   this.$router.push({ name: 'CreateAccount' })
-      // },
+        this.$router.push({ name: 'Game' })
+      },
       // async onContinueGame() {
       //   //TODO: Request saved game data
       //   this.$router.push({ name: 'CreateAccount' })
