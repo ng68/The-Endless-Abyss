@@ -1,5 +1,7 @@
 <template>
   <div>
+    <h2>Health</h2>
+    <h2>Gold</h2>
     <h2>Inventory</h2>
     <ul class="inventory">
       <li class="row item" v-for="item in items" v-bind:key="item.id">
