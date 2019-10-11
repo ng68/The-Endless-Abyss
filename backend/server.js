@@ -105,6 +105,7 @@ app.get("/score", (req, res, next) => {
   });
 });
 
+
 //Giving high score info on specific user
 app.post("/score", (req, res, next) => {
   var obj = req.body;
