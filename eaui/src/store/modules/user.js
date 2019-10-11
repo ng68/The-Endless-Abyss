@@ -1,74 +1,120 @@
 import * as types from '../mutation-types'
 import Vue from 'vue'
-import Api from '../../services/Api'
-import jsonwebtoken from 'jsonwebtoken'
+import url from '../../url'
+
 
 const getDefaultState = () => {
   return {
-    user: null
+    user: null,
+    loggedin: false,
+    tester: 'the store is working'
   }
 }
+
 
 const state = getDefaultState()
 
 const getters = {
   user: state => state.user,
+  tester: state => state.tester,
+  loggedin: state => state.loggedin,
   username: state => state.user.username,
   trophies: state => state.user.trophies,
 }
 
 const actions = {
-  storeUser({ commit }, storeUserPayload) {
-    commit(types.STORE_USER, storeUserPayload)
+  storeUser(storeUserPayload) {
+    
   },
   //Used for login
-  authenticateUser({ commit }, loginPayload) {
-    return Api()
-      .get('/api/auth/v1/authenticate/', { auth: loginPayload })
-      .then(resp => {
-        if (!resp) {
-          throw new Error()
-        }
-        const data = resp.data
-        window.localStorage.setItem('jwtToken', data.token)
-        window.localStorage.setItem('username', loginPayload.username)
+  authenticateUser({ commit }, loginPayload ) {
+    
+    let requestURL = url + '/login'
 
-        commit(types.STORE_USER, loginPayload)
+    var axios = require('axios')
+
+    const options = {
+      url: requestURL,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: {
+        username: loginPayload.username,
+        password: loginPayload.password
+      }
+    }
+    axios(options)
+      .then(response =>{
+        console.log(response.data)
+        if(response.data === "Success"){
+          commit(types.STORE_LOGGED_IN, true)
+          console.log("state of logged in: " + state.loggedin)
+        }
       })
+    
   },
   // currently only used to change a user's password
-  updateUser({ commit }, updateUserPayload) {
-    return Api()
-      .put(`/api/auth/v1/account/${updateUserPayload.username}`, updateUserPayload)
-      .then(resp => {
-        const user = resp.data
-        commit(types.STORE_USER, user)
-      })
+  updateUser(updateUserPayload) {
+    let requestURL = url + '/update'
+    
+    axios.post(requestURL, {
+      updateUserPayload
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+
   },
   //Used for creating a new user
   createUser(createPlayload) {
-    return Api()
-      .get('/api/createuser/', { createPlayload })
-      .then(resp => {
-        if (!resp) {
-          throw new Error()
-        }
-        const data = resp.data
-        window.localStorage.setItem('jwtToken', data.token)
+    console.log(createPlayload.username + " username")
+    let requestURL = url + '/create'
 
-        commit(type.STORE_USER, createPlayload)
+    var axios = require('axios')
+
+    const options = {
+      url: requestURL,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: {
+        username: createPlayload.username,
+        password: createPlayload.password,
+        email: createPlayload.email
+      }
+    }
+    axios(options)
+      .then(response =>{
+        if(response.data === "success"){
+          state.loggedin = true;
+        }
       })
+
   },
   //Used for reseting passwords
   recoverUser(recoverPayload) {
-    return Api()
-      .put(`/api/recoveruser/${recoverPayload}`, recoverPayload)
+    let requestURL = url + '/recover'
+    
+    axios.post(requestURL, {
+      recoverPayload
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+
   }
 }
 
 const mutations = {
   [types.STORE_USER](state, storeUserPayload) {
     Vue.set(state, 'user', storeUserPayload)
+  },
+  [types.STORE_LOGGED_IN](state, storeUserPayload) {
+    Vue.set(state, 'loggedin', storeUserPayload)
   },
 }
 

@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import axios from 'axios'
 import App from './App.vue'
+import store from './store'
 import Login from './components/Login'
 import CreateAccount from './components/CreateAccount'
 import RecoverAccount from './components/RecoverAccount'
@@ -33,8 +35,10 @@ const router = new VueRouter({
 Vue.use(Buefy, {
   defaultIconPack: 'fas'
 })
+Vue.use(axios)
 
 new Vue({
   router,
+  store,
   render: h => h(App),
 }).$mount('#app')
