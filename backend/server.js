@@ -3,7 +3,9 @@ var bodyParser = require('body-parser');
 var app = express();
 var mysql = require('mysql');
 var cryptJS = require('crypto-js');
+var cors = require('cors');
 
+app.use(cors());
 app.use(bodyParser.json());
 
 var con = mysql.createConnection({

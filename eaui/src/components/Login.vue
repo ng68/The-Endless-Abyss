@@ -52,6 +52,13 @@
                 >
                   Sign Up
                 </a>
+                <!--TODO: Remove this -->
+                <br><a
+                  @click="onHackIntoMainMenu"
+                >
+                  Hack into the Main Menu
+                </a>
+                <!-- -->
               </form>
             </div>
   </div>
@@ -136,7 +143,10 @@ export default {
       },
       async onForgotPassword() {
         this.$router.push({ name: 'RecoverAccount' })
-      }
+      },
+      async onHackIntoMainMenu() {
+        this.$router.push({ name: 'MainMenu' })
+      },
     },
 
     mapGetters(['tester','loggedin']),
