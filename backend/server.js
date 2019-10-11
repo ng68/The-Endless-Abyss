@@ -19,6 +19,7 @@ con.connect(function(err) {
   console.log("Connected to database!");
 });
 
+
 //Handling creating new account
 app.post("/newuser", (req, res, next) => {
     var obj = req.body;
