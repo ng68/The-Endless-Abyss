@@ -60,6 +60,8 @@
 <script>
 
 import { mapActions, mapGetters } from 'vuex'
+import axios from 'axios'
+import url from '../url'
 
 export default {
   name: 'Login',
@@ -78,9 +80,6 @@ export default {
   methods: Object.assign(
     {
       async onSubmit(evt) {
-        alert('hello')
-        this.login.username = this.username
-        this.login.password = this.password
         evt.preventDefault()
         if (!this.username || !this.password) {
           this.$toast.open({
@@ -91,9 +90,37 @@ export default {
           })
         } else {
           try {
-            console.log('prior to authUser')
-            await this.authenticateUser(this.username, this.password)
-            //this.$router.push({ name: 'Home', query: { tab: 'sut', page: 1 } })
+            /*
+            //console.log('prior to authUser: ' + this.login.username)
+            await this.authenticateUser(this.login)
+
+            if(this.loggedin()){
+               this.$router.push({ name: 'Home' })
+            }
+            */
+            let requestURL = url + '/login'
+
+            var axios = require('axios')
+
+            const options = {
+              url: requestURL,
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              data: {
+                username: this.login.username,
+                password: this.login.password
+              }
+            }
+            axios(options)
+              .then(response =>{
+                console.log(response.data)
+                if(response.data === "Success"){
+                 this.$router.push({ name: 'Home' })
+                }
+              })
+
           } catch (e) {
             this.$toast.open({
               duration: 5000,
@@ -112,7 +139,7 @@ export default {
       }
     },
 
-
+    mapGetters(['tester','loggedin']),
     mapActions(['authenticateUser'])
   )
 }
