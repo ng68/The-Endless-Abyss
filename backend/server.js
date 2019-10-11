@@ -260,6 +260,7 @@ app.post("/enter", (req, res, next) => {
   //room = user.room;
   
   switch(user.room) {
+    //Room 1
     case 1:
       options[1] = "Attack the troll";
       options[2] = "Run around the troll";
@@ -267,9 +268,25 @@ app.post("/enter", (req, res, next) => {
         options[3] = "Bribe the troll";
       }
       if (user.inventory.includes("Flashbang")) {
-        options[4] = "Throw flashbang at troll";
+        options[4] = "Use Flashbang";
       }
       break;
+    //Room 2
+    case 2:
+      options[1] = "Jump over the pit";
+      options[2] = "Climb down the pit";
+      if(user.inventory.includes("Rope")) {
+        options[3] = "Use Rope";
+      }
+      break;
+    case 3:
+        options[1] = "Open Chest 1";
+        options[2] = "Open Chest 2";
+        options[3] = "Open Chest 3";
+        if(user.inventory.includes("Rope")) {
+          options[4] = "Use Rope";
+        }
+        break;
     default:
       break;
   }
@@ -290,6 +307,7 @@ app.post("/exit", (req, res, next) => {
   //room = user.room;
   
   switch(user.room) {
+    //Room 1
     case 1:
       switch(optionID) {
         case 1:
@@ -297,15 +315,64 @@ app.post("/exit", (req, res, next) => {
           result = "As you lunge and attempt to punch the troll in the face, he swiftly dodges and then procedes to call your mom ugly. Your pride is utterly destroyed. You lose 30 health.";
           break;
         case 2:
+          user.health -= 10;
+          result = "You sprint around the troll and avoid his attacks, but you twist your ankle on a rock. You Lose 10 Health."
           break;
         case 3:
+          user.gold -= 20;
+          result = "The troll accepts your bribe and lets you pass."
           break;
         case 4:
+          user.inventory.splice(user.inventory.indexof("Flashbang"),1);
+          result = "You throw the flashbang that stuns and disorients the troll, allowing you to run past."
           break;
         default:
           break;
       }
       break;
+    //Room 2
+    case 2:
+        switch(optionID) {
+          case 1:
+            user.health -= 10;
+            result = "You try to jump over the pit, but fall short of the other side. The pit isn't as deep as you thought, but you hurt your legs falling. You lose 10 health.";
+            break;
+          case 2:
+            result = "The pit isn't as deep as you thought. You climb down and climb back up the other side."
+            break;
+          case 3:
+            user.inventory.splice(user.inventory.indexof("Rope"),1);
+            result = "You use the rope to get across but the rope snaps."
+            break;
+          default:
+            break;
+        }
+        break;
+    //Room 3
+    case 3:
+        switch(optionID) {
+          case 1:
+            user.inventory.push("Item 1");
+            result = "You opened Chest 1, you obtained Item 1.";
+            break;
+          case 2:
+            user.inventory.push("Item 2");
+            result = "You opened Chest 2, you obtained Item 2."
+            break;
+          case 3:
+            user.inventory.push("Item 3");
+            result = "You opened Chest 3, you obtained Item 3."
+            break;
+          case 4:
+            user.inventory.push("Item 1");
+            user.inventory.push("Item 2");
+            user.inventory.push("Item 3");
+            user.inventory.splice(user.inventory.indexof("Rope"),1);
+            result = "You used the rope to tie all 3 of the chests together and obtained Item 1, Item 2, and Item 3."
+          default:
+            break;
+        }
+        break;
     default:
       break;
   }
