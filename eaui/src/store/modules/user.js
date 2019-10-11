@@ -1,7 +1,9 @@
 import * as types from '../mutation-types'
 import Vue from 'vue'
-import axios from 'axios'
 import url from '../../url'
+
+var axios = require("axios")
+//var urlServer = "http//localhost:3000"
 
 const getDefaultState = () => {
   return {
@@ -25,7 +27,21 @@ const actions = {
   //Used for login
   authenticateUser( loginPayload ) {
     console.log("hello from auth")
-    let requestURL = url + '/login'
+    let requestURL = url + '/score'
+    const options = {
+      url: requestURL,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data: {
+        username : "Sup"
+      }
+    }
+  
+    axios(options).then(response => {
+      console.log(response.data);
+    })
     /*axios({
       method: 'POST',
       url: requestURL,
@@ -38,16 +54,16 @@ const actions = {
       }
     })*/
     
-    axios.post(requestURL, {
-      username: loginPayload.username,
-      password: loginPayload.password
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    }
+    // axios.post(requestURL, {
+    //   username: loginPayload.username,
+    //   password: loginPayload.password
+    // }, {
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   }
+    },
     
-    )
+    //)
 
     /*
     const header = {
@@ -56,7 +72,7 @@ const actions = {
     axios.post(requestURL, loginPayload, {
         headers: header
     })*/
-  },
+//}
   // currently only used to change a user's password
   updateUser(updateUserPayload) {
 
