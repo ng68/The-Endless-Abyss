@@ -251,23 +251,24 @@ app.post("/addscoretest", (req, res, next) => {
 //Enter a room
 app.post("/enter", (req, res, next) => {
   var obj = req.body;
-  var user = obj.user;
+  var game = obj.game;
   var options = {};
-  //gold = user.gold;
-  //health = user.health;
-  //inventory = user.inventory;
-  //trophies = user.trophies;
-  //room = user.room;
-  
-  switch(user.room) {
+  //username = game.username;
+  //gold = game.gold;
+  //health = game.health;
+  //inventory = game.inventory;
+  //trophies = game.trophies;
+  //room = game.room;
+
+  switch(game.room) {
     //Room 1
     case 1:
       options[1] = "Attack the troll";
       options[2] = "Run around the troll";
-      if (user.gold >= 20) {
+      if (game.gold >= 20) {
         options[3] = "Bribe the troll";
       }
-      if (user.inventory.includes("Flashbang")) {
+      if (game.inventory.includes("Flashbang")) {
         options[4] = "Use Flashbang";
       }
       break;
@@ -275,7 +276,7 @@ app.post("/enter", (req, res, next) => {
     case 2:
       options[1] = "Jump over the pit";
       options[2] = "Climb down the pit";
-      if(user.inventory.includes("Large Plank")) {
+      if(game.inventory.includes("Large Plank")) {
         options[3] = "Use Large Plank";
       }
       break;
@@ -284,7 +285,7 @@ app.post("/enter", (req, res, next) => {
         options[1] = "Open Chest 1";
         options[2] = "Open Chest 2";
         options[3] = "Open Chest 3";
-        if(user.inventory.includes("Rope")) {
+        if(game.inventory.includes("Rope")) {
           options[4] = "Use Rope";
         }
         break;
@@ -298,7 +299,7 @@ app.post("/enter", (req, res, next) => {
     case 5:
         options[1] = "Crack a Joke";
         options[2] = "Walk around the plant";
-        if(user.inventory.includes("Chicken Leg")) {
+        if(game.inventory.includes("Chicken Leg")) {
           options[3] = "Throw Chicken Leg";
         }
         break;
@@ -342,13 +343,18 @@ app.post("/enter", (req, res, next) => {
       break;
   }
 
-  res.json(options);
+  var sql = "SELECT * FROM Rooms WHERE roomID = " + game.room;
+  con.query(sql, function(err, result) {
+    if (err) throw err;
+    var data = {options, result};
+    res.json(data);
+  });
 });
 
 //Exit a room
 app.post("/exit", (req, res, next) => {
   var obj = req.body;
-  var user = obj.user;
+  var game = obj.game;
   var optionID = obj.optionID;
   var result;
   //gold = user.gold;
@@ -357,24 +363,24 @@ app.post("/exit", (req, res, next) => {
   //trophies = user.trophies;
   //room = user.room;
   
-  switch(user.room) {
+  switch(game.room) {
     //Room 1
     case 1:
       switch(optionID) {
         case 1:
-          user.health -= 30;
-          result = "As you lunge and attempt to punch the troll in the face, he swiftly dodges and then procedes to call your mom ugly. Your pride is utterly destroyed. You lose 30 health.";
+          game.health -= 30;
+          result = "As you lunge and attempt to punch the troll in the face, he swiftly dodges and then procedes to call your mom ugly. Your pride is utterly destroyed. You Lose 30 Health.";
           break;
         case 2:
-          user.health -= 10;
-          result = "You sprint around the troll and avoid his attacks, but you twist your ankle on a rock. You Lose 10 Health."
+          game.health -= 10;
+          result = "You sprint around the troll and avoid his immature insults, but you twist your ankle on a rock. You Lose 10 Health."
           break;
         case 3:
-          user.gold -= 20;
+          game.gold -= 20;
           result = "The troll accepts your bribe and lets you pass."
           break;
         case 4:
-          user.inventory.splice(user.inventory.indexof("Flashbang"),1);
+          game.inventory.splice(game.inventory.indexof("Flashbang"),1);
           result = "You throw the flashbang that stuns and disorients the troll, allowing you to run past."
           break;
         default:
@@ -385,14 +391,14 @@ app.post("/exit", (req, res, next) => {
     case 2:
         switch(optionID) {
           case 1:
-            user.health -= 10;
+            game.health -= 10;
             result = "You try to jump over the pit, but fall short of the other side. The pit isn't as deep as you thought, but you hurt your legs falling. You lose 10 health.";
             break;
           case 2:
             result = "The pit isn't as deep as you thought. You climb down and climb back up the other side."
             break;
           case 3:
-            user.inventory.splice(user.inventory.indexof("Large Plank"),1);
+            game.inventory.splice(user.inventory.indexof("Large Plank"),1);
             result = "You use the large plank to get across but the plank breaks."
             break;
           default:
@@ -403,34 +409,34 @@ app.post("/exit", (req, res, next) => {
     case 3:
         switch(optionID) {
           case 1:
-            user.gold += 15;
-            if(user.gold > 100){
-              user.gold = 100;
+            game.gold += 15;
+            if(game.gold > 100){
+              game.gold = 100;
             }
             result = "You opened Chest 1, you obtained 15 gold.";
             break;
           case 2:
-            user.health += 15;
-            if(user.health > 100) {
-              user.health = 100;
+            game.health += 15;
+            if(game.health > 100) {
+              game.health = 100;
             }
             result = "You opened Chest 2, you obtained bandages and used them. Gain 15 health."
             break;
           case 3:
-            user.inventory.push("Can of Beans");
+            game.inventory.push("Can of Beans");
             result = "You opened Chest 3, you obtained a Can of Beans."
             break;
           case 4:
-            user.gold += 15;
-            if(user.gold > 100){
-              user.gold = 100;
+            game.gold += 15;
+            if(game.gold > 100){
+              game.gold = 100;
             }
-            user.health += 15;
-            if(user.health > 100) {
-              user.health = 100;
+            game.health += 15;
+            if(game.health > 100) {
+              game.health = 100;
             }
-            user.inventory.push("Can of Beans");
-            user.inventory.splice(user.inventory.indexof("Rope"),1);
+            game.inventory.push("Can of Beans");
+            game.inventory.splice(game.inventory.indexof("Rope"),1);
             result = "You used the rope to tie all 3 of the chests together and obtained 15 gold, Bandages (15 health), and Item 3."
           default:
             break;
@@ -440,17 +446,17 @@ app.post("/exit", (req, res, next) => {
     case 4:
         switch(optionID) {
               case 1:
-                user.gold -= 10;
-                user.inventory.push("Rope");
+                game.gold -= 10;
+                game.inventory.push("Rope");
                 result = "You purchased Rope.";
                 break;
               case 2:
-                user.gold -= 15;
-                user.inventory.push("Rope");
+                game.gold -= 15;
+                game.inventory.push("Rope");
                 result = "You purchased a Flashbang."
                 break;
               case 3:
-                user.health +=15;
+                game.health +=15;
                 result = "You purchased a MedKit. Gain 15 health"
                 break;
               default:
@@ -467,7 +473,7 @@ app.post("/exit", (req, res, next) => {
                     result = ""
                     break;
                   case 3:
-                    user.health -=15;
+                    game.health -=15;
                     result = "The plant ignores the Chicken Leg and attacks you. You lose 15 health."
                     break;
                   default:
@@ -478,13 +484,13 @@ app.post("/exit", (req, res, next) => {
     case 6:
         switch(optionID) {
                   case 1:
-                    user.health -= 10;
+                    game.health -= 10;
                     result = "The woman unleashes a swarm of bats that scratch and scrape you. You lose 10 health.";
                     break;
                   case 2:
-                    user.gold -= 10;
-                    if(user.gold < 0) {
-                      user.gold = 0;
+                    game.gold -= 10;
+                    if(game.gold < 0) {
+                      game.gold = 0;
                     }
                     result = "The woman pickpockets you and vanishes. You lose 10 gold"
                     break;
@@ -547,8 +553,20 @@ app.post("/exit", (req, res, next) => {
     default:
       break;
   }
-  var data = {user, result};
+  var data = {game, result};
   res.json(data);
+});
+
+//Continue an existing game
+app.post("/continue", (req, res, next) => {
+  var obj = req.body;
+  var username = obj.username;
+  
+  //var sql = "INSERT INTO Scores (username, score) VALUES ('" + username + "', " + score + ")";
+  //con.query(sql, function(err, result) {
+  //  if (err) throw err;
+  //  res.json("Success");
+  //});
 });
 
 //Host
