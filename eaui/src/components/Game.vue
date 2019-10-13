@@ -1,10 +1,10 @@
 <template>
   <div class="row game-box">
     <div class="column room-box">
-      <h2>{{currentRoom}}</h2>
-      <p>{{room.description}}</p>
+      <h2>{{game.room.name}}</h2>
+      <p>{{game.room.description}}</p>
       <ul class="option-list">
-        <li v-for="option in room.options">
+        <li v-for="option in game.options" v-bind:key="option.id">
           {{option}}
         </li>
       </ul>
@@ -24,48 +24,64 @@
   </div>
 </template>
 
+
 <script>
 
-// import { mapActions, mapGetters } from "vuex";
+import { mapGetters } from 'vuex'
+import axios from 'axios'
+import url from '../url'
 
 export default {
   name: "game",
   data: () => ({
-    currentRoom: "Tavern",
-    rooms: ["Trader", "Campfire", "Hole", "Trapdoor"],
-    recentRooms: ["Levers", "Chest", "Goblin"],
-    room: {
-      description: "This is the room.",
-      options: [
-        "Fight",
-        "Run Away",
-        "Cry"
-      ]
-    },
-    items: [
-      {
-        name: "Sword",
-        description: "This hits stuff",
-      },
-      {
-        name: "Shield",
-        description: "This blocks swords and stuff",
-      },
-      {
-        name: "Potion",
-        description: "This heals you",
-      },
-      {
-        name: "Stick",
-        description: "It's a stick",
-      },
-      {
-        name: "Paul Bunyan's",
-        description: "Where the stuff is good, but not too good, eh?",
-      }
-    ]
+    game: this.game(),
   }),
+  beforeMount: {
+    function: () => {
+      enterRoom();
+    }
+  },
   methods: {
+    enterRoom() {
+      console.log("entering room");
+      try {
+        let requestURL = url + '/enter';
+
+        var axios = require('axios');
+
+        const options = {
+          url: requestURL,
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          data: {
+            game: this.game
+          },
+        }
+        axios(options).then(response =>{
+          if(response.data === "Failure"){
+            this.$toast.open({
+              duration: 3000,
+              message: 'The abyss seems to be missing a room.',
+              position: 'is-bottom',
+              type: 'is-danger'
+            })
+          } else {
+          }
+        })
+      } catch (e) {
+        this.$toast.open({
+          duration: 3000,
+          message: 'Something is wrong in the abyss. Come back later.',
+          position: 'is-bottom',
+          type: 'is-danger'
+        })
+      }
+    },
+    exitRoom(optionID) {
+      
+    },
     cycleRoom() {
       var random = Math.floor(Math.random() * this.rooms.length);
       var temp = this.currentRoom;

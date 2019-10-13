@@ -7,26 +7,22 @@
     <div class="navigationButtons">
       <button
         class="button is-block is-info is-fullwidth mt50"
-        @click="onNewGame"
-      >
+        @click="onNewGame">
         New Game
       </button>
       <button
         class="button is-block is-info is-fullwidth mt50"
-        @click="onContinueGame"
-      >
+        @click="onContinueGame">
         Continue Game
       </button>
       <button
         class="button is-block is-info is-fullwidth mt50"
-        @click="onTrophyRoom"
-      >
+        @click="onTrophyRoom">
         View my Trophies
       </button>
       <button
         class="button is-block is-info is-fullwidth mt50"
-        @click="onLeaderboard"
-      >
+        @click="onLeaderboard">
         Leaderboard
       </button>
     </div>
@@ -35,39 +31,72 @@
 
 <script>
 
-// import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
+import axios from 'axios'
+import url from '../url'
 
 export default {
   name: 'MainMenu',
   components: {
-
   },
-
   data: () => ({
-
   }),
-
   computed: {},
-
   methods: Object.assign(
     {
-      async onNewGame() {
-      //   //TODO: New Game data
-        this.$router.push({ name: 'Game' })
+      onNewGame() {
+        this.newGameData();
+        this.$router.push({ name: 'Game' });
       },
-      // async onContinueGame() {
-      //   //TODO: Request saved game data
-      //   this.$router.push({ name: 'CreateAccount' })
-      // },
-      async onTrophyRoom() {
+      onContinueGame() {
+        try {
+          let requestURL = url + '/continue';
+
+          var axios = require('axios');
+
+          const options = {
+            url: requestURL,
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            data: {
+              username: this.username()
+            },
+          }
+          axios(options).then(response =>{
+            if(response.data === "Failure"){
+              this.$toast.open({
+                duration: 3000,
+                message: 'No saved game exists for this user.',
+                position: 'is-bottom',
+                type: 'is-danger'
+              })
+            } else {
+              this.loadGameData(response.data);
+              this.$router.push({ name: 'Game' });
+            }
+          })
+        } catch (e) {
+          this.$toast.open({
+            duration: 3000,
+            message: 'No saved game exists for this user.',
+            position: 'is-bottom',
+            type: 'is-danger'
+          })
+        }
+      },
+      onTrophyRoom() {
         //TODO: Retrieve trophy room data
-        this.$router.push({ name: 'TrophyRoom' })
+        this.$router.push({ name: 'TrophyRoom' });
       },
-      async onLeaderboard() {
+      onLeaderboard() {
         //TODO: Retrieve Leaderboard data
-        this.$router.push({ name: 'Leaderboard' })
+        this.$router.push({ name: 'Leaderboard' });
       },
     },
+    mapGetters(['username']),
+    mapActions(['newGameData', 'loadGameData']),
   )
 
 }
