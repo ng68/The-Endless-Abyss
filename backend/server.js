@@ -21,6 +21,7 @@ con.connect(function(err) {
   console.log("Connected to database!");
 });
 
+
 //Handling creating new account
 app.post("/newuser", (req, res, next) => {
     var obj = req.body;
@@ -104,6 +105,7 @@ app.get("/score", (req, res, next) => {
     res.json(result);
   });
 });
+
 
 //Giving high score info on specific user
 app.post("/score", (req, res, next) => {
@@ -244,6 +246,230 @@ app.post("/addscoretest", (req, res, next) => {
     if (err) throw err;
     res.json("Success");
   });
+});
+
+//Enter a room
+app.post("/enter", (req, res, next) => {
+  var obj = req.body;
+  var user = obj.user;
+  var options = {};
+  //gold = user.gold;
+  //health = user.health;
+  //inventory = user.inventory;
+  //trophies = user.trophies;
+  //room = user.room;
+  
+  switch(user.room) {
+    //Room 1
+    case 1:
+      options[1] = "Attack the troll";
+      options[2] = "Run around the troll";
+      if (user.gold >= 20) {
+        options[3] = "Bribe the troll";
+      }
+      if (user.inventory.includes("Flashbang")) {
+        options[4] = "Use Flashbang";
+      }
+      break;
+    //Room 2
+    case 2:
+      options[1] = "Jump over the pit";
+      options[2] = "Climb down the pit";
+      if(user.inventory.includes("Large Plank")) {
+        options[3] = "Use Large Plank";
+      }
+      break;
+    //Room 3
+    case 3:
+        options[1] = "Open Chest 1";
+        options[2] = "Open Chest 2";
+        options[3] = "Open Chest 3";
+        if(user.inventory.includes("Rope")) {
+          options[4] = "Use Rope";
+        }
+        break;
+    //Room 4
+    case 4:
+        options[1] = "Purchase Rope (10 gold)";
+        options[2] = "Purchase Flashbang (15 gold)";
+        options[3] = "Purchase MedKit (+15 Health)";
+        break;
+    //Room 5
+    case 5:
+        options[1] = "Crack a Joke";
+        options[2] = "Walk around the plant";
+        if(user.inventory.includes("Chicken Leg")) {
+          options[3] = "Throw Chicken Leg";
+        }
+        break;
+    //Room 6
+    case 6:
+        options[1] = "A Scarecrow";
+        options[2] = "A Mountain";
+        options[3] = "A Tree";
+        break;
+    default:
+      break;
+  }
+
+  res.json(options);
+});
+
+//Exit a room
+app.post("/exit", (req, res, next) => {
+  var obj = req.body;
+  var user = obj.user;
+  var optionID = obj.optionID;
+  var result;
+  //gold = user.gold;
+  //health = user.health;
+  //inventory = user.inventory;
+  //trophies = user.trophies;
+  //room = user.room;
+  
+  switch(user.room) {
+    //Room 1
+    case 1:
+      switch(optionID) {
+        case 1:
+          user.health -= 30;
+          result = "As you lunge and attempt to punch the troll in the face, he swiftly dodges and then procedes to call your mom ugly. Your pride is utterly destroyed. You lose 30 health.";
+          break;
+        case 2:
+          user.health -= 10;
+          result = "You sprint around the troll and avoid his attacks, but you twist your ankle on a rock. You Lose 10 Health."
+          break;
+        case 3:
+          user.gold -= 20;
+          result = "The troll accepts your bribe and lets you pass."
+          break;
+        case 4:
+          user.inventory.splice(user.inventory.indexof("Flashbang"),1);
+          result = "You throw the flashbang that stuns and disorients the troll, allowing you to run past."
+          break;
+        default:
+          break;
+      }
+      break;
+    //Room 2
+    case 2:
+        switch(optionID) {
+          case 1:
+            user.health -= 10;
+            result = "You try to jump over the pit, but fall short of the other side. The pit isn't as deep as you thought, but you hurt your legs falling. You lose 10 health.";
+            break;
+          case 2:
+            result = "The pit isn't as deep as you thought. You climb down and climb back up the other side."
+            break;
+          case 3:
+            user.inventory.splice(user.inventory.indexof("Large Plank"),1);
+            result = "You use the large plank to get across but the plank breaks."
+            break;
+          default:
+            break;
+        }
+        break;
+    //Room 3
+    case 3:
+        switch(optionID) {
+          case 1:
+            user.gold += 15;
+            if(user.gold > 100){
+              user.gold = 100;
+            }
+            result = "You opened Chest 1, you obtained 15 gold.";
+            break;
+          case 2:
+            user.health += 15;
+            if(user.health > 100) {
+              user.health = 100;
+            }
+            result = "You opened Chest 2, you obtained bandages and used them. Gain 15 health."
+            break;
+          case 3:
+            user.inventory.push("Can of Beans");
+            result = "You opened Chest 3, you obtained a Can of Beans."
+            break;
+          case 4:
+            user.gold += 15;
+            if(user.gold > 100){
+              user.gold = 100;
+            }
+            user.health += 15;
+            if(user.health > 100) {
+              user.health = 100;
+            }
+            user.inventory.push("Can of Beans");
+            user.inventory.splice(user.inventory.indexof("Rope"),1);
+            result = "You used the rope to tie all 3 of the chests together and obtained 15 gold, Bandages (15 health), and Item 3."
+          default:
+            break;
+        }
+        break;
+    //Room 4
+    case 4:
+        switch(optionID) {
+              case 1:
+                user.gold -= 10;
+                user.inventory.push("Rope");
+                result = "You purchased Rope.";
+                break;
+              case 2:
+                user.gold -= 15;
+                user.inventory.push("Rope");
+                result = "You purchased a Flashbang."
+                break;
+              case 3:
+                user.health +=15;
+                result = "You purchased a MedKit. Gain 15 health"
+                break;
+              default:
+                break;
+        }
+        break;
+    //Room 5
+    case 5:
+        switch(optionID) {
+                  case 1:
+                    result = "";
+                    break;
+                  case 2:
+                    result = ""
+                    break;
+                  case 3:
+                    user.health -=15;
+                    result = "The plant ignores the Chicken Leg and attacks you. You lose 15 health."
+                    break;
+                  default:
+                    break;
+        }
+        break;
+    //Room 6
+    case 6:
+        switch(optionID) {
+                  case 1:
+                    user.health -= 10;
+                    result = "The woman unleashes a swarm of bats that scratch and scrape you. You lose 10 health.";
+                    break;
+                  case 2:
+                    user.gold -= 10;
+                    if(user.gold < 0) {
+                      user.gold = 0;
+                    }
+                    result = "The woman pickpockets you and vanishes. You lose 10 gold"
+                    break;
+                  case 3:
+                    result = "Correct! The mysterious woman lets out an evil laugh and disappears."
+                    break;
+                  default:
+                    break;
+        }
+        break;
+    default:
+      break;
+  }
+  var data = {user, result};
+  res.json(data);
 });
 
 //Host
