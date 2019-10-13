@@ -10,6 +10,7 @@ import MainMenu from './components/MainMenu'
 import HelloWorld from './components/HelloWorld'
 import TrophyRoom from './components/TrophyRoom'
 import Game from './components/Game'
+import Scoreboard from './components/Scoreboard'
 import Buefy from 'buefy'
 
 Vue.config.productionTip = false
@@ -19,6 +20,7 @@ Vue.use(VueRouter)
 const routes = [
   { path: '/helloworld', name: 'HelloWorld', component: HelloWorld },
   { path: '/createaccount', name: 'CreateAccount', component: CreateAccount },
+  { path: '/scoreboard', name: 'Scoreboard', component: Scoreboard },
   { path: '/login', name: 'Login', component: Login},
   { path: '/recoveraccount', name: 'RecoverAccount', component: RecoverAccount },
   { path: '/mainmenu', name: 'MainMenu', component: MainMenu },
