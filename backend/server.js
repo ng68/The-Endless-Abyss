@@ -248,7 +248,7 @@ app.post("/addscoretest", (req, res, next) => {
   });
 });
 
-//Enter a room
+//Enter a roomID
 app.post("/enter", (req, res, next) => {
   var obj = req.body;
   var game = obj.game;
@@ -258,9 +258,9 @@ app.post("/enter", (req, res, next) => {
   //health = game.health;
   //inventory = game.inventory;
   //trophies = game.trophies;
-  //room = game.room;
+  //roomID = game.roomID;
 
-  switch(game.room) {
+  switch(game.roomID) {
     //Room 1
     case 1:
       options[1] = "Attack the troll";
@@ -343,7 +343,7 @@ app.post("/enter", (req, res, next) => {
       break;
   }
 
-  var sql = "SELECT * FROM Rooms WHERE roomID = " + game.room;
+  var sql = "SELECT * FROM Rooms WHERE roomID = " + game.roomID;
   con.query(sql, function(err, result) {
     if (err) throw err;
     var data = {options, result};
@@ -361,9 +361,9 @@ app.post("/exit", (req, res, next) => {
   //health = game.health;
   //inventory = game.inventory;
   //trophies = game.trophies;
-  //room = game.room;
+  //roomID = game.roomID;
   
-  switch(game.room) {
+  switch(game.roomID) {
     //Room 1
     case 1:
       switch(optionID) {
@@ -561,6 +561,33 @@ app.post("/exit", (req, res, next) => {
     default:
       break;
   }
+  var sql = "DELETE FROM UserGameInventory WHERE username = " + game.username;
+  con.query(sql, function(err, result) {
+    if (err) throw err;
+  });
+  sql = "DELETE FROM UserGameTrophies WHERE username = " + game.username;
+  con.query(sql, function(err, result) {
+    if (err) throw err;
+  });
+  sql = "UPDATE UserGames SET health = " + game.health + ", gold = " + game.gold + " WHERE username = '" + game.username + "'";
+  con.query(sql, function(err, result) {
+    if (err) throw err;
+  });
+
+  for(var i = 0; i < game.inventory.size; i++) {
+    sql = "INSERT INTO UserGameInventory (username, item) VALUES ('" + game.username + "', '" + game.inventory[i]  + "')";
+    con.query(sql, function(err, result) {
+      if (err) throw err;
+    });
+  } 
+
+  for(var i = 0; i < game.trophies.size; i++) {
+    sql = "INSERT INTO UserGameTrophies (username, trophy) VALUES ('" + game.username + "', '" + game.trophies[i]  + "')";
+    con.query(sql, function(err, result) {
+      if (err) throw err;
+    });
+  } 
+
   var data = {game, result};
   res.json(data);
 });
