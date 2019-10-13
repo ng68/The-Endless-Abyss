@@ -52,13 +52,6 @@
                 >
                   Sign Up
                 </a>
-                <!--TODO: Remove this -->
-                <br><a
-                  @click="onHackIntoMainMenu"
-                >
-                  Hack into the Main Menu
-                </a>
-                <!-- -->
               </form>
             </div>
   </div>
@@ -66,7 +59,7 @@
 
 <script>
 
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import axios from 'axios'
 import url from '../url'
 
@@ -97,14 +90,6 @@ export default {
           })
         } else {
           try {
-            /*
-            //console.log('prior to authUser: ' + this.login.username)
-            await this.authenticateUser(this.login)
-
-            if(this.loggedin()){
-               this.$router.push({ name: 'Home' })
-            }
-            */
             let requestURL = url + '/login'
 
             var axios = require('axios')
@@ -122,7 +107,6 @@ export default {
             }
             axios(options)
               .then(response =>{
-                console.log(response.data)
                 if(response.data === "Success"){
                  this.$router.push({ name: 'Home' })
                 }
@@ -148,8 +132,6 @@ export default {
         this.$router.push({ name: 'MainMenu' })
       },
     },
-
-    mapGetters(['tester','loggedin']),
     mapActions(['authenticateUser'])
   )
 }

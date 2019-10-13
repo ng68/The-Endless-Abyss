@@ -46,10 +46,8 @@ const actions = {
     }
     axios(options)
       .then(response =>{
-        console.log(response.data)
         if(response.data === "Success"){
           commit(types.STORE_LOGGED_IN, true)
-          console.log("state of logged in: " + state.loggedin)
         }
       })
     
@@ -69,7 +67,6 @@ const actions = {
   },
   //Used for creating a new user
   createUser(createPlayload) {
-    console.log(createPlayload.username + " username")
     let requestURL = url + '/create'
 
     var axios = require('axios')
