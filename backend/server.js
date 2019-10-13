@@ -251,23 +251,24 @@ app.post("/addscoretest", (req, res, next) => {
 //Enter a room
 app.post("/enter", (req, res, next) => {
   var obj = req.body;
-  var user = obj.user;
+  var user = obj.game;
   var options = {};
-  //gold = user.gold;
-  //health = user.health;
-  //inventory = user.inventory;
-  //trophies = user.trophies;
-  //room = user.room;
-  
-  switch(user.room) {
+  //username = game.username;
+  //gold = game.gold;
+  //health = game.health;
+  //inventory = game.inventory;
+  //trophies = game.trophies;
+  //room = game.room;
+
+  switch(game.room) {
     //Room 1
     case 1:
       options[1] = "Attack the troll";
       options[2] = "Run around the troll";
-      if (user.gold >= 20) {
+      if (game.gold >= 20) {
         options[3] = "Bribe the troll";
       }
-      if (user.inventory.includes("Flashbang")) {
+      if (game.inventory.includes("Flashbang")) {
         options[4] = "Use Flashbang";
       }
       break;
@@ -291,7 +292,12 @@ app.post("/enter", (req, res, next) => {
       break;
   }
 
-  res.json(options);
+  var sql = "SELECT * FROM Rooms WHERE roomID = " + user.room;
+  con.query(sql, function(err, result) {
+    if (err) throw err;
+    var data = {result, options};
+    res.json(data);
+  });
 });
 
 //Exit a room
@@ -312,11 +318,11 @@ app.post("/exit", (req, res, next) => {
       switch(optionID) {
         case 1:
           user.health -= 30;
-          result = "As you lunge and attempt to punch the troll in the face, he swiftly dodges and then procedes to call your mom ugly. Your pride is utterly destroyed. You lose 30 health.";
+          result = "As you lunge and attempt to punch the troll in the face, he swiftly dodges and then procedes to call your mom ugly. Your pride is utterly destroyed. You Lose 30 Health.";
           break;
         case 2:
           user.health -= 10;
-          result = "You sprint around the troll and avoid his attacks, but you twist your ankle on a rock. You Lose 10 Health."
+          result = "You sprint around the troll and avoid his immature insults, but you twist your ankle on a rock. You Lose 10 Health."
           break;
         case 3:
           user.gold -= 20;
