@@ -35,7 +35,7 @@
 
 <script>
 
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import axios from 'axios'
 import url from '../url'
 
@@ -82,7 +82,6 @@ export default {
             }
             axios(options)
               .then(response =>{
-                console.log(response.data)
                 if(response.data === "Success"){
                  this.$router.push({ name: 'Home' })
                 } else {
