@@ -521,6 +521,19 @@ app.post("/exit", (req, res, next) => {
                     user.health += -15;
                     result = "The food is rancide and rotten, what possesed you to eat it (-15 Health)"
                     break;
+                  case 2:
+                    user.health += -5;
+                    user.inventory.push("Key");
+                    result = "While the fluid is vile something interesting was at the bottom a key (Gain key)";
+                    break;
+                  case 3:
+                    user.gold += 25;
+                    result = "The food may have gone bad, but their coin has not"
+                    break;
+                  case 4:
+                    user.inventory.splice(user.inventory.indexof("Chicken Leg"),1);
+                    result = "A great fly with a crown appears and nods in thanks";
+                    break;
         }
         break;
     //room 9
