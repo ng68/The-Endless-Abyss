@@ -115,10 +115,6 @@ export default {
             })
         } else { 
             try {
-              /*
-            await this.createUser(this.login)
-            this.$router.push({ name: 'Home' })
-            */
              let requestURL = url + '/newuser'
 
               var axios = require('axios')
@@ -137,9 +133,7 @@ export default {
               }
               axios(options)
                 .then(response =>{
-                  console.log(response.data)
                   if(response.data === "Success"){
-                    console.log("Successful creation")
                     this.$router.push({ name: 'Home' })
                   } else {
                     this.$toast.open({
