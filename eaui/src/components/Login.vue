@@ -90,14 +90,6 @@ export default {
           })
         } else {
           try {
-            /*
-            //console.log('prior to authUser: ' + this.login.username)
-            await this.authenticateUser(this.login)
-
-            if(this.loggedin()){
-               this.$router.push({ name: 'Home' })
-            }
-            */
             let requestURL = url + '/login'
 
             var axios = require('axios')
