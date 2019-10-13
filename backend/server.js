@@ -546,8 +546,16 @@ app.post("/exit", (req, res, next) => {
     case 9:
         switch(optionID) {
                   case 1:
-
-                  break;
+                    user.health += 10;
+                    result = "The water is refreshing and fills you with strength";
+                    break;
+                  case 2:
+                    user.gold --;
+                    result = "as you throw the coin down you hear a yelp and a sword come flying up, maybe look before you wish";
+                    break;
+                  case 3:
+                    result = "You decend down the well till you meet a large snail, he greets you kindly as he states his name Keven";
+                    break;
         }
         break;
     default:
