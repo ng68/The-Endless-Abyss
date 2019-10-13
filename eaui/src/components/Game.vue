@@ -1,16 +1,25 @@
 <template>
-  <div class="row game-screen">
-    <div class="column room-screen">
-      <h2>{{currentRoom.name}}</h2>
-      <p>{{currentRoom.description}}</p>
-      <ul>
-        <li v-for="option in options" v-bind:key="option.id">
+  <div class="row game-box">
+    <div class="column room-box">
+      <h2>{{currentRoom}}</h2>
+      <p>{{room.description}}</p>
+      <ul class="option-list">
+        <li v-for="option in room.options">
+          {{option}}
         </li>
       </ul>
       <button @click="cycleRoom">New Room</button>
-    </div>y
-    <div class="column inventory">
-      <Inventory></Inventory>
+    </div>
+    <div class="column inventory-box">
+      <h2>Health</h2>
+      <h2>Gold</h2>
+      <h2>Inventory</h2>
+      <ul class="inventory">
+        <li class="row item" v-for="item in items" v-bind:key="item.id">
+          <img>
+          <span :title="item.description">{{item.name}}</span>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -19,16 +28,42 @@
 
 // import { mapActions, mapGetters } from "vuex";
 
-import Inventory from './Inventory'
-
-import Room from './Room'
-
 export default {
   name: "game",
   data: () => ({
     currentRoom: "Tavern",
     rooms: ["Trader", "Campfire", "Hole", "Trapdoor"],
-    recentRooms: ["Levers", "Chest", "Goblin"]
+    recentRooms: ["Levers", "Chest", "Goblin"],
+    room: {
+      description: "This is the room.",
+      options: [
+        "Fight",
+        "Run Away",
+        "Cry"
+      ]
+    },
+    items: [
+      {
+        name: "Sword",
+        description: "This hits stuff",
+      },
+      {
+        name: "Shield",
+        description: "This blocks swords and stuff",
+      },
+      {
+        name: "Potion",
+        description: "This heals you",
+      },
+      {
+        name: "Stick",
+        description: "It's a stick",
+      },
+      {
+        name: "Paul Bunyan's",
+        description: "Where the stuff is good, but not too good, eh?",
+      }
+    ]
   }),
   methods: {
     cycleRoom() {
@@ -40,7 +75,6 @@ export default {
     }
   },
   components: {
-    Inventory,
   }
 };
 
@@ -49,7 +83,7 @@ export default {
 
 <style scoped>
 
-.game-screen {
+.game-box {
   height: 86vh;
 }
 
@@ -57,18 +91,38 @@ export default {
   display: flex;
 }
 
-.room-screen {
+.room-box {
   flex: 75%;
-}
-
-.room-screen {
   border-style: solid;
 }
 
-.inventory {
+.option-list {
+  text-align: left;
+}
+
+.inventory-box {
   flex: 25%;
   border-style: solid;
   border-left: 0px;
+}
+
+h2 {
+  font-weight: bold;
+  font-size: large;
+}
+
+.inventory {
+  text-align: left;
+  border-style: solid;
+}
+
+.item {
+  background: darkgrey;
+  padding: 3px;
+}
+
+.item:nth-child(odd) {
+  background: silver;
 }
 
 </style>
