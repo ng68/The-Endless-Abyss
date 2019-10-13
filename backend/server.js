@@ -314,7 +314,7 @@ app.post("/enter", (req, res, next) => {
     case 7:
         options[1] = "Inspect the fissures";
         options[2] = "Trudge through the ice and snow (-20 Health)";
-        if(user.inventory.includes("Torch")) {
+        if(game.inventory.includes("Torch")) {
           option[3] = "Light the torch and continue"
         }
         break;
@@ -324,7 +324,7 @@ app.post("/enter", (req, res, next) => {
         options[1] = "Try the quizeen";
         options[2] = "Try the drinks";
         options[3] = "Servay the dish wear";
-        if(user.inventory.includes("Chicken Leg")){
+        if(game.inventory.includes("Chicken Leg")){
           option[4] = "Leave an offering for the log lost feast (Lose Chicken Leg)"
         }
         break;
@@ -332,10 +332,10 @@ app.post("/enter", (req, res, next) => {
     //The well, in a mostly circular room there is a large well looming in the middle
     case 9:
         options[1] = "Get some water";//give 10 hp
-        if(user.gold >= 1){
+        if(game.gold >= 1){
           option[2] = "Toss a coin in (Loss 1 coin)"// gives sword
         }
-        if(user.inventory.includes("Rope")){
+        if(game.inventory.includes("Rope")){
           option[3] = "Travel down the well" // Meet keven, gives card, trophie meet keven
         }
         break;
@@ -357,11 +357,11 @@ app.post("/exit", (req, res, next) => {
   var game = obj.game;
   var optionID = obj.optionID;
   var result;
-  //gold = user.gold;
-  //health = user.health;
-  //inventory = user.inventory;
-  //trophies = user.trophies;
-  //room = user.room;
+  //gold = game.gold;
+  //health = game.health;
+  //inventory = game.inventory;
+  //trophies = game.trophies;
+  //room = game.room;
   
   switch(game.room) {
     //Room 1
@@ -398,7 +398,7 @@ app.post("/exit", (req, res, next) => {
             result = "The pit isn't as deep as you thought. You climb down and climb back up the other side."
             break;
           case 3:
-            game.inventory.splice(user.inventory.indexof("Large Plank"),1);
+            game.inventory.splice(game.inventory.indexof("Large Plank"),1);
             result = "You use the large plank to get across but the plank breaks."
             break;
           default:
@@ -505,14 +505,14 @@ app.post("/exit", (req, res, next) => {
     case 7:
         switch(optionID) {
                   case 1:
-                    user.gold -= 10;
-                    if(user.gold < 0) {
-                      user.gold = 0;
+                    game.gold -= 10;
+                    if(game.gold < 0) {
+                      game.gold = 0;
                     }
                     result = "On closer inspection you find the grond is pretty slippery and you fall in, You hear some coins fall out"
                     break;
                   case 2:
-                    user.health += -20;
+                    game.health += -20;
                     result = "Its cold and brutal but you get through the room, after losing a toe or 2 (-20 health)"
                     break;
                   case 3:
@@ -524,20 +524,20 @@ app.post("/exit", (req, res, next) => {
     case 8:
         switch(optionID) {
                   case 1:
-                    user.health += -15;
+                    game.health += -15;
                     result = "The food is rancide and rotten, what possesed you to eat it (-15 Health)"
                     break;
                   case 2:
-                    user.health += -5;
-                    user.inventory.push("Key");
+                    game.health += -5;
+                    game.inventory.push("Key");
                     result = "While the fluid is vile something interesting was at the bottom a key (Gain key)";
                     break;
                   case 3:
-                    user.gold += 25;
+                    game.gold += 25;
                     result = "The food may have gone bad, but their coin has not"
                     break;
                   case 4:
-                    user.inventory.splice(user.inventory.indexof("Chicken Leg"),1);
+                    game.inventory.splice(game.inventory.indexof("Chicken Leg"),1);
                     result = "A great fly with a crown appears and nods in thanks";
                     break;
         }
@@ -546,11 +546,11 @@ app.post("/exit", (req, res, next) => {
     case 9:
         switch(optionID) {
                   case 1:
-                    user.health += 10;
+                    game.health += 10;
                     result = "The water is refreshing and fills you with strength";
                     break;
                   case 2:
-                    user.gold --;
+                    game.gold --;
                     result = "as you throw the coin down you hear a yelp and a sword come flying up, maybe look before you wish";
                     break;
                   case 3:
