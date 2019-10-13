@@ -35,7 +35,9 @@
 
 <script>
 
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
+import axios from 'axios'
+import url from '../url'
 
 export default {
   name: 'RecoverAccount',
@@ -64,12 +66,37 @@ export default {
           })
         } else {
           try {
-            await this.authenticateUser(this.login)
-            this.$router.push({ name: 'Home', query: { tab: 'sut', page: 1 } })
+            let requestURL = url + '/recovery'
+
+            var axios = require('axios')
+
+            const options = {
+              url: requestURL,
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              data: {
+                email: this.email
+              }
+            }
+            axios(options)
+              .then(response =>{
+                if(response.data === "Success"){
+                 this.$router.push({ name: 'Home' })
+                } else {
+                this.$toast.open({
+                  duration: 5000,
+                  message: 'Invalid Email Please Try Again',
+                  position: 'is-bottom',
+                  type: 'is-danger'
+                })
+                }
+              })
           } catch (e) {
             this.$toast.open({
               duration: 5000,
-              message: 'Incorrect login. Please try again',
+              message: 'An Error Has Occured Please Try Again',
               position: 'is-bottom',
               type: 'is-danger'
             })

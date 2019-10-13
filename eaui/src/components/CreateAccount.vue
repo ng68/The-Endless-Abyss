@@ -74,7 +74,9 @@
 
 <script>
 
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
+import axios from 'axios'
+import url from '../url'
 
 export default {
   name: 'CreateAccount',
@@ -113,8 +115,36 @@ export default {
             })
         } else { 
             try {
-            await this.createUser(this.login)
-            this.$router.push({ name: 'Home' })
+             let requestURL = url + '/newuser'
+
+              var axios = require('axios')
+
+              const options = {
+                url: requestURL,
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                data: {
+                  username: this.username,
+                  password: this.password,
+                  email: this.email
+                }
+              }
+              axios(options)
+                .then(response =>{
+                  if(response.data === "Success"){
+                    this.$router.push({ name: 'Home' })
+                  } else {
+                    this.$toast.open({
+                      duration: 5000,
+                      message: response.data,
+                      position: 'is-bottom',
+                      type: 'is-danger'
+                    })
+                  }
+                })
+
           } catch (e) {
             this.$toast.open({
               duration: 5000,
