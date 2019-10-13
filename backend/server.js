@@ -308,6 +308,36 @@ app.post("/enter", (req, res, next) => {
         options[2] = "A Mountain";
         options[3] = "A Tree";
         break;
+    //Room 7
+    //A fidged wind bellows from a room covered in Ice and deep fissures
+    case 7:
+        options[1] = "Inspect the fissures";
+        options[2] = "Trudge through the ice and snow (-20 Health)";
+        if(user.inventory.includes("Torch")) {
+          option[3] = "Light the torch and continue"
+        }
+        break;
+    //Room 8
+    //A feasting hall the size of emense size, food spread across in a rotten display with flys and webs covering it
+    case 8:
+        options[1] = "Try the quizeen";
+        options[2] = "Try the drinks";
+        options[3] = "Servay the dish wear";
+        if(user.inventory.includes("Chicken Leg")){
+          option[4] = "Leave an offering for the log lost feast (Lose Chicken Leg)"
+        }
+        break;
+    //Room 9
+    //The well, in a mostly circular room there is a large well looming in the middle
+    case 9:
+        options[1] = "Get some water";//give 10 hp
+        if(user.gold >= 1){
+          option[2] = "Toss a coin in (Loss 1 coin)"// gives sword
+        }
+        if(user.inventory.includes("Rope")){
+          option[3] = "Travel down the well" // Meet keven, gives card, trophie meet keven
+        }
+        break;
     default:
       break;
   }
@@ -463,6 +493,42 @@ app.post("/exit", (req, res, next) => {
                     break;
                   default:
                     break;
+        }
+        break;
+    //room 7
+    case 7:
+        switch(optionID) {
+                  case 1:
+                    user.gold -= 10;
+                    if(user.gold < 0) {
+                      user.gold = 0;
+                    }
+                    result = "On closer inspection you find the grond is pretty slippery and you fall in, You hear some coins fall out"
+                    break;
+                  case 2:
+                    user.health += -20;
+                    result = "Its cold and brutal but you get through the room, after losing a toe or 2 (-20 health)"
+                    break;
+                  case 3:
+                    result = "quick on your feet you light up a torch and pass through warm along the way"
+                    break;
+        }
+        break;
+    //room 8
+    case 8:
+        switch(optionID) {
+                  case 1:
+                    user.health += -15;
+                    result = "The food is rancide and rotten, what possesed you to eat it (-15 Health)"
+                    break;
+        }
+        break;
+    //room 9
+    case 9:
+        switch(optionID) {
+                  case 1:
+
+                  break;
         }
         break;
     default:

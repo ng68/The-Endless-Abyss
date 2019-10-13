@@ -52,13 +52,6 @@
                 >
                   Sign Up
                 </a>
-                <!--TODO: Remove this -->
-                <br><a
-                  @click="onHackIntoMainMenu"
-                >
-                  Hack into the Main Menu
-                </a>
-                <!-- -->
               </form>
             </div>
   </div>
