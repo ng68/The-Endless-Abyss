@@ -1,20 +1,54 @@
 <template>
-  <div>
+  <div id="TrophyRoom">
     <div>
       <h1>Trophy Room</h1>
     </div>
     <div class='trophy-case'>
-      <div class='trophy' v-for="trophy in trophies" title="{{ trophy.description }}">
-        <img class='trophy-image' src="{{ trophy.img }}">
-        <span class='trophy-text'>{{ trophy.title }}</span>
+      <div class='trophy' title="This is a basic placeholder trophy">
+        <img class='trophy-image' src="../assets/simple_trophy.png">
+        <span class='trophy-text'>Simple Trophy</span>
+      </div>
+      <div class='trophy' title="This is a basic placeholder trophy">
+        <img class='trophy-image' src="../assets/simple_trophy.png">
+        <span class='trophy-text'>Simple Trophy</span>
+      </div>
+      <div class='trophy' title="This is a basic placeholder trophy">
+        <img class='trophy-image' src="../assets/simple_trophy.png">
+        <span class='trophy-text'>Simple Trophy</span>
+      </div>
+      <div class='trophy' title="This is a basic placeholder trophy">
+        <img class='trophy-image' src="../assets/simple_trophy.png">
+        <span class='trophy-text'>Simple Trophy</span>
+      </div>
+      <div class='trophy' title="This is a basic placeholder trophy">
+        <img class='trophy-image' src="../assets/simple_trophy.png">
+        <span class='trophy-text'>Simple Trophy</span>
+      </div>
+      <div class='trophy' title="This is a basic placeholder trophy">
+        <img class='trophy-image' src="../assets/simple_trophy.png">
+        <span class='trophy-text'>Simple Trophy</span>
+      </div>
+      <div class='trophy' title="This is a basic placeholder trophy">
+        <img class='trophy-image' src="../assets/simple_trophy.png">
+        <span class='trophy-text'>Simple Trophy</span>
+      </div>
+      <div class='trophy' title="This is a basic placeholder trophy">
+        <img class='trophy-image' src="../assets/simple_trophy.png">
+        <span class='trophy-text'>Simple Trophy</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'TrophyRoom',
+  components: {
+
+  },
 
   data: () => ({
     trophies: []
@@ -28,7 +62,15 @@ export default {
     },
     mapGetters(['user'])
   ),
+
+  methods: Object.assign(
+    {
+
+    },
+  )
+
 }
+
 </script>
 
 <style scoped>
@@ -49,7 +91,6 @@ export default {
   padding-left: 10px;
   padding-right: 10px;
   background-image: url("../assets/shelf.jpg");
-  background-size: 100cw 100ch;
 }
 
 .trophy-image {

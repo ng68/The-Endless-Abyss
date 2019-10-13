@@ -3,7 +3,9 @@ var bodyParser = require('body-parser');
 var app = express();
 var mysql = require('mysql');
 var cryptJS = require('crypto-js');
+var cors = require('cors');
 
+app.use(cors());
 app.use(bodyParser.json());
 
 var con = mysql.createConnection({
@@ -18,6 +20,7 @@ con.connect(function(err) {
   if (err) throw err;
   console.log("Connected to database!");
 });
+
 
 //Handling creating new account
 app.post("/newuser", (req, res, next) => {
@@ -242,6 +245,71 @@ app.post("/addscoretest", (req, res, next) => {
     if (err) throw err;
     res.json("Success");
   });
+});
+
+//Enter a room
+app.post("/enter", (req, res, next) => {
+  var obj = req.body;
+  var user = obj.user;
+  var options = {};
+  //gold = user.gold;
+  //health = user.health;
+  //inventory = user.inventory;
+  //trophies = user.trophies;
+  //room = user.room;
+  
+  switch(user.room) {
+    case 1:
+      options[1] = "Attack the troll";
+      options[2] = "Run around the troll";
+      if (user.gold >= 20) {
+        options[3] = "Bribe the troll";
+      }
+      if (user.inventory.includes("Flashbang")) {
+        options[4] = "Throw flashbang at troll";
+      }
+      break;
+    default:
+      break;
+  }
+
+  res.json(options);
+});
+
+//Exit a room
+app.post("/exit", (req, res, next) => {
+  var obj = req.body;
+  var user = obj.user;
+  var optionID = obj.optionID;
+  var result;
+  //gold = user.gold;
+  //health = user.health;
+  //inventory = user.inventory;
+  //trophies = user.trophies;
+  //room = user.room;
+  
+  switch(user.room) {
+    case 1:
+      switch(optionID) {
+        case 1:
+          user.health -= 30;
+          result = "As you lunge and attempt to punch the troll in the face, he swiftly dodges and then procedes to call your mom ugly. Your pride is utterly destroyed. You lose 30 health.";
+          break;
+        case 2:
+          break;
+        case 3:
+          break;
+        case 4:
+          break;
+        default:
+          break;
+      }
+      break;
+    default:
+      break;
+  }
+  var data = {user, result};
+  res.json(data);
 });
 
 //Host
