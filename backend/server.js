@@ -372,6 +372,9 @@ app.post("/enter", (req, res, next) => {
   //"IF NOT EXISTS(SELECT * FROM UserGames WHERE username = " + game.username + ") INSERT INTO UserGames (username, health, gold, roomID) VALUES ('" + game.username + "', " + game.health  + ", " + game.gold + ", " + game.roomID + ") ELSE UPDATE UserGames SET roomID = " + game.roomID + " WHERE username = " + game.username;
   con.query(sql, function(err, result) {
     if (err) {
+      throw err;
+    }
+    if (result.affectedRows == 0) {
       sql = "INSERT INTO UserGames (username, health, gold, roomID) VALUES ('" + game.username + "', " + game.health  + ", " + game.gold + ", " + game.roomID + ")";
       con.query(sql, function(err, result) { 
         if (err) throw err;
@@ -382,7 +385,6 @@ app.post("/enter", (req, res, next) => {
   con.query(sql, function(err, result) { 
   });
   for(var i = 0; i < game.recentRooms.length; i++) {
-    console.log(i);
     sql = "INSERT INTO UserGameRecentRooms (username, roomID) VALUES ('" + game.username + "', '" + game.recentRooms[i]  + "')";
     con.query(sql, function(err, result) {
       if (err) throw err;
@@ -643,11 +645,45 @@ app.post("/continue", (req, res, next) => {
   var obj = req.body;
   var username = obj.username;
   
-  //var sql = "INSERT INTO Scores (username, score) VALUES ('" + username + "', " + score + ")";
-  //con.query(sql, function(err, result) {
-  //  if (err) throw err;
-  //  res.json("Success");
-  //});
+  var sql = "SELECT * FROM UserGames WHERE username = '" + username + "'";
+  con.query(sql, function(err, result) {
+    if (err) throw err;
+    if (result.length > 0) {
+      var user = {
+        username : result[0].username,
+        health : result[0].health,
+        gold : result[0].gold,
+        roomID : result[0].roomID,
+        inventory : [],
+        recentRooms : [],
+        trophies : []
+      }
+      sql = "SELECT * FROM UserGameInventory WHERE username = '" + username + "'";
+      con.query(sql, function(err, result) {
+        if (err) throw err;
+        for (var i = 0; i < result.length; i++) {
+          user.inventory.push(result[i].item);
+        }
+      });
+      sql = "SELECT * FROM UserGameRecentRooms WHERE username = '" + username + "'";
+      con.query(sql, function(err, result) {
+        if (err) throw err;
+        for (var i = 0; i < result.length; i++) {
+          user.recentRooms.push(result[i].roomID);
+        }
+      });
+      sql = "SELECT * FROM UserGameTrophies WHERE username = '" + username + "'";
+      con.query(sql, function(err, result) {
+        if (err) throw err;
+        for (var i = 0; i < result.length; i++) {
+          user.trophies.push(result[i].trophy);
+        }
+        res.json(user);
+      });
+    }else {
+      res.json("Failure");
+    }
+  });
 });
 
 //Host
