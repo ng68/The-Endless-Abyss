@@ -293,24 +293,30 @@ app.post("/enter", (req, res, next) => {
     case 4:
         options[1] = "Purchase Rope (10 gold)";
         options[2] = "Purchase Flashbang (15 gold)";
-        options[3] = "Purchase MedKit (+15 Health)";
+        options[3] = "Purchase MedKit (+20 Health) (15 gold)";
         break;
     //Room 5
     case 5:
-        options[1] = "Crack a Joke";
+        if(game.inventory.includes("Fun Puns")) {
+          options[1] = "Read aloud a funny pun from Fun Puns";
+        }
         options[2] = "Walk around the plant";
         if(game.inventory.includes("Chicken Leg")) {
           options[3] = "Throw Chicken Leg";
         }
+        options[4] = "Throw a rock at the plant"
         break;
     //Room 6
     case 6:
         options[1] = "A Scarecrow";
         options[2] = "A Mountain";
         options[3] = "A Tree";
+        if (game.inventory.includes("Fun Puns")) {
+          options[4] = "Offer \"Fun Puns\" to the woman";
+        }
         break;
     //Room 7
-    //A fidged wind bellows from a room covered in Ice and deep fissures
+    //A frigid wind bellows from a room covered in Ice and deep fissures
     case 7:
         options[1] = "Inspect the fissures";
         options[2] = "Trudge through the ice and snow (-20 Health)";
@@ -321,11 +327,11 @@ app.post("/enter", (req, res, next) => {
     //Room 8
     //A feasting hall the size of emense size, food spread across in a rotten display with flys and webs covering it
     case 8:
-        options[1] = "Try the quizeen";
+        options[1] = "Try the cuisine";
         options[2] = "Try the drinks";
-        options[3] = "Servay the dish wear";
+        options[3] = "Survey the dishwear";
         if(game.inventory.includes("Chicken Leg")){
-          option[4] = "Leave an offering for the log lost feast (Lose Chicken Leg)"
+          option[4] = "Leave an offering for the long lost feast (Lose Chicken Leg)"
         }
         break;
     //Room 9
@@ -333,17 +339,48 @@ app.post("/enter", (req, res, next) => {
     case 9:
         options[1] = "Get some water";//give 10 hp
         if(game.gold >= 1){
-          option[2] = "Toss a coin in (Loss 1 coin)"// gives sword
+          option[2] = "Toss a coin in (Lose 1 coin)"// gives sword
         }
         if(game.inventory.includes("Rope")){
           option[3] = "Travel down the well" // Meet keven, gives card, trophie meet keven
         }
         break;
+    //Room 10
+    //You enter a vast hall with books lining the walls. On the other side there is a door, however, in between you and the door sits a goblin reading a book labeled "Fun Puns"    
+    case 10:
+        options[1] = "Attempt to sneak passed the goblin without disturbing him";
+        options[2] = "Ask the goblin what he is reading";
+        if (game.inventory.includes("Sword")){
+            options[3] = "Attack him, sword in hand";
+        }
+        if (game.inventory.includes("Flashbang")){
+            options[4] = "Throw flashbang"
+        }
+        break;
     default:
       break;
   }
-
-  var sql = "SELECT * FROM Rooms WHERE roomID = " + game.roomID;
+  var sql = "UPDATE UserGames SET roomID = " + game.roomID + " WHERE username = '" + game.username + "'";
+  //"IF NOT EXISTS(SELECT * FROM UserGames WHERE username = " + game.username + ") INSERT INTO UserGames (username, health, gold, roomID) VALUES ('" + game.username + "', " + game.health  + ", " + game.gold + ", " + game.roomID + ") ELSE UPDATE UserGames SET roomID = " + game.roomID + " WHERE username = " + game.username;
+  con.query(sql, function(err, result) {
+    if (err) {
+      sql = "INSERT INTO UserGames (username, health, gold, roomID) VALUES ('" + game.username + "', " + game.health  + ", " + game.gold + ", " + game.roomID + ")";
+      con.query(sql, function(err, result) { 
+        if (err) throw err;
+      });
+    }
+  });
+  sql = "DELETE FROM UserGameRecentRooms WHERE username = '" + game.username + "'";
+  con.query(sql, function(err, result) { 
+  });
+  for(var i = 0; i < game.recentRooms.length; i++) {
+    console.log(i);
+    sql = "INSERT INTO UserGameRecentRooms (username, roomID) VALUES ('" + game.username + "', '" + game.recentRooms[i]  + "')";
+    con.query(sql, function(err, result) {
+      if (err) throw err;
+    });
+  } 
+  sql = "SELECT * FROM Rooms WHERE roomID = " + game.roomID;
   con.query(sql, function(err, result) {
     if (err) throw err;
     var data = {options, result};
@@ -525,7 +562,7 @@ app.post("/exit", (req, res, next) => {
         switch(optionID) {
                   case 1:
                     game.health += -15;
-                    result = "The food is rancide and rotten, what possesed you to eat it (-15 Health)"
+                    result = "The food is rancide and rotten, what posses sed you to eat it (-15 Health)"
                     break;
                   case 2:
                     game.health += -5;
@@ -561,11 +598,12 @@ app.post("/exit", (req, res, next) => {
     default:
       break;
   }
-  var sql = "DELETE FROM UserGameInventory WHERE username = " + game.username;
+  
+  var sql = "DELETE FROM UserGameInventory WHERE username = '" + game.username + "'";
   con.query(sql, function(err, result) {
     if (err) throw err;
   });
-  sql = "DELETE FROM UserGameTrophies WHERE username = " + game.username;
+  sql = "DELETE FROM UserGameTrophies WHERE username = '" + game.username + "'";
   con.query(sql, function(err, result) {
     if (err) throw err;
   });
@@ -574,14 +612,14 @@ app.post("/exit", (req, res, next) => {
     if (err) throw err;
   });
 
-  for(var i = 0; i < game.inventory.size; i++) {
+  for(var i = 0; i < game.inventory.length; i++) {
     sql = "INSERT INTO UserGameInventory (username, item) VALUES ('" + game.username + "', '" + game.inventory[i]  + "')";
     con.query(sql, function(err, result) {
       if (err) throw err;
     });
   } 
 
-  for(var i = 0; i < game.trophies.size; i++) {
+  for(var i = 0; i < game.trophies.length; i++) {
     sql = "INSERT INTO UserGameTrophies (username, trophy) VALUES ('" + game.username + "', '" + game.trophies[i]  + "')";
     con.query(sql, function(err, result) {
       if (err) throw err;
