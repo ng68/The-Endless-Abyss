@@ -10,7 +10,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 var transporter = nodemailer.createTransport({
-  serice: 'gmail',
+  service: 'gmail',
   auth: {
     user: 'theendlessabyss.noreply@gmail.com',
     pass: '@byss123'
@@ -88,38 +88,47 @@ app.post("/login", (req, res, next) => {
   });
 });
 
-//Recover password (In progress)
+//Recover password
 app.post("/recovery", (req, res, next) => {
   var obj = req.body;
   var username = obj.username;
-  var email;
-  var password;
 
-  var mailOptions = {
-    from: 'theendlessabyss.noreply@gmail.com',
-    to: 'colecompton28@yahoo.com',
-    subject: 'Recovery password for The Endless Abyss',
-    text: 'Hi'
-  };
-  
-  transporter.sendMail(mailOptions, function(error, info){
-    if (error) {
-      console.log(error);
-    } else {
-      console.log('Email sent: ' + info.response);
+  //Get email of user
+  var sql = "SELECT email FROM User WHERE username = '" + username + "'";
+  con.query(sql, function(err, result) {
+    if (err) throw err;
+    //Generate temp password
+    var email = result[0].email;
+    var tempPassword = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < 10; i++ ) {
+      tempPassword += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
+
+    //Save temp password
+    var encryptPassword = cryptJS.SHA256(tempPassword);
+    sql = "UPDATE User SET password = '" + encryptPassword + "' WHERE username = '" + username + "'";
+    con.query(sql, function(err, result) {
+      if (err) throw err;
+    });
+
+    var mailOptions = {
+      from: 'theendlessabyss.noreply@gmail.com',
+      to: email,
+      subject: 'Recovery password for The Endless Abyss',
+      text: 'Here is your temporary password: ' + tempPassword
+    };
+    
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+    res.json(email);
   });
-  //Decrypt email
-  res.json("Success");
-  // var sql = "SELECT password FROM User WHERE email = '" + email + "'";
-  // con.query(sql, function(err, result) {
-  //   if (err) throw err;
-  //   if (result.length > 0) {
-  //     res.json(result);
-  //   }else {
-  //     res.json("Failure");
-  //   }
-  // });
 });
 
 //Giving high score info on entire leaderboard
@@ -452,7 +461,7 @@ app.post("/exit", (req, res, next) => {
           result = "The troll accepts your bribe and lets you pass."
           break;
         case 4:
-          game.inventory.splice(game.inventory.indexof("Flashbang"),1);
+          game.inventory.splice(game.inventory.indexOf("Flashbang"),1);
           result = "You throw the flashbang that stuns and disorients the troll, allowing you to run past."
           break;
         default:
@@ -470,7 +479,7 @@ app.post("/exit", (req, res, next) => {
             result = "The pit isn't as deep as you thought. You climb down and climb back up the other side."
             break;
           case 3:
-            game.inventory.splice(game.inventory.indexof("Large Plank"),1);
+            game.inventory.splice(game.inventory.indexOf("Large Plank"),1);
             result = "You use the large plank to get across but the plank breaks."
             break;
           default:
@@ -508,7 +517,7 @@ app.post("/exit", (req, res, next) => {
               game.health = 100;
             }
             game.inventory.push("Can of Beans");
-            game.inventory.splice(game.inventory.indexof("Rope"),1);
+            game.inventory.splice(game.inventory.indexOf("Rope"),1);
             result = "You used the rope to tie all 3 of the chests together and obtained 15 gold, Bandages (15 health), and Item 3."
           default:
             break;
@@ -609,7 +618,7 @@ app.post("/exit", (req, res, next) => {
                     result = "The food may have gone bad, but their coin has not"
                     break;
                   case 4:
-                    game.inventory.splice(game.inventory.indexof("Chicken Leg"),1);
+                    game.inventory.splice(game.inventory.indexOf("Chicken Leg"),1);
                     result = "A great fly with a crown appears and nods in thanks";
                     break;
         }
@@ -633,7 +642,18 @@ app.post("/exit", (req, res, next) => {
     default:
       break;
   }
-  
+
+  for (var i = 0; i < game.inventory.length; i++) {
+    for (var j = i+1; j < game.inventory.length; j++) {
+      if (game.inventory[i] == game.inventory[j]) {
+        var saved = game.inventory[i];
+        game.inventory.splice(game.inventory.indexOf(saved),1);
+        game.gold += 10;
+        result += " Sorry, duplicate items are hard to implement. Here's 10 gold. (+10 Gold)";
+      }
+    }
+  }
+
   var sql = "DELETE FROM UserGameInventory WHERE username = '" + game.username + "'";
   con.query(sql, function(err, result) {
     if (err) throw err;
@@ -661,7 +681,7 @@ app.post("/exit", (req, res, next) => {
     });
   } 
 
-  if (game.health == 0) {
+  if (game.health <= 0) {
     status = "Lose";
   }
   var data = {game, result, status};
