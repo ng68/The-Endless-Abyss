@@ -76,13 +76,20 @@ export default {
                 'Content-Type': 'application/json',
               },
               data: {
-                email: this.email
+                email: this.email,
+                newpassword: ""
               }
             }
             axios(options)
               .then(response =>{
                 if(response.data === "Success"){
-                 this.$router.push({ name: 'Home' })
+                 this.$toast.open({
+                  duration: 5000,
+                  message: 'An email has been sent',
+                  position: 'is-bottom',
+                  type: 'success'
+                })
+                this.$router.push({ name: 'Login' })
                 } else {
                 this.$toast.open({
                   duration: 5000,

@@ -53,18 +53,13 @@
                   Sign Up
                 </a>
               </form>
-              <h1>{{ teststate }}</h1>
-              <h1>{{ countLinks }}</h1>
-              <h1>{{ count }}</h1>
-              <h1>{{ localcount }}</h1>
-              <button @click="increasecount">test</button>
             </div>
   </div>
 </template>
 
 <script>
 
-import { mapState, mapGetters, mapMutations } from 'vuex'
+import { mapMutations } from 'vuex'
 import axios from 'axios'
 import url from '../url'
 
@@ -79,20 +74,11 @@ export default {
   }),
 
   computed: {
-    ...mapState([
-      'teststate',
-      'count'
-    ]),
-    ...mapGetters([
-      //delete
-      'countLinks'
-    ]),
   },
 
   methods: Object.assign(
     {
       ...mapMutations([
-        'INCREASE',
         'LOGIN_USER'
       ]),
       //delete
@@ -133,7 +119,6 @@ export default {
                 if(response.data === "Success"){
                   this.loginuser(this.login.username)
                   localStorage.setItem("username", this.login.username)
-                  console.log(localStorage.getItem("username"))
                  this.$router.push({ name: 'MainMenu' })
                 }
               })
