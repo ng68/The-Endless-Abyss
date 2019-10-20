@@ -652,7 +652,7 @@ app.post("/continue", (req, res, next) => {
   con.query(sql, function(err, result) {
     if (err) throw err;
     if (result.length > 0) {
-      var user = {
+      var game = {
         username : result[0].username,
         health : result[0].health,
         gold : result[0].gold,
@@ -665,23 +665,23 @@ app.post("/continue", (req, res, next) => {
       con.query(sql, function(err, result) {
         if (err) throw err;
         for (var i = 0; i < result.length; i++) {
-          user.inventory.push(result[i].item);
+          game.inventory.push(result[i].item);
         }
       });
       sql = "SELECT * FROM UserGameRecentRooms WHERE username = '" + username + "'";
       con.query(sql, function(err, result) {
         if (err) throw err;
         for (var i = 0; i < result.length; i++) {
-          user.recentRooms.push(result[i].roomID);
+          game.recentRooms.push(result[i].roomID);
         }
       });
       sql = "SELECT * FROM UserGameTrophies WHERE username = '" + username + "'";
       con.query(sql, function(err, result) {
         if (err) throw err;
         for (var i = 0; i < result.length; i++) {
-          user.trophies.push(result[i].trophy);
+          game.trophies.push(result[i].trophy);
         }
-        res.json(user);
+        res.json(game);
       });
     }else {
       res.json("Failure");
