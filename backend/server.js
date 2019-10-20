@@ -401,7 +401,7 @@ app.post("/enter", (req, res, next) => {
 app.post("/exit", (req, res, next) => {
   var obj = req.body;
   var game = obj.game;
-  var optionID = obj.optionID;
+  var optionID = parseInt(obj.optionID);
   var result;
   var status = "Playing";
   //gold = game.gold;
@@ -409,7 +409,7 @@ app.post("/exit", (req, res, next) => {
   //inventory = game.inventory;
   //trophies = game.trophies;
   //roomID = game.roomID;
-  
+
   switch(game.roomID) {
     //Room 1
     case 1:
