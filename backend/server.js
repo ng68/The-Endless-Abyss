@@ -91,44 +91,37 @@ app.post("/login", (req, res, next) => {
 //Recover password
 app.post("/recovery", (req, res, next) => {
   var obj = req.body;
-  var username = obj.username;
+  var email = obj.email;
 
-  //Get email of user
-  var sql = "SELECT email FROM User WHERE username = '" + username + "'";
+  var tempPassword = '';
+  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var charactersLength = characters.length;
+  for ( var i = 0; i < 10; i++ ) {
+    tempPassword += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+
+  //Save temp password
+  var encryptPassword = cryptJS.SHA256(tempPassword);
+  sql = "UPDATE User SET password = '" + encryptPassword + "' WHERE email = '" + email + "'";
   con.query(sql, function(err, result) {
     if (err) throw err;
-    //Generate temp password
-    var email = result[0].email;
-    var tempPassword = '';
-    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var charactersLength = characters.length;
-    for ( var i = 0; i < 10; i++ ) {
-      tempPassword += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-
-    //Save temp password
-    var encryptPassword = cryptJS.SHA256(tempPassword);
-    sql = "UPDATE User SET password = '" + encryptPassword + "' WHERE username = '" + username + "'";
-    con.query(sql, function(err, result) {
-      if (err) throw err;
-    });
-
-    var mailOptions = {
-      from: 'theendlessabyss.noreply@gmail.com',
-      to: email,
-      subject: 'Recovery password for The Endless Abyss',
-      text: 'Here is your temporary password: ' + tempPassword
-    };
-    
-    transporter.sendMail(mailOptions, function(error, info){
-      if (error) {
-        console.log(error);
-      } else {
-        console.log('Email sent: ' + info.response);
-      }
-    });
-    res.json(email);
   });
+
+  var mailOptions = {
+    from: 'theendlessabyss.noreply@gmail.com',
+    to: email,
+    subject: 'Recovery password for The Endless Abyss',
+    text: 'Here is your temporary password: ' + tempPassword
+  };
+  
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+  res.json(email);
 });
 
 //Giving high score info on entire leaderboard
