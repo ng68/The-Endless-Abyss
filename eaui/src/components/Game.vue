@@ -89,18 +89,18 @@ export default {
         
       },
       cycleRoom() {
-        this.potentialRooms = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+        let potentialRooms = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
         //Remove current and recent rooms from potential rooms
-        for(recRoom in recentRooms) {
-          for(let i = 0; i < this.potentialRooms.length; i++) {
-            if(this.potentialRooms[i] == recRoom || this.potentialRooms[i] == this.game.roomID) {
-              this.potentialRooms.splice(i, 1);
+        for(recRoom in this.game.recentRooms) {
+          for(let i = 0; i < potentialRooms.length; i++) {
+            if(potentialRooms[i] == recRoom || potentialRooms[i] == this.game.roomID) {
+              potentialRooms.splice(i, 1);
               i--;
             }
           }
         }
         var temp = this.game.roomID;
-        var random = Math.floor(Math.random() * this.potentialRooms.length);
+        var random = Math.floor(Math.random() * potentialRooms.length);
         this.game.roomID = this.potentialRooms[random];
         this.potentialRooms[random] = this.game.recentRooms.shift();
         this.game.recentRooms.push(temp);
