@@ -10,6 +10,7 @@ import MainMenu from './components/MainMenu'
 import HelloWorld from './components/HelloWorld'
 import TrophyRoom from './components/TrophyRoom'
 import Game from './components/Game'
+import Leaderboard from './components/Leaderboard'
 import Buefy from 'buefy'
 
 Vue.config.productionTip = false
@@ -24,7 +25,8 @@ const routes = [
   { path: '/mainmenu', name: 'MainMenu', component: MainMenu },
   { path: '/trophyroom', name: 'TrophyRoom', component: TrophyRoom },
   { path: '/game', name: 'Game', component: Game},
-  { path: '/', name: 'Login', component: Login},
+  { path: '/leaderboard', name: 'Leaderboard', component: Leaderboard},
+  { path: '/', redirect: Login},
 ]
 
 const router = new VueRouter({
