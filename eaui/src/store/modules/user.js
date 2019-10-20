@@ -103,7 +103,22 @@ const actions = {
       }
     })
 
-  }
+  },
+  newGameData() {
+    this.game = {
+      username: this.state.user.username,
+      roomID: 1,
+      recentRooms: [12,13,14,15],
+      health: 100,
+      gold: 20,
+      inventory: [],
+      trophies: [],
+    }
+  },
+  loadGameData(loadGame) {
+    this.game.username = this.state.user.username;
+    this.game = loadGame;
+  },
 }
 
 const mutations = {
