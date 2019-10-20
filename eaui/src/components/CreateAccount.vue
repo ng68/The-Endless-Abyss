@@ -134,7 +134,7 @@ export default {
               axios(options)
                 .then(response =>{
                   if(response.data === "Success"){
-                    this.$router.push({ name: 'Home' })
+                    this.$router.push({ name: 'MainMenu' })
                   } else {
                     this.$toast.open({
                       duration: 5000,
