@@ -12,9 +12,12 @@
     </div>
     <div class="column inventory-box">
       <h2>Health</h2>
+      <span>{{game.health}}</span>
+      <br>
       <h2>Gold</h2>
-      <h2>Inventory</h2>
-      <ul class="inventory">
+      <br>
+      <h2 v-if="game.inventory > 0">Inventory</h2>
+      <ul class="inventory" v-if="game.inventory > 0">
         <li class="row item" v-for="item in items" v-bind:key="item.id">
           <img>
           <span :title="item.description">{{item.name}}</span>
@@ -33,65 +36,78 @@ import url from '../url'
 
 export default {
   name: "game",
-  data: () => ({
-    game: this.game(),
-  }),
-  beforeMount: {
-    function: () => {
-      enterRoom();
-    }
+  data: {
+    game: null, //ADD game
   },
-  methods: {
-    enterRoom() {
-      console.log("entering room");
-      try {
-        let requestURL = url + '/enter';
+  mounted: function() {
+    if(this.saved) {
+    } else {
+    }
+    this.enterRoom();
+  },
+  methods: Object.assign (
+    {
+      enterRoom() {
+        try {
+          let requestURL = url + '/enter';
 
-        var axios = require('axios');
+          var axios = require('axios');
 
-        const options = {
-          url: requestURL,
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          data: {
-            game: this.game
-          },
-        }
-        axios(options).then(response =>{
-          if(response.data === "Failure"){
-            this.$toast.open({
-              duration: 3000,
-              message: 'The abyss seems to be missing a room.',
-              position: 'is-bottom',
-              type: 'is-danger'
-            })
-          } else {
+          const options = {
+            url: requestURL,
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            data: {
+              game: this.game
+            },
           }
-        })
-      } catch (e) {
-        this.$toast.open({
-          duration: 3000,
-          message: 'Something is wrong in the abyss. Come back later.',
-          position: 'is-bottom',
-          type: 'is-danger'
-        })
+          axios(options).then(response =>{
+            if(response.data === "Failure"){
+              this.$toast.open({
+                duration: 3000,
+                message: 'The abyss seems to be missing a room.',
+                position: 'is-bottom',
+                type: 'is-danger'
+              })
+            } else {
+              this.game = response.data.game;
+              this.options = response.data.options;
+            }
+          })
+        } catch (e) {
+          this.$toast.open({
+            duration: 3000,
+            message: 'Something is wrong in the abyss. Come back later.',
+            position: 'is-bottom',
+            type: 'is-danger'
+          })
+        }
+      },
+      exitRoom(optionID) {
+        
+      },
+      cycleRoom() {
+        this.potentialRooms = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+        //Remove current and recent rooms from potential rooms
+        for(recRoom in recentRooms) {
+          for(let i = 0; i < this.potentialRooms.length; i++) {
+            if(this.potentialRooms[i] == recRoom || this.potentialRooms[i] == this.game.roomID) {
+              this.potentialRooms.splice(i, 1);
+              i--;
+            }
+          }
+        }
+        var temp = this.game.roomID;
+        var random = Math.floor(Math.random() * this.potentialRooms.length);
+        this.game.roomID = this.potentialRooms[random];
+        this.potentialRooms[random] = this.game.recentRooms.shift();
+        this.game.recentRooms.push(temp);
       }
     },
-    exitRoom(optionID) {
-      
-    },
-    cycleRoom() {
-      var random = Math.floor(Math.random() * this.rooms.length);
-      var temp = this.currentRoom;
-      this.currentRoom = this.rooms[random];
-      this.rooms[random] = this.recentRooms.shift();
-      this.recentRooms.push(temp);
-    }
-  },
-  components: {
-  }
+    mapGetters(['game'])
+  )
 };
 
 </script>
