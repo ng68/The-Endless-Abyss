@@ -4,9 +4,18 @@ var app = express();
 var mysql = require('mysql');
 var cryptJS = require('crypto-js');
 var cors = require('cors');
+var nodemailer = require('nodemailer');
 
 app.use(cors());
 app.use(bodyParser.json());
+
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'theendlessabyss.noreply@gmail.com',
+    pass: '@byss123'
+  }
+});  
 
 var con = mysql.createConnection({
   host: 'remotemysql.com',
@@ -79,21 +88,46 @@ app.post("/login", (req, res, next) => {
   });
 });
 
-//Recover password (In progress)
+//Recover password
 app.post("/recovery", (req, res, next) => {
   var obj = req.body;
-  var email = obj.email;
+  var username = obj.username;
 
-  //Decrypt email
-
-  var sql = "SELECT password FROM User WHERE email = '" + email + "'";
+  //Get email of user
+  var sql = "SELECT email FROM User WHERE username = '" + username + "'";
   con.query(sql, function(err, result) {
     if (err) throw err;
-    if (result.length > 0) {
-      res.json(result);
-    }else {
-      res.json("Failure");
+    //Generate temp password
+    var email = result[0].email;
+    var tempPassword = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < 10; i++ ) {
+      tempPassword += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
+
+    //Save temp password
+    var encryptPassword = cryptJS.SHA256(tempPassword);
+    sql = "UPDATE User SET password = '" + encryptPassword + "' WHERE username = '" + username + "'";
+    con.query(sql, function(err, result) {
+      if (err) throw err;
+    });
+
+    var mailOptions = {
+      from: 'theendlessabyss.noreply@gmail.com',
+      to: email,
+      subject: 'Recovery password for The Endless Abyss',
+      text: 'Here is your temporary password: ' + tempPassword
+    };
+    
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+    res.json(email);
   });
 });
 
@@ -181,6 +215,14 @@ app.post("/changeusername", (req, res, next) => {
                 con.query(sql, function(err, result) {
                   if (err) throw err;
                 });
+                sql = "UPDATE UserGameInventory SET username = '" + newUsername + "' WHERE username = '" + username + "'";
+                con.query(sql, function(err, result) {});
+                sql = "UPDATE UserGames SET username = '" + newUsername + "' WHERE username = '" + username + "'";
+                con.query(sql, function(err, result) {});
+                sql = "UPDATE UserGameTrophies SET username = '" + newUsername + "' WHERE username = '" + username + "'";
+                con.query(sql, function(err, result) {});
+                sql = "UPDATE UserGameRecentRooms SET username = '" + newUsername + "' WHERE username = '" + username + "'";
+                con.query(sql, function(err, result) {});
               });
               res.json("Success");
             });
@@ -293,24 +335,30 @@ app.post("/enter", (req, res, next) => {
     case 4:
         options[1] = "Purchase Rope (10 gold)";
         options[2] = "Purchase Flashbang (15 gold)";
-        options[3] = "Purchase MedKit (+15 Health)";
+        options[3] = "Purchase MedKit (+20 Health) (15 gold)";
         break;
     //Room 5
     case 5:
-        options[1] = "Crack a Joke";
+        if(game.inventory.includes("Fun Puns")) {
+          options[1] = "Read aloud a funny pun from Fun Puns";
+        }
         options[2] = "Walk around the plant";
         if(game.inventory.includes("Chicken Leg")) {
           options[3] = "Throw Chicken Leg";
         }
+        options[4] = "Throw a rock at the plant"
         break;
     //Room 6
     case 6:
         options[1] = "A Scarecrow";
         options[2] = "A Mountain";
         options[3] = "A Tree";
+        if (game.inventory.includes("Fun Puns")) {
+          options[4] = "Offer \"Fun Puns\" to the woman";
+        }
         break;
     //Room 7
-    //A fidged wind bellows from a room covered in Ice and deep fissures
+    //A frigid wind bellows from a room covered in Ice and deep fissures
     case 7:
         options[1] = "Inspect the fissures";
         options[2] = "Trudge through the ice and snow (-20 Health)";
@@ -321,11 +369,11 @@ app.post("/enter", (req, res, next) => {
     //Room 8
     //A feasting hall the size of emense size, food spread across in a rotten display with flys and webs covering it
     case 8:
-        options[1] = "Try the quizeen";
+        options[1] = "Try the cuisine";
         options[2] = "Try the drinks";
-        options[3] = "Servay the dish wear";
+        options[3] = "Survey the dishwear";
         if(game.inventory.includes("Chicken Leg")){
-          option[4] = "Leave an offering for the log lost feast (Lose Chicken Leg)"
+          option[4] = "Leave an offering for the long lost feast (Lose Chicken Leg)"
         }
         break;
     //Room 9
@@ -333,17 +381,49 @@ app.post("/enter", (req, res, next) => {
     case 9:
         options[1] = "Get some water";//give 10 hp
         if(game.gold >= 1){
-          option[2] = "Toss a coin in (Loss 1 coin)"// gives sword
+          option[2] = "Toss a coin in (Lose 1 coin)"// gives sword
         }
         if(game.inventory.includes("Rope")){
           option[3] = "Travel down the well" // Meet keven, gives card, trophie meet keven
         }
         break;
+    //Room 10
+    //You enter a vast hall with books lining the walls. On the other side there is a door, however, in between you and the door sits a goblin reading a book labeled "Fun Puns"    
+    case 10:
+        options[1] = "Attempt to sneak passed the goblin without disturbing him";
+        options[2] = "Ask the goblin what he is reading";
+        if (game.inventory.includes("Sword")){
+            options[3] = "Attack him, sword in hand";
+        }
+        if (game.inventory.includes("Flashbang")){
+            options[4] = "Throw flashbang"
+        }
+        break;
     default:
       break;
   }
-
-  var sql = "SELECT * FROM Rooms WHERE roomID = " + game.roomID;
+  var sql = "UPDATE UserGames SET roomID = " + game.roomID + " WHERE username = '" + game.username + "'";
+  con.query(sql, function(err, result) {
+    if (err) {
+      throw err;
+    }
+    if (result.affectedRows == 0) {
+      sql = "INSERT INTO UserGames (username, health, gold, roomID) VALUES ('" + game.username + "', " + game.health  + ", " + game.gold + ", " + game.roomID + ")";
+      con.query(sql, function(err, result) { 
+        if (err) throw err;
+      });
+    }
+  });
+  sql = "DELETE FROM UserGameRecentRooms WHERE username = '" + game.username + "'";
+  con.query(sql, function(err, result) { 
+  });
+  for(var i = 0; i < game.recentRooms.length; i++) {
+    sql = "INSERT INTO UserGameRecentRooms (username, roomID) VALUES ('" + game.username + "', '" + game.recentRooms[i]  + "')";
+    con.query(sql, function(err, result) {
+      if (err) throw err;
+    });
+  } 
+  sql = "SELECT * FROM Rooms WHERE roomID = " + game.roomID;
   con.query(sql, function(err, result) {
     if (err) throw err;
     var data = {options, result};
@@ -355,14 +435,15 @@ app.post("/enter", (req, res, next) => {
 app.post("/exit", (req, res, next) => {
   var obj = req.body;
   var game = obj.game;
-  var optionID = obj.optionID;
+  var optionID = parseInt(obj.optionID);
   var result;
+  var status = "Playing";
   //gold = game.gold;
   //health = game.health;
   //inventory = game.inventory;
   //trophies = game.trophies;
   //roomID = game.roomID;
-  
+
   switch(game.roomID) {
     //Room 1
     case 1:
@@ -380,7 +461,7 @@ app.post("/exit", (req, res, next) => {
           result = "The troll accepts your bribe and lets you pass."
           break;
         case 4:
-          game.inventory.splice(game.inventory.indexof("Flashbang"),1);
+          game.inventory.splice(game.inventory.indexOf("Flashbang"),1);
           result = "You throw the flashbang that stuns and disorients the troll, allowing you to run past."
           break;
         default:
@@ -398,7 +479,7 @@ app.post("/exit", (req, res, next) => {
             result = "The pit isn't as deep as you thought. You climb down and climb back up the other side."
             break;
           case 3:
-            game.inventory.splice(game.inventory.indexof("Large Plank"),1);
+            game.inventory.splice(game.inventory.indexOf("Large Plank"),1);
             result = "You use the large plank to get across but the plank breaks."
             break;
           default:
@@ -436,7 +517,7 @@ app.post("/exit", (req, res, next) => {
               game.health = 100;
             }
             game.inventory.push("Can of Beans");
-            game.inventory.splice(game.inventory.indexof("Rope"),1);
+            game.inventory.splice(game.inventory.indexOf("Rope"),1);
             result = "You used the rope to tie all 3 of the chests together and obtained 15 gold, Bandages (15 health), and Item 3."
           default:
             break;
@@ -525,7 +606,7 @@ app.post("/exit", (req, res, next) => {
         switch(optionID) {
                   case 1:
                     game.health += -15;
-                    result = "The food is rancide and rotten, what possesed you to eat it (-15 Health)"
+                    result = "The food is rancide and rotten, what posses sed you to eat it (-15 Health)"
                     break;
                   case 2:
                     game.health += -5;
@@ -537,7 +618,7 @@ app.post("/exit", (req, res, next) => {
                     result = "The food may have gone bad, but their coin has not"
                     break;
                   case 4:
-                    game.inventory.splice(game.inventory.indexof("Chicken Leg"),1);
+                    game.inventory.splice(game.inventory.indexOf("Chicken Leg"),1);
                     result = "A great fly with a crown appears and nods in thanks";
                     break;
         }
@@ -561,11 +642,23 @@ app.post("/exit", (req, res, next) => {
     default:
       break;
   }
-  var sql = "DELETE FROM UserGameInventory WHERE username = " + game.username;
+
+  for (var i = 0; i < game.inventory.length; i++) {
+    for (var j = i+1; j < game.inventory.length; j++) {
+      if (game.inventory[i] == game.inventory[j]) {
+        var saved = game.inventory[i];
+        game.inventory.splice(game.inventory.indexOf(saved),1);
+        game.gold += 10;
+        result += " Sorry, duplicate items are hard to implement. Here's 10 gold. (+10 Gold)";
+      }
+    }
+  }
+
+  var sql = "DELETE FROM UserGameInventory WHERE username = '" + game.username + "'";
   con.query(sql, function(err, result) {
     if (err) throw err;
   });
-  sql = "DELETE FROM UserGameTrophies WHERE username = " + game.username;
+  sql = "DELETE FROM UserGameTrophies WHERE username = '" + game.username + "'";
   con.query(sql, function(err, result) {
     if (err) throw err;
   });
@@ -574,21 +667,24 @@ app.post("/exit", (req, res, next) => {
     if (err) throw err;
   });
 
-  for(var i = 0; i < game.inventory.size; i++) {
+  for(var i = 0; i < game.inventory.length; i++) {
     sql = "INSERT INTO UserGameInventory (username, item) VALUES ('" + game.username + "', '" + game.inventory[i]  + "')";
     con.query(sql, function(err, result) {
       if (err) throw err;
     });
   } 
 
-  for(var i = 0; i < game.trophies.size; i++) {
+  for(var i = 0; i < game.trophies.length; i++) {
     sql = "INSERT INTO UserGameTrophies (username, trophy) VALUES ('" + game.username + "', '" + game.trophies[i]  + "')";
     con.query(sql, function(err, result) {
       if (err) throw err;
     });
   } 
 
-  var data = {game, result};
+  if (game.health <= 0) {
+    status = "Lose";
+  }
+  var data = {game, result, status};
   res.json(data);
 });
 
@@ -597,11 +693,86 @@ app.post("/continue", (req, res, next) => {
   var obj = req.body;
   var username = obj.username;
   
-  //var sql = "INSERT INTO Scores (username, score) VALUES ('" + username + "', " + score + ")";
-  //con.query(sql, function(err, result) {
-  //  if (err) throw err;
-  //  res.json("Success");
-  //});
+  var sql = "SELECT * FROM UserGames WHERE username = '" + username + "'";
+  con.query(sql, function(err, result) {
+    if (err) throw err;
+    if (result.length > 0) {
+      var game = {
+        username : result[0].username,
+        health : result[0].health,
+        gold : result[0].gold,
+        roomID : result[0].roomID,
+        inventory : [],
+        recentRooms : [],
+        trophies : []
+      }
+      sql = "SELECT * FROM UserGameInventory WHERE username = '" + username + "'";
+      con.query(sql, function(err, result) {
+        if (err) throw err;
+        for (var i = 0; i < result.length; i++) {
+          game.inventory.push(result[i].item);
+        }
+      });
+      sql = "SELECT * FROM UserGameRecentRooms WHERE username = '" + username + "'";
+      con.query(sql, function(err, result) {
+        if (err) throw err;
+        for (var i = 0; i < result.length; i++) {
+          game.recentRooms.push(result[i].roomID);
+        }
+      });
+      sql = "SELECT * FROM UserGameTrophies WHERE username = '" + username + "'";
+      con.query(sql, function(err, result) {
+        if (err) throw err;
+        for (var i = 0; i < result.length; i++) {
+          game.trophies.push(result[i].trophy);
+        }
+        res.json(game);
+      });
+    }else {
+      res.json("Failure");
+    }
+  });
+});
+
+//End existing game
+app.post("/endgame", (req, res, next) => {
+  var obj = req.body;
+  var game = obj.game;
+  var status = obj.status;
+  var sql;
+  if (status == "Win") {
+    for (var i = 0; i < game.trophies.length; i++) {
+      sql = "INSERT IGNORE INTO UserTrophies (trophy, username) VALUES (" + game.trophies[i] + ", '" + game.username + "')";
+      con.query(sql, function(err, result) { 
+        if (err) {
+          throw err;
+        } 
+      });
+    }
+    var overall = game.health + game.gold + game.inventory.length * 10 + game.trophies.length * 25;
+    sql = "INSERT IGNORE INTO Scores (username, score) VALUES ('" + game.username + "', " + overall + ")";
+    con.query(sql, function(err, result) { 
+      if (err) throw err;
+    });
+  }
+    //Cleanup time
+    sql = "DELETE FROM UserGameInventory WHERE username = '" + game.username + "'";
+    con.query(sql, function(err, result) { 
+      if (err) throw err;
+    });
+    sql = "DELETE FROM UserGames WHERE username = '" + game.username + "'";
+    con.query(sql, function(err, result) { 
+      if (err) throw err;
+    });
+    sql = "DELETE FROM UserGameRecentRooms WHERE username = '" + game.username + "'";
+    con.query(sql, function(err, result) { 
+      if (err) throw err;
+    });
+    sql = "DELETE FROM UserGameTrophies WHERE username = '" + game.username + "'";
+    con.query(sql, function(err, result) { 
+      if (err) throw err;
+      res.json("Success");
+    });
 });
 
 //Host

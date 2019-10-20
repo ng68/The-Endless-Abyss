@@ -35,7 +35,6 @@
 
 <script>
 
-import { mapActions } from 'vuex'
 import axios from 'axios'
 import url from '../url'
 
@@ -104,7 +103,6 @@ export default {
         }
       }
     },
-    mapActions(['recoverUser'])
   )
 }
 </script>
