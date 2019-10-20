@@ -296,41 +296,41 @@ app.post("/enter", (req, res, next) => {
   //roomID = game.roomID;
 
   switch(game.roomID) {
-    //Room 1
+    //Room 1 Cave of the Troll
     case 1:
-      options[1] = "Attack the troll";
-      options[2] = "Run around the troll";
+      options[1] = "Attack the troll.";
+      options[2] = "Run around the troll.";
       if (game.gold >= 20) {
-        options[3] = "Bribe the troll";
+        options[3] = "Bribe the troll. (20 Gold)";
       }
       if (game.inventory.includes("Flashbang")) {
-        options[4] = "Use Flashbang";
+        options[4] = "Use Flashbang.";
       }
       break;
-    //Room 2
+    //Room 2 The Pit
     case 2:
-      options[1] = "Jump over the pit";
-      options[2] = "Climb down the pit";
+      options[1] = "Jump over the pit.";
+      options[2] = "Climb down the pit.";
       if(game.inventory.includes("Large Plank")) {
-        options[3] = "Use Large Plank";
+        options[3] = "Use Large Plank to go over the pit.";
       }
       break;
-    //Room 3
+    //Room 3 Storage Room
     case 3:
-        options[1] = "Open Chest 1";
-        options[2] = "Open Chest 2";
-        options[3] = "Open Chest 3";
+        options[1] = "Open the first chest.";
+        options[2] = "Open the second chest.";
+        options[3] = "Open the third chest.";
         if(game.inventory.includes("Rope")) {
-          options[4] = "Use Rope";
+          options[4] = "Use Rope to tie chests together.";
         }
         break;
-    //Room 4
+    //Room 4 Hallway Merchant
     case 4:
-        options[1] = "Purchase Rope (10 gold)";
-        options[2] = "Purchase Flashbang (15 gold)";
-        options[3] = "Purchase MedKit (+20 Health) (15 gold)";
+        options[1] = "Purchase Rope. (10 gold)";
+        options[2] = "Purchase Flashbang. (15 gold)";
+        options[3] = "Purchase MedKit. (+20 Health) (15 gold)";
         break;
-    //Room 5
+    //Room 5 The Greenhouse
     case 5:
         if(game.inventory.includes("Fun Puns")) {
           options[1] = "Read aloud a funny pun from Fun Puns";
@@ -341,7 +341,7 @@ app.post("/enter", (req, res, next) => {
         }
         options[4] = "Throw a rock at the plant"
         break;
-    //Room 6
+    //Room 6 The Mysterious Woman
     case 6:
         options[1] = "A Scarecrow";
         options[2] = "A Mountain";
@@ -350,8 +350,7 @@ app.post("/enter", (req, res, next) => {
           options[4] = "Offer \"Fun Puns\" to the woman";
         }
         break;
-    //Room 7
-    //A frigid wind bellows from a room covered in Ice and deep fissures
+    //Room 7 The Snow Caverns
     case 7:
         options[1] = "Inspect the fissures";
         options[2] = "Trudge through the ice and snow (-20 Health)";
@@ -359,8 +358,7 @@ app.post("/enter", (req, res, next) => {
           option[3] = "Light the torch and continue"
         }
         break;
-    //Room 8
-    //A feasting hall the size of emense size, food spread across in a rotten display with flys and webs covering it
+    //Room 8 The Dining Chamber
     case 8:
         options[1] = "Try the cuisine";
         options[2] = "Try the drinks";
@@ -369,8 +367,7 @@ app.post("/enter", (req, res, next) => {
           option[4] = "Leave an offering for the long lost feast (Lose Chicken Leg)"
         }
         break;
-    //Room 9
-    //The well, in a mostly circular room there is a large well looming in the middle
+    //Room 9 The Well
     case 9:
         options[1] = "Get some water";//give 10 hp
         if(game.gold >= 1){
@@ -380,8 +377,7 @@ app.post("/enter", (req, res, next) => {
           option[3] = "Travel down the well" // Meet keven, gives card, trophie meet keven
         }
         break;
-    //Room 10
-    //You enter a vast hall with books lining the walls. On the other side there is a door, however, in between you and the door sits a goblin reading a book labeled "Fun Puns"    
+    //Room 10 The Library
     case 10:
         options[1] = "Attempt to sneak passed the goblin without disturbing him";
         options[2] = "Ask the goblin what he is reading";
@@ -443,19 +439,19 @@ app.post("/exit", (req, res, next) => {
       switch(optionID) {
         case 1:
           game.health -= 30;
-          result = "As you lunge and attempt to punch the troll in the face, he swiftly dodges and then procedes to call your mom ugly. Your pride is utterly destroyed. You Lose 30 Health.";
+          result = "As you lunge and attempt to punch the troll in the face, he swiftly dodges and then procedes to call your mom ugly. Your pride is utterly destroyed. (-30 Health)";
           break;
         case 2:
           game.health -= 10;
-          result = "You sprint around the troll and avoid his immature insults, but you twist your ankle on a rock. You Lose 10 Health."
+          result = "You sprint around the troll and avoid his immature insults, but you twist your ankle on a rock. (-10 Health)"
           break;
         case 3:
           game.gold -= 20;
-          result = "The troll accepts your bribe and lets you pass."
+          result = "The troll accepts your bribe and proceeds to go on his laptop to buy bathwater. While he's distracted you walk passed him. (-20 Gold)"
           break;
         case 4:
           game.inventory.splice(game.inventory.indexOf("Flashbang"),1);
-          result = "You throw the flashbang that stuns and disorients the troll, allowing you to run past."
+          result = "You throw the flashbang that stuns and disorients the troll, what you didn't realize is that the troll has epilepsy. You walk passed him. (-Flashbang)"
           break;
         default:
           break;
@@ -466,14 +462,15 @@ app.post("/exit", (req, res, next) => {
         switch(optionID) {
           case 1:
             game.health -= 10;
-            result = "You try to jump over the pit, but fall short of the other side. The pit isn't as deep as you thought, but you hurt your legs falling. You lose 10 health.";
+            game.inventory.push("Torch");
+            result = "You try to jump over the pit, but fall short of the other side. The pit isn't as deep as you thought, but you hurt your legs falling. Next to you lies an unlit torch. You pick it up and right after a stalagtite comes crashing down where the torch previously lied. You then climb out of the pit and reach the other side. (-10 Health) (+Torch)";
             break;
           case 2:
-            result = "The pit isn't as deep as you thought. You climb down and climb back up the other side."
+            result = "The pit isn't as deep as you thought. You climb down and see an unlit torch in the middle of the room. As you walk toward it to pick it up, a stalagtite comes crashing down and breaks the torch into pieces. You then climb out of the pit, unscathed, and reach the other side.";
             break;
           case 3:
             game.inventory.splice(game.inventory.indexOf("Large Plank"),1);
-            result = "You use the large plank to get across but the plank breaks."
+            result = "You lay the Large Plank down and it barely reaches the other side of the pit. You walk across cautiously trying as hard as you can not to look down. You make it across safely, but when you attempt to pick the plank up, a stalagtite comes crashing down breaking the plank in half. (-Large Plank)"
             break;
           default:
             break;
@@ -484,34 +481,22 @@ app.post("/exit", (req, res, next) => {
         switch(optionID) {
           case 1:
             game.gold += 15;
-            if(game.gold > 100){
-              game.gold = 100;
-            }
-            result = "You opened Chest 1, you obtained 15 gold.";
+            result = "You open the first chest and find 15 gold inside. Then the room begins to shake and a hidden door opens up. You run to the door as the room collapses behind you. (+15 Gold)";
             break;
           case 2:
             game.health += 15;
-            if(game.health > 100) {
-              game.health = 100;
-            }
-            result = "You opened Chest 2, you obtained bandages and used them. Gain 15 health."
+            result = "You open the second chest and find a health potion inside. You are so excited that you drink it immediately. Then the room begins to shake and a hidden door opens up. You run to the door as the room collapses behind you. (+15 Health)"
             break;
           case 3:
-            game.inventory.push("Can of Beans");
-            result = "You opened Chest 3, you obtained a Can of Beans."
+            game.inventory.push("Chicken Leg");
+            result = "You open the third chest and find a Chicken Leg inside. You're not hungry so you save it for later. Then the room begins to shake and a hidden door opens up. You run to the door as the room collapses behind you. (+Chicken Leg)"
             break;
           case 4:
             game.gold += 15;
-            if(game.gold > 100){
-              game.gold = 100;
-            }
             game.health += 15;
-            if(game.health > 100) {
-              game.health = 100;
-            }
-            game.inventory.push("Can of Beans");
+            game.inventory.push("Chicken Leg");
             game.inventory.splice(game.inventory.indexOf("Rope"),1);
-            result = "You used the rope to tie all 3 of the chests together and obtained 15 gold, Bandages (15 health), and Item 3."
+            result = "You use the rope to tie all 3 of the chests together and then the room begins to shake and a hidden door opens up. You pull the chests through the door as the room collapses behind you and barely save them and more importantly yourself. The rope breaks in the process, but you find gold, a health potion, and a Chicken Leg. You're hungry after almost being crushed so you drink the health potion but save the Chicken Leg. (+15 Gold) (+15 Health) (+Chicken Leg)"
           default:
             break;
         }
@@ -625,6 +610,7 @@ app.post("/exit", (req, res, next) => {
                     break;
                   case 2:
                     game.gold --;
+                    game.inventory.push("Sword");
                     result = "as you throw the coin down you hear a yelp and a sword come flying up, maybe look before you wish";
                     break;
                   case 3:
@@ -632,6 +618,8 @@ app.post("/exit", (req, res, next) => {
                     break;
         }
         break;
+    case 10:
+      break;
     default:
       break;
   }
@@ -645,6 +633,10 @@ app.post("/exit", (req, res, next) => {
         result += " Sorry, duplicate items are hard to implement. Here's 10 gold. (+10 Gold)";
       }
     }
+  }
+
+  if (game.health > 100) {
+    game.health = 100;
   }
 
   var sql = "DELETE FROM UserGameInventory WHERE username = '" + game.username + "'";
@@ -764,7 +756,7 @@ app.post("/endgame", (req, res, next) => {
     sql = "DELETE FROM UserGameTrophies WHERE username = '" + game.username + "'";
     con.query(sql, function(err, result) { 
       if (err) throw err;
-      res.json("Success");
+      res.json(overall);
     });
 });
 
