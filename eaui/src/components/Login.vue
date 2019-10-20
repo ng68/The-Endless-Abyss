@@ -151,12 +151,6 @@ export default {
       onForgotPassword() {
         this.$router.push({ name: 'RecoverAccount' })
       },
-<<<<<<< HEAD
-      onHackIntoMainMenu() {
-        this.$router.push({ name: 'MainMenu' })
-      },
-=======
->>>>>>> master
     },
   )
 }
