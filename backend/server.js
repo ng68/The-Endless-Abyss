@@ -392,7 +392,8 @@ app.post("/enter", (req, res, next) => {
   sql = "SELECT * FROM Rooms WHERE roomID = " + game.roomID;
   con.query(sql, function(err, result) {
     if (err) throw err;
-    var data = {options, result};
+    var res = result[0];
+    var data = {options, res};
     res.json(data);
   });
 });
