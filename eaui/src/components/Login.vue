@@ -108,7 +108,7 @@ export default {
             axios(options)
               .then(response =>{
                 if(response.data === "Success"){
-                 this.$router.push({ name: 'Home' })
+                 this.$router.push({ name: 'MainMenu' })
                 }
               })
 
@@ -127,9 +127,6 @@ export default {
       },
       async onForgotPassword() {
         this.$router.push({ name: 'RecoverAccount' })
-      },
-      async onHackIntoMainMenu() {
-        this.$router.push({ name: 'MainMenu' })
       },
     },
     mapActions(['authenticateUser'])
