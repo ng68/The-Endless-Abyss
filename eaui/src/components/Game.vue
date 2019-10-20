@@ -1,10 +1,10 @@
 <template>
   <div class="row game-box">
     <div class="column room-box">
-      <h2>{{currentRoom}}</h2>
-      <p>{{room.description}}</p>
+      <h2>{{game.room.name}}</h2>
+      <p>{{game.room.description}}</p>
       <ul class="option-list">
-        <li v-for="option in room.options">
+        <li v-for="option in game.options" v-bind:key="option.id">
           {{option}}
         </li>
       </ul>
@@ -12,9 +12,12 @@
     </div>
     <div class="column inventory-box">
       <h2>Health</h2>
+      <span>{{game.health}}</span>
+      <br>
       <h2>Gold</h2>
-      <h2>Inventory</h2>
-      <ul class="inventory">
+      <br>
+      <h2 v-if="game.inventory > 0">Inventory</h2>
+      <ul class="inventory" v-if="game.inventory > 0">
         <li class="row item" v-for="item in items" v-bind:key="item.id">
           <img>
           <span :title="item.description">{{item.name}}</span>
@@ -24,58 +27,87 @@
   </div>
 </template>
 
+
 <script>
 
-// import { mapActions, mapGetters } from "vuex";
+import { mapGetters } from 'vuex'
+import axios from 'axios'
+import url from '../url'
 
 export default {
   name: "game",
-  data: () => ({
-    currentRoom: "Tavern",
-    rooms: ["Trader", "Campfire", "Hole", "Trapdoor"],
-    recentRooms: ["Levers", "Chest", "Goblin"],
-    room: {
-      description: "This is the room.",
-      options: [
-        "Fight",
-        "Run Away",
-        "Cry"
-      ]
-    },
-    items: [
-      {
-        name: "Sword",
-        description: "This hits stuff",
-      },
-      {
-        name: "Shield",
-        description: "This blocks swords and stuff",
-      },
-      {
-        name: "Potion",
-        description: "This heals you",
-      },
-      {
-        name: "Stick",
-        description: "It's a stick",
-      },
-      {
-        name: "Paul Bunyan's",
-        description: "Where the stuff is good, but not too good, eh?",
-      }
-    ]
-  }),
-  methods: {
-    cycleRoom() {
-      var random = Math.floor(Math.random() * this.rooms.length);
-      var temp = this.currentRoom;
-      this.currentRoom = this.rooms[random];
-      this.rooms[random] = this.recentRooms.shift();
-      this.recentRooms.push(temp);
-    }
+  data: {
+    game: null, //ADD game
   },
-  components: {
-  }
+  mounted: function() {
+    if(this.saved) {
+    } else {
+    }
+    this.enterRoom();
+  },
+  methods: Object.assign (
+    {
+      enterRoom() {
+        try {
+          let requestURL = url + '/enter';
+
+          var axios = require('axios');
+
+          const options = {
+            url: requestURL,
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            data: {
+              game: this.game
+            },
+          }
+          axios(options).then(response =>{
+            if(response.data === "Failure"){
+              this.$toast.open({
+                duration: 3000,
+                message: 'The abyss seems to be missing a room.',
+                position: 'is-bottom',
+                type: 'is-danger'
+              })
+            } else {
+              this.game = response.data.game;
+              this.options = response.data.options;
+            }
+          })
+        } catch (e) {
+          this.$toast.open({
+            duration: 3000,
+            message: 'Something is wrong in the abyss. Come back later.',
+            position: 'is-bottom',
+            type: 'is-danger'
+          })
+        }
+      },
+      exitRoom(optionID) {
+        
+      },
+      cycleRoom() {
+        let potentialRooms = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+        //Remove current and recent rooms from potential rooms
+        for(recRoom in this.game.recentRooms) {
+          for(let i = 0; i < potentialRooms.length; i++) {
+            if(potentialRooms[i] == recRoom || potentialRooms[i] == this.game.roomID) {
+              potentialRooms.splice(i, 1);
+              i--;
+            }
+          }
+        }
+        var temp = this.game.roomID;
+        var random = Math.floor(Math.random() * potentialRooms.length);
+        this.game.roomID = this.potentialRooms[random];
+        this.potentialRooms[random] = this.game.recentRooms.shift();
+        this.game.recentRooms.push(temp);
+      }
+    },
+    mapGetters(['game'])
+  )
 };
 
 </script>
