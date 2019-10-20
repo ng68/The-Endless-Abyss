@@ -4,9 +4,18 @@ var app = express();
 var mysql = require('mysql');
 var cryptJS = require('crypto-js');
 var cors = require('cors');
+var nodemailer = require('nodemailer');
 
 app.use(cors());
 app.use(bodyParser.json());
+
+var transporter = nodemailer.createTransport({
+  serice: 'gmail',
+  auth: {
+    user: 'theendlessabyss.noreply@gmail.com',
+    pass: '@byss123'
+  }
+});  
 
 var con = mysql.createConnection({
   host: 'remotemysql.com',
@@ -82,19 +91,35 @@ app.post("/login", (req, res, next) => {
 //Recover password (In progress)
 app.post("/recovery", (req, res, next) => {
   var obj = req.body;
-  var email = obj.email;
+  var username = obj.username;
+  var email;
+  var password;
 
-  //Decrypt email
-
-  var sql = "SELECT password FROM User WHERE email = '" + email + "'";
-  con.query(sql, function(err, result) {
-    if (err) throw err;
-    if (result.length > 0) {
-      res.json(result);
-    }else {
-      res.json("Failure");
+  var mailOptions = {
+    from: 'theendlessabyss.noreply@gmail.com',
+    to: 'colecompton28@yahoo.com',
+    subject: 'Recovery password for The Endless Abyss',
+    text: 'Hi'
+  };
+  
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
     }
   });
+  //Decrypt email
+  res.json("Success");
+  // var sql = "SELECT password FROM User WHERE email = '" + email + "'";
+  // con.query(sql, function(err, result) {
+  //   if (err) throw err;
+  //   if (result.length > 0) {
+  //     res.json(result);
+  //   }else {
+  //     res.json("Failure");
+  //   }
+  // });
 });
 
 //Giving high score info on entire leaderboard
