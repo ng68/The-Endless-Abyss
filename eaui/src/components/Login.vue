@@ -56,6 +56,7 @@
               <h1>{{ teststate }}</h1>
               <h1>{{ countLinks }}</h1>
               <h1>{{ count }}</h1>
+              <h1>{{ localcount }}</h1>
               <button @click="increasecount">test</button>
             </div>
   </div>
