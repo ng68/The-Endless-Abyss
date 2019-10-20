@@ -5,8 +5,8 @@ var should = chai.should();
 chai.use(chaiHttp);
 
 
-describe('/POST newuser', () => {
-    it('It should create a test user and delete it', (done) => {
+describe('Test Account Basic Functionality', () => {
+    it('It should create a test user', (done) => {
         let user = {
             username: "testuser",
             password: "testpassword",
@@ -21,9 +21,6 @@ describe('/POST newuser', () => {
             done();
           });
     });
-});
-
-describe('/POST login', () => {
     it('It should login to the test user', (done) => {
         let user = {
             username: "testuser",
@@ -39,10 +36,7 @@ describe('/POST login', () => {
             done();
           });
     });
-});
-
-describe('/POST deletetest', () => {
-    it('It should login to the test user', (done) => {
+    it('It should delete the test user', (done) => {
         let user = {
             username: "testuser",
         }
