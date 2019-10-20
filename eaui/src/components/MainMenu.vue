@@ -1,8 +1,7 @@
 <template>
   <div>
     <div class="header">
-      <h1>Main Menu</h1>
-      <span>You have entered the abyss...</span>
+      <h1>You have entered the abyss...</h1>
     </div>
     <div class="navigationButtons">
       <button
@@ -104,6 +103,11 @@ export default {
 </script>
 
 <style>
+
+h1 {
+  font-size: 300%;
+  font-weight: bold;
+}
 
 .navigationButtons {
   width: 300px;
