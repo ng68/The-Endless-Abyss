@@ -35,8 +35,6 @@
 
 <script>
 
-// import { mapActions, mapGetters } from 'vuex'
-
 export default {
   name: 'MainMenu',
   components: {
@@ -51,19 +49,15 @@ export default {
 
   methods: Object.assign(
     {
-      async onNewGame() {
+      onNewGame() {
       //   //TODO: New Game data
         this.$router.push({ name: 'Game' })
       },
-      // async onContinueGame() {
-      //   //TODO: Request saved game data
-      //   this.$router.push({ name: 'CreateAccount' })
-      // },
-      async onTrophyRoom() {
+      onTrophyRoom() {
         //TODO: Retrieve trophy room data
         this.$router.push({ name: 'TrophyRoom' })
       },
-      async onLeaderboard() {
+      onLeaderboard() {
         //TODO: Retrieve Leaderboard data
         this.$router.push({ name: 'Leaderboard' })
       },
