@@ -73,8 +73,7 @@
 </template>
 
 <script>
-
-import { mapActions } from 'vuex'
+import { mapMutations } from 'vuex'
 import axios from 'axios'
 import url from '../url'
 
@@ -96,6 +95,9 @@ export default {
 
   methods: Object.assign(
     {
+      ...mapMutations([
+          'LOGIN_USER'
+      ]),
       async onSubmit(evt) {
         
         evt.preventDefault()
@@ -134,7 +136,8 @@ export default {
               axios(options)
                 .then(response =>{
                   if(response.data === "Success"){
-                    this.$router.push({ name: 'Home' })
+                    this.LOGIN_USER(this.username)
+                    this.$router.push({ name: 'MainMenu' })
                   } else {
                     this.$toast.open({
                       duration: 5000,
@@ -156,7 +159,6 @@ export default {
         }
       }
     },
-    mapActions(['createUser'])
   )
 }
 </script>
