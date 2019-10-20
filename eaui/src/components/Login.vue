@@ -132,6 +132,8 @@ export default {
               .then(response =>{
                 if(response.data === "Success"){
                   this.loginuser(this.login.username)
+                  localStorage.setItem("username", this.login.username)
+                  console.log(localStorage.getItem("username"))
                  this.$router.push({ name: 'MainMenu' })
                 }
               })
