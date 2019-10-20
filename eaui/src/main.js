@@ -37,6 +37,8 @@ Vue.use(Buefy, {
 })
 Vue.use(axios)
 
+Vue.config.productionTip = false
+
 new Vue({
   router,
   store,

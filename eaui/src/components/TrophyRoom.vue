@@ -42,7 +42,6 @@
 
 <script>
 
-import { mapGetters } from 'vuex'
 
 export default {
   name: 'TrophyRoom',
@@ -60,7 +59,6 @@ export default {
         this.trophies = this.getTrophies();
       }
     },
-    mapGetters(['user'])
   ),
 
   methods: Object.assign(

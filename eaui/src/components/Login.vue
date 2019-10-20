@@ -53,32 +53,54 @@
                   Sign Up
                 </a>
               </form>
+              <h1>{{ teststate }}</h1>
+              <h1>{{ countLinks }}</h1>
+              <h1>{{ count }}</h1>
+              <button @click="increasecount">test</button>
             </div>
   </div>
 </template>
 
 <script>
 
-import { mapActions } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 import axios from 'axios'
 import url from '../url'
 
 export default {
   name: 'Login',
-  components: {
-
-  },
 
   data: () => ({
     username: '',
     password: '',
-    login: {}
+    login: {},
+    localcount: 4,
   }),
 
-  computed: {},
+  computed: {
+    ...mapState([
+      'teststate',
+      'count'
+    ]),
+    ...mapGetters([
+      //delete
+      'countLinks'
+    ]),
+  },
 
   methods: Object.assign(
     {
+      ...mapMutations([
+        'INCREASE',
+        'LOGIN_USER'
+      ]),
+      //delete
+      increasecount() {
+        this.INCREASE(this.localcount)
+      },
+      loginuser(username) {
+        this.LOGIN_USER(username)
+      },
       async onSubmit(evt) {
         evt.preventDefault()
         if (!this.username || !this.password) {
@@ -108,6 +130,7 @@ export default {
             axios(options)
               .then(response =>{
                 if(response.data === "Success"){
+                  this.loginuser(this.login.username)
                  this.$router.push({ name: 'MainMenu' })
                 }
               })
@@ -122,14 +145,19 @@ export default {
           }
         }
       },
-      async onCreateAccount() {
+      onCreateAccount() {
         this.$router.push({ name: 'CreateAccount' })
       },
-      async onForgotPassword() {
+      onForgotPassword() {
         this.$router.push({ name: 'RecoverAccount' })
       },
+<<<<<<< HEAD
+      onHackIntoMainMenu() {
+        this.$router.push({ name: 'MainMenu' })
+      },
+=======
+>>>>>>> master
     },
-    mapActions(['authenticateUser'])
   )
 }
 </script>
