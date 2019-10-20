@@ -7,7 +7,6 @@ import Login from './components/Login'
 import CreateAccount from './components/CreateAccount'
 import RecoverAccount from './components/RecoverAccount'
 import MainMenu from './components/MainMenu'
-import HelloWorld from './components/HelloWorld'
 import TrophyRoom from './components/TrophyRoom'
 import Game from './components/Game'
 import Leaderboard from './components/Leaderboard'
@@ -18,7 +17,6 @@ Vue.config.productionTip = false
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/helloworld', name: 'HelloWorld', component: HelloWorld },
   { path: '/createaccount', name: 'CreateAccount', component: CreateAccount },
   { path: '/login', name: 'Login', component: Login},
   { path: '/recoveraccount', name: 'RecoverAccount', component: RecoverAccount },

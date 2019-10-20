@@ -44,13 +44,13 @@ export default {
   methods: Object.assign(
     {
       onNewGame() {
-        this.newGameData();
+        this.newGame();
         this.$router.push({ name: 'Game' });
       },
       onContinueGame() {
         try {
           let requestURL = url + '/continue';
-
+          
           var axios = require('axios');
 
           const options = {
@@ -60,7 +60,7 @@ export default {
               'Content-Type': 'application/json',
             },
             data: {
-              username: this.username()
+              username: this.getUsername(),
             },
           }
           axios(options).then(response =>{
@@ -72,14 +72,16 @@ export default {
                 type: 'is-danger'
               })
             } else {
-              this.loadGameData(response.data);
+              let game = response.data;
+              console.log(response)
+              this.continueGame(game);
               this.$router.push({ name: 'Game' });
             }
           })
         } catch (e) {
           this.$toast.open({
             duration: 3000,
-            message: 'No saved game exists for this user.',
+            message: 'Something went wrong.',
             position: 'is-bottom',
             type: 'is-danger'
           })
@@ -94,8 +96,8 @@ export default {
         this.$router.push({ name: 'Leaderboard' });
       },
     },
-    mapGetters(['username']),
-    mapActions(['newGameData', 'loadGameData']),
+    mapGetters(['getUsername']),
+    mapActions(['newGame', 'continueGame']),
   )
 
 }
