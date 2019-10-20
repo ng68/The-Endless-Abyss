@@ -27,30 +27,11 @@ const actions = {
     
   },
   //Used for login
-  authenticateUser({ commit }, loginPayload ) {
-    
-    let requestURL = url + '/login'
-
-    var axios = require('axios')
-
-    const options = {
-      url: requestURL,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      data: {
-        username: loginPayload.username,
-        password: loginPayload.password
-      }
-    }
-    axios(options)
-      .then(response =>{
-        if(response.data === "Success"){
-          commit(types.STORE_LOGGED_IN, true)
-        }
-      })
-    
+  authenticateUser(context, {username}) {
+    console.log("setting username")
+    console.log("hello: " + username.username)
+    this.state.username = username
+    console.log("The username: " + this.state.username)
   },
   // currently only used to change a user's password
   updateUser(updateUserPayload) {

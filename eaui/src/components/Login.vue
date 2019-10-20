@@ -108,6 +108,8 @@ export default {
             axios(options)
               .then(response =>{
                 if(response.data === "Success"){
+                  console.log(this.login.username)
+                  this.authenticateUser("hellooooooooo")
                  this.$router.push({ name: 'Home' })
                 }
               })
