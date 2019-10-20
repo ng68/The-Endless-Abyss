@@ -369,7 +369,6 @@ app.post("/enter", (req, res, next) => {
       break;
   }
   var sql = "UPDATE UserGames SET roomID = " + game.roomID + " WHERE username = '" + game.username + "'";
-  //"IF NOT EXISTS(SELECT * FROM UserGames WHERE username = " + game.username + ") INSERT INTO UserGames (username, health, gold, roomID) VALUES ('" + game.username + "', " + game.health  + ", " + game.gold + ", " + game.roomID + ") ELSE UPDATE UserGames SET roomID = " + game.roomID + " WHERE username = " + game.username;
   con.query(sql, function(err, result) {
     if (err) {
       throw err;
@@ -404,6 +403,7 @@ app.post("/exit", (req, res, next) => {
   var game = obj.game;
   var optionID = obj.optionID;
   var result;
+  var status = "Playing";
   //gold = game.gold;
   //health = game.health;
   //inventory = game.inventory;
@@ -636,7 +636,10 @@ app.post("/exit", (req, res, next) => {
     });
   } 
 
-  var data = {game, result};
+  if (game.health == 0) {
+    status = "Lose";
+  }
+  var data = {game, result, status};
   res.json(data);
 });
 
@@ -684,6 +687,47 @@ app.post("/continue", (req, res, next) => {
       res.json("Failure");
     }
   });
+});
+
+//End existing game
+app.post("/endgame", (req, res, next) => {
+  var obj = req.body;
+  var game = obj.game;
+  var status = obj.status;
+  var sql;
+  if (status == "Win") {
+    for (var i = 0; i < game.trophies.length; i++) {
+      sql = "INSERT IGNORE INTO UserTrophies (trophy, username) VALUES (" + game.trophies[i] + ", '" + game.username + "')";
+      con.query(sql, function(err, result) { 
+        if (err) {
+          throw err;
+        } 
+      });
+    }
+    var overall = game.health + game.gold + game.inventory.length * 10 + game.trophies.length * 25;
+    sql = "INSERT IGNORE INTO Scores (username, score) VALUES ('" + game.username + "', " + overall + ")";
+    con.query(sql, function(err, result) { 
+      if (err) throw err;
+    });
+  }
+    //Cleanup time
+    sql = "DELETE FROM UserGameInventory WHERE username = '" + game.username + "'";
+    con.query(sql, function(err, result) { 
+      if (err) throw err;
+    });
+    sql = "DELETE FROM UserGames WHERE username = '" + game.username + "'";
+    con.query(sql, function(err, result) { 
+      if (err) throw err;
+    });
+    sql = "DELETE FROM UserGameRecentRooms WHERE username = '" + game.username + "'";
+    con.query(sql, function(err, result) { 
+      if (err) throw err;
+    });
+    sql = "DELETE FROM UserGameTrophies WHERE username = '" + game.username + "'";
+    con.query(sql, function(err, result) { 
+      if (err) throw err;
+      res.json("Success");
+    });
 });
 
 //Host
