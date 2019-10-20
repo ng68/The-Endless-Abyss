@@ -131,7 +131,7 @@ export default {
               .then(response =>{
                 if(response.data === "Success"){
                   this.loginuser(this.login.username)
-                 this.$router.push({ name: 'Home' })
+                 this.$router.push({ name: 'MainMenu' })
                 }
               })
 
@@ -151,9 +151,12 @@ export default {
       onForgotPassword() {
         this.$router.push({ name: 'RecoverAccount' })
       },
+<<<<<<< HEAD
       onHackIntoMainMenu() {
         this.$router.push({ name: 'MainMenu' })
       },
+=======
+>>>>>>> master
     },
   )
 }
