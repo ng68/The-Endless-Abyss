@@ -1,29 +1,49 @@
 <template>
-  <div class="row game-box">
-    <div class="column room-box">
-      <div class="room-details">
-        <span v-if="exitMessage">{{ exitMessage }}</span>
-        <h2 v-if="enterMessage.length != 0">{{ enterMessage[0].name }}</h2>
-        <span v-if="enterMessage.length != 0">{{ enterMessage[0].description }}</span>
+  <div>
+    <div v-if="outcome=='Win'">
+      <h2>Congratulations! You win!</h2>
+      <div v-if="game.trophies.length > trophyNum">
+        <h3>You received the following trophies</h3>
+        <b>{{ game.trophies[trophyNum].name }}</b>
+        <img="{{game.trophies[trophyNum].image}}">
+        <span>{{ game.trophies[trophyNum].description }}</span>
+        <button class="button mt50" @click="trophyNum++">Next Trophy</button>
       </div>
-      <ul class="option-list">
-        <li v-for="(option, key) in options" v-bind:key="option.id">
-          <button class="player-option text-only" v-on:click="exitRoom(key)">{{ option }}</button>
-        </li>
-      </ul>
-      <button v-if="options.length == 0" @click="cycleRoom">Continue</button>
+      <div v-else>
+        <h3>Your score was {{ finalScore }}</h3>
+      </div>
     </div>
-    <div class="column inventory-box">
-      <h2>Health</h2>
-      <span>{{ game.health }}</span>
-      <br>
-      <h2>Gold</h2>
-      <span>{{ game.gold }}</span>
-      <br>
-      <h2 v-if="game.inventory.length > 0">Inventory</h2>
-      <ul class="inventory" v-if="game.inventory.length > 0">
-        <p class="row item" v-for="item in game.inventory" :key="item">{{ item }}</p>
-      </ul>
+    <div v-else-if="outcome=='Lose'">
+      <h2>You lose.</h2>
+      <h3>Better luck next time!</h3>
+      <h3>Your score was {{ finalScore }}</h3>
+    </div>
+    <div class="row game-box" v-else>
+      <div class="column room-box">
+        <div class="room-details">
+          <span v-if="exitMessage">{{ exitMessage }}</span>
+          <h2 v-if="enterMessage.length != 0">{{ enterMessage[0].name }}</h2>
+          <span v-if="enterMessage.length != 0">{{ enterMessage[0].description }}</span>
+        </div>
+        <ul class="option-list">
+          <li v-for="(option, key) in options" v-bind:key="option.id">
+            <button class="player-option text-only" v-on:click="exitRoom(key)">{{ option }}</button>
+          </li>
+        </ul>
+        <button class="button mt50" v-if="options.length == 0" @click="cycleRoom">Continue</button>
+      </div>
+      <div class="column inventory-box">
+        <h2>Health</h2>
+        <span>{{ game.health }}</span>
+        <br>
+        <h2>Gold</h2>
+        <span>{{ game.gold }}</span>
+        <br>
+        <h2 v-if="game.inventory.length > 0">Inventory</h2>
+        <ul class="inventory" v-if="game.inventory.length > 0">
+          <p class="row item" v-for="item in game.inventory" :key="item">{{ item }}</p>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -43,6 +63,8 @@ export default {
       options: [],
       enterMessage: "",
       exitMessage: "",
+      outcome: "",
+      trophyNum: 0,
     }
   },
   beforeMount: function() {
@@ -119,8 +141,10 @@ export default {
             } else {
               if(response.data.status == "Win") {
                 this.endGame("Win");
+                outcome = "Win";
               } else if (response.data.status == "Lose") {
                 this.endGame("Lose");
+                outcome = "Lose";
               } else {
                 this.game = response.data.game;
                 this.exitMessage = response.data.result;
@@ -182,6 +206,8 @@ export default {
                 position: 'is-bottom',
                 type: 'is-danger'
               })
+            } else {
+              this.finalScore = response.data;
             }
           })
         } catch (e) {
@@ -202,6 +228,13 @@ export default {
 
 
 <style scoped>
+
+button {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: #2c3e50;
+  color: #fff;
+}
 
 .player-option:hover {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

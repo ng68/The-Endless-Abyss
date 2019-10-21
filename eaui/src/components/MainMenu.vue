@@ -5,22 +5,22 @@
     </div>
     <div class="navigationButtons">
       <button
-        class="button is-block is-info is-fullwidth mt50"
+        class="button is-block is-fullwidth mt50"
         @click="onNewGame">
         New Game
       </button>
       <button
-        class="button is-block is-info is-fullwidth mt50"
+        class="button is-block is-fullwidth mt50"
         @click="onContinueGame">
         Continue Game
       </button>
       <button
-        class="button is-block is-info is-fullwidth mt50"
+        class="button is-block is-fullwidth mt50"
         @click="onTrophyRoom">
         View my Trophies
       </button>
       <button
-        class="button is-block is-info is-fullwidth mt50"
+        class="button is-block is-fullwidth mt50"
         @click="onLeaderboard">
         Leaderboard
       </button>
@@ -119,6 +119,8 @@ h1 {
 .button {
   margin-top: 10px;
   margin-bottom: 10px;
+  background-color: #2c3e50;
+  color: #fff;
 }
 
 </style>
