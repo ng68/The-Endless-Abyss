@@ -436,15 +436,16 @@ describe('Test User Trophies', () => {
 //Testing Game Logic
 describe('Test Game Logic', () => {
     it('Create Game for User', (done) => {
-        let data = { game : {
-                username : "testuser",
-                gold : 40,
-                health : 30,
-                inventory : ["Flashbang", "Chicken Leg"],
-                roomID : 1,
-                recentRooms : [3,5,7],
-                trophies : [3,5]   
-            }
+        let data = { 
+                game : {
+                    username : "testuser",
+                    gold : 40,
+                    health : 30,
+                    inventory : ["Flashbang", "Chicken Leg"],
+                    roomID : 1,
+                    recentRooms : [3,5,7],
+                    trophies : [3,5]   
+                }
         }
         let expect = {
             options : {
@@ -466,7 +467,8 @@ describe('Test Game Logic', () => {
           .send(data)
           .end((err, res) => {
                 res.should.have.status(200);
-                res.body.should.equal(expect);
+                res.body.options.should.equal(expect.options);
+                res.body.result.should.equal(expect.result);
             done();
           });
     });
@@ -512,7 +514,9 @@ describe('Test Game Logic', () => {
           .send(data)
           .end((err, res) => {
                 res.should.have.status(200);
-                res.body.should.equal(expect);
+                res.body.game.should.equal(expect.game);
+                res.body.result.should.equal(expect.result);
+                res.body.status.should.equal(expect.status);
             done();
           });
     });
