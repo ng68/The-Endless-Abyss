@@ -467,8 +467,7 @@ describe('Test Game Logic', () => {
           .send(data)
           .end((err, res) => {
                 res.should.have.status(200);
-                res.body.options.should.equal(expect.options);
-                res.body.result.should.equal(expect.result);
+                res.body.should.eql(expect);
             done();
           });
     });
@@ -514,9 +513,7 @@ describe('Test Game Logic', () => {
           .send(data)
           .end((err, res) => {
                 res.should.have.status(200);
-                res.body.game.should.equal(expect.game);
-                res.body.result.should.equal(expect.result);
-                res.body.status.should.equal(expect.status);
+                res.body.should.eql(expect);
             done();
           });
     });
