@@ -73,7 +73,6 @@ export default {
               })
             } else {
               let game = response.data;
-              console.log(response)
               this.continueGame(game);
               this.$router.push({ name: 'Game' });
             }
