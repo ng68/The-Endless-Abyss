@@ -758,6 +758,7 @@ app.post("/endgame", (req, res, next) => {
   var game = obj.game;
   var status = obj.status;
   var sql;
+  
   if (status == "Win") {
     for (var i = 0; i < game.trophies.length; i++) {
       sql = "INSERT IGNORE INTO UserTrophies (trophy, username) VALUES (" + game.trophies[i] + ", '" + game.username + "')";
