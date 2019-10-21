@@ -358,7 +358,7 @@ app.post("/enter", (req, res, next) => {
         options[1] = "Inspect the fissures";
         options[2] = "Trudge through the ice and snow (-20 Health)";
         if(game.inventory.includes("Torch")) {
-          option[3] = "Light the torch and continue"
+          options[3] = "Light the torch and continue"
         }
         break;
     //Room 8 The Dining Chamber
@@ -367,17 +367,17 @@ app.post("/enter", (req, res, next) => {
         options[2] = "Try the drinks.";
         options[3] = "Survey the cutlery.";
         if(game.inventory.includes("Chicken Leg")){
-          option[4] = "Leave an offering for the long lost feast (- Chicken Leg)"
+          options[4] = "Leave an offering for the long lost feast (- Chicken Leg)"
         }
         break;
     //Room 9 The Well
     case 9:
         options[1] = "Get some water";//give 10 hp
         if(game.gold >= 1){
-          option[2] = "Toss a coin in (- 1 coin)"// gives sword
+          options[2] = "Toss a coin in (- 1 coin)"// gives sword
         }
         if(game.inventory.includes("Rope")){
-          option[3] = "Travel down the well" // Meet keven, gives card, trophie meet keven
+          options[3] = "Travel down the well" // Meet keven, gives card, trophie meet keven
         }
         break;
     //Room 10 The Library
