@@ -30,7 +30,7 @@
             <button class="player-option text-only" v-on:click="exitRoom(key)">{{ option }}</button>
           </li>
         </ul>
-        <button class="button mt50" v-if="options.length == 0" @click="cycleRoom">Continue</button>
+        <button class="button mt50" v-if="options.length == 0" @click="cycleRoom(game.roomID, game.recentRooms)">Continue</button>
       </div>
       <div class="column inventory-box">
         <h2>Health</h2>
@@ -162,22 +162,22 @@ export default {
           })
         }
       },
-      cycleRoom() {
+      cycleRoom(roomID, recentRooms) {
         let potentialRooms = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
         //Remove current and recent rooms from potential rooms
-        for(var index in this.game.recentRooms) {
+        for(var index in recentRooms) {
           for(let i = 0; i < potentialRooms.length; i++) {
-            if(potentialRooms[i] == this.game.recentRooms[index] || potentialRooms[i] == this.game.roomID) {
+            if(potentialRooms[i] == recentRooms[index] || potentialRooms[i] == roomID) {
               potentialRooms.splice(i, 1);
               i--;
             }
           }
         }
-        var temp = this.game.roomID;
+        var temp = roomID;
         var random = Math.floor(Math.random() * potentialRooms.length);
-        this.game.roomID = potentialRooms[random];
-        potentialRooms[random] = this.game.recentRooms.shift();
-        this.game.recentRooms.push(temp);
+        roomID = potentialRooms[random];
+        potentialRooms[random] = recentRooms.shift();
+        recentRooms.push(temp);
 
         this.enterRoom();
       },
