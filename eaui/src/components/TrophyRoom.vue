@@ -86,8 +86,8 @@ export default {
   -webkit-flex-flow: column nowrap; /* Safari 6.1+ */
   justify-content: space-between;
   justify-content: center;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 17px;
+  padding-right: 17px;
   background-image: url("../assets/shelf.jpg");
 }
 
