@@ -488,6 +488,7 @@ describe('Test Game Logic', () => {
         
         let expect = {
             game: {
+                username: "testuser",
                 gold: 40,
                 health: 0,
                 inventory: [
@@ -503,8 +504,7 @@ describe('Test Game Logic', () => {
                 trophies: [
                     3,
                     5
-                ],
-                username: "testuser"
+                ]
             },
             result: "As you lunge and attempt to punch the troll in the face, he swiftly dodges and then proceeds to call your mom ugly. Your pride is utterly destroyed. (-30 Health)",
             status: "Lose"
