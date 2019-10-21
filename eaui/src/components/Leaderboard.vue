@@ -3,10 +3,10 @@
       <h1>A LEADERBOARD</h1>
       <ul id="example-1">
         <li v-for="item in activeboard" v-bind:key="item.username">
-            {{item.username}}  {{item.score}}
+            {{item.username}} - {{item.score}}
         </li>
       </ul>
-      <button @click="onChangeView">change view</button>
+      <button class="button mt50" @click="onChangeView">{{viewButtonText}}</button>
   </div>
 </template>
 
@@ -24,6 +24,7 @@ export default {
         personalboard: [],//current player scores
         activeboard: [],
         isLeaderboardActive: true,
+        viewButtonText: "See my scores",
     }),
 
     computed: {
@@ -78,13 +79,26 @@ export default {
             if(this.isLeaderboardActive){
                 this.isLeaderboardActive = false
                 this.activeboard = this.personalboard
+                this.viewButtonText = "See all scores"
                 return
             }
             this.isLeaderboardActive = true
             this.activeboard = this.leaderboard
+            this.viewButtonText = "See my scores"
         },
         ...mapGetters(['getUsername'])
     })
 }
 
 </script>
+
+<style scoped>
+
+button {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: #2c3e50;
+  color: #fff;
+}
+
+</style>

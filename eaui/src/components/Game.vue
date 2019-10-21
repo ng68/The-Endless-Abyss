@@ -2,11 +2,11 @@
   <div>
     <div v-if="outcome=='Win'">
       <h2>Congratulations! You win!</h2>
-      <div v-if="game.trophies.length > trophyNum">
+      <div v-if="trophyDetails.length > trophyNum">
         <h3>You received the following trophies</h3>
-        <b>{{ game.trophies[trophyNum].name }}</b>
-        <img="{{game.trophies[trophyNum].image}}">
-        <span>{{ game.trophies[trophyNum].description }}</span>
+        <b>{{ trophyDetails[trophyNum].name }}</b>
+        <img :src="trophyDetails[trophyNum].image">
+        <span>{{ trophyDetails[trophyNum].description }}</span>
         <button class="button mt50" @click="trophyNum++">Next Trophy</button>
       </div>
       <div v-else>
@@ -30,7 +30,7 @@
             <button class="player-option text-only" v-on:click="exitRoom(key)">{{ option }}</button>
           </li>
         </ul>
-        <button class="button mt50" v-if="options.length == 0" @click="cycleRoom(game.roomID, game.recentRooms)">Continue</button>
+        <button class="button mt50" v-if="options.length == 0" @click="cycleRoom()">Continue</button>
       </div>
       <div class="column inventory-box">
         <h2>Health</h2>
@@ -65,6 +65,7 @@ export default {
       exitMessage: "",
       outcome: "",
       trophyNum: 0,
+      finalScore: 0,
     }
   },
   beforeMount: function() {
@@ -141,10 +142,10 @@ export default {
             } else {
               if(response.data.status == "Win") {
                 this.endGame("Win");
-                outcome = "Win";
+                this.outcome = "Win";
               } else if (response.data.status == "Lose") {
                 this.endGame("Lose");
-                outcome = "Lose";
+                this.outcome = "Lose";
               } else {
                 this.game = response.data.game;
                 this.exitMessage = response.data.result;
@@ -162,22 +163,22 @@ export default {
           })
         }
       },
-      cycleRoom(roomID, recentRooms) {
+      cycleRoom() {
         let potentialRooms = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
         //Remove current and recent rooms from potential rooms
-        for(var index in recentRooms) {
+        for(var index in this.game.recentRooms) {
           for(let i = 0; i < potentialRooms.length; i++) {
-            if(potentialRooms[i] == recentRooms[index] || potentialRooms[i] == roomID) {
+            if(potentialRooms[i] == this.game.recentRooms[index] || potentialRooms[i] == this.game.roomID) {
               potentialRooms.splice(i, 1);
               i--;
             }
           }
         }
-        var temp = roomID;
+        var temp = this.game.roomID;
         var random = Math.floor(Math.random() * potentialRooms.length);
-        roomID = potentialRooms[random];
-        potentialRooms[random] = recentRooms.shift();
-        recentRooms.push(temp);
+        this.game.roomID = potentialRooms[random];
+        potentialRooms[random] = this.game.recentRooms.shift();
+        this.game.recentRooms.push(temp);
 
         this.enterRoom();
       },
