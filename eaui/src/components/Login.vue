@@ -119,7 +119,8 @@ export default {
                 if(response.data === "Success"){
                   this.loginuser(this.login.username)
                   localStorage.setItem("username", this.login.username)
-                 this.$router.push({ name: 'MainMenu' })
+                  this.$emit("authenticated", true);
+                  this.$router.push({ name: 'MainMenu' })
                 }
               })
 

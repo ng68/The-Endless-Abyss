@@ -14,16 +14,17 @@
 export default {
   name: 'Navigation',
   methods: Object.assign({
-    async onHome() {
+    onHome() {
       this.$router.push({ name: 'MainMenu' })
     },
-    async onTrophies() {
+    onTrophies() {
       this.$router.push({ name: 'TrophyRoom' })
     },
-    async onLeaderboard() {
+    onLeaderboard() {
       this.$router.push({ name: 'Leaderboard' })
     },
-    async onLogOut() {
+    onLogOut() {
+      this.$emit("authenticated", false);
       this.$router.push({ name: 'Login' })
     },
   })

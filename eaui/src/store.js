@@ -9,6 +9,7 @@ export default new Vuex.Store({
         //dont delete
         user: {
             username: "",
+            authenticated: false
         },
         //dont delete
         game: {
@@ -20,6 +21,7 @@ export default new Vuex.Store({
             inventory: [],
             trophies: [],
         }
+
     },
     getters: {
         getUsername: state => {

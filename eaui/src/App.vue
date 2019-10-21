@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <Navigation v-if="['Login', 'CreateAccount'].indexOf($route.name) == -1"></Navigation>
-    <router-view></router-view>
+    <Navigation v-if="['Login', 'CreateAccount', 'RecoverAccount'].indexOf($route.name) == -1"></Navigation>
+    <router-view @authenticated="setAuthenticated"/>
   </div>
 </template>
 
@@ -13,6 +13,21 @@ export default {
   name: 'app',
   components: {
     Navigation,
+  },
+  data() {
+    return {
+      authenticated: false,
+    }
+  },
+  mounted() {
+    if(!this.authenticated) {
+      this.$router.replace({ name: "Login" })
+    }
+  },
+  methods: {
+    setAuthenticated(status){
+      this.authenticated = status
+    },
   }
 }
 
