@@ -758,7 +758,7 @@ app.post("/endgame", (req, res, next) => {
   var game = obj.game;
   var status = obj.status;
   var sql;
-  
+
   if (status == "Win") {
     for (var i = 0; i < game.trophies.length; i++) {
       sql = "INSERT IGNORE INTO UserTrophies (trophy, username) VALUES (" + game.trophies[i] + ", '" + game.username + "')";
@@ -797,4 +797,20 @@ app.post("/endgame", (req, res, next) => {
 //Host
 app.listen(process.env.PORT || 3000, () => {
  console.log("Server running");
+});
+
+app.post("/gametrophies", (req, res, next) => {
+  var obj = req.body;
+  var trophies = obj.trophies;
+  var sql;
+  var data = [];
+
+  for (var i = 0; i < trophies.length; i++) {
+    sql = "SELECT * FROM Trophies WHERE id = " + trophies[i];
+    con.query(sql, function(err, result) {
+      if (err) throw err;
+      data.push(result[0]);
+    });
+  }
+  res.json(data);
 });

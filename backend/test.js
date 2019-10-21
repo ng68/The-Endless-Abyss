@@ -441,7 +441,7 @@ describe('Test Game Logic', () => {
             gold : 40,
 		    health : 30,
 		    inventory : ["Flashbang", "Chicken Leg"],
-		    roomID : 1,
+            roomID : "1",
 		    recentRooms : [3,5,7],
 		    trophies : [3,5]   
         }
