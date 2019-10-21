@@ -304,7 +304,7 @@ app.post("/enter", (req, res, next) => {
         options[3] = "Bribe the troll. (20 Gold)";
       }
       if (game.inventory.includes("Flashbang")) {
-        options[4] = "Use Flashbang.";
+        options[4] = "Use the Flashbang.";
       }
       break;
     //Room 2 The Pit
@@ -326,9 +326,12 @@ app.post("/enter", (req, res, next) => {
         break;
     //Room 4 Hallway Merchant
     case 4:
-        options[1] = "Purchase Rope. (10 gold)";
-        options[2] = "Purchase Flashbang. (15 gold)";
-        options[3] = "Purchase MedKit. (+20 Health) (15 gold)";
+        if(game.gold >= 10){
+          options[1] = "Purchase Rope. (10 gold)";
+        }
+        if(game.gold >= 15){options[2] = "Purchase Flashbang. (15 gold)";}
+        if(game.gold >= 15){options[3] = "Purchase MedKit. (15 gold)";}
+        options[4] = "look into your rather empty pockets and sigh."
         break;
     //Room 5 The Greenhouse
     case 5:
@@ -337,7 +340,7 @@ app.post("/enter", (req, res, next) => {
         }
         options[2] = "Walk around the plant";
         if(game.inventory.includes("Chicken Leg")) {
-          options[3] = "Throw Chicken Leg";
+          options[3] = "Throw a Chicken Leg";
         }
         options[4] = "Throw a rock at the plant"
         break;
@@ -360,18 +363,18 @@ app.post("/enter", (req, res, next) => {
         break;
     //Room 8 The Dining Chamber
     case 8:
-        options[1] = "Try the cuisine";
-        options[2] = "Try the drinks";
-        options[3] = "Survey the dishwear";
+        options[1] = "Try the cuisine.";
+        options[2] = "Try the drinks.";
+        options[3] = "Survey the cutlery.";
         if(game.inventory.includes("Chicken Leg")){
-          option[4] = "Leave an offering for the long lost feast (Lose Chicken Leg)"
+          option[4] = "Leave an offering for the long lost feast (- Chicken Leg)"
         }
         break;
     //Room 9 The Well
     case 9:
         options[1] = "Get some water";//give 10 hp
         if(game.gold >= 1){
-          option[2] = "Toss a coin in (Lose 1 coin)"// gives sword
+          option[2] = "Toss a coin in (- 1 coin)"// gives sword
         }
         if(game.inventory.includes("Rope")){
           option[3] = "Travel down the well" // Meet keven, gives card, trophie meet keven
@@ -385,7 +388,7 @@ app.post("/enter", (req, res, next) => {
             options[3] = "Attack him, sword in hand";
         }
         if (game.inventory.includes("Flashbang")){
-            options[4] = "Throw flashbang"
+            options[4] = "Throw the flashbang"
         }
         break;
     default:
@@ -439,7 +442,7 @@ app.post("/exit", (req, res, next) => {
       switch(optionID) {
         case 1:
           game.health -= 30;
-          result = "As you lunge and attempt to punch the troll in the face, he swiftly dodges and then procedes to call your mom ugly. Your pride is utterly destroyed. (-30 Health)";
+          result = "As you lunge and attempt to punch the troll in the face, he swiftly dodges and then proceeds to call your mom ugly. Your pride is utterly destroyed. (-30 Health)";
           break;
         case 2:
           game.health -= 10;
@@ -451,7 +454,7 @@ app.post("/exit", (req, res, next) => {
           break;
         case 4:
           game.inventory.splice(game.inventory.indexOf("Flashbang"),1);
-          result = "You throw the flashbang that stuns and disorients the troll, what you didn't realize is that the troll has epilepsy. You walk passed him. (-Flashbang)"
+          result = "You throw the flashbang that stuns and disorients the troll, what you didn't realize is that the troll has epilepsy. You walk passed him. (- Flashbang)"
           break;
         default:
           break;
@@ -463,14 +466,14 @@ app.post("/exit", (req, res, next) => {
           case 1:
             game.health -= 10;
             game.inventory.push("Torch");
-            result = "You try to jump over the pit, but fall short of the other side. The pit isn't as deep as you thought, but you hurt your legs falling. Next to you lies an unlit torch. You pick it up and right after a stalagtite comes crashing down where the torch previously lied. You then climb out of the pit and reach the other side. (-10 Health) (+Torch)";
+            result = "You try to jump over the pit, but fall short of the other side. The pit isn't as deep as you thought, but you hurt your legs falling. Next to you lies an unlit torch. You pick it up and right after a stalactite comes crashing down where the torch previously lied. You then climb out of the pit and reach the other side. (-10 Health) (+ Torch)";
             break;
           case 2:
-            result = "The pit isn't as deep as you thought. You climb down and see an unlit torch in the middle of the room. As you walk toward it to pick it up, a stalagtite comes crashing down and breaks the torch into pieces. You then climb out of the pit, unscathed, and reach the other side.";
+            result = "The pit isn't as deep as you thought. You climb down and see an unlit torch in the middle of the room. As you walk toward it to pick it up, a stalactite comes crashing down and breaks the torch into pieces. You then climb out of the pit, unscathed, and reach the other side.";
             break;
           case 3:
             game.inventory.splice(game.inventory.indexOf("Large Plank"),1);
-            result = "You lay the Large Plank down and it barely reaches the other side of the pit. You walk across cautiously trying as hard as you can not to look down. You make it across safely, but when you attempt to pick the plank up, a stalagtite comes crashing down breaking the plank in half. (-Large Plank)"
+            result = "You lay the Large Plank down and it barely reaches the other side of the pit. You walk across cautiously trying as hard as you can not to look down. You make it across safely, but when you attempt to pick the plank up, a stalactite comes crashing down breaking the plank in half. (- Large Plank)"
             break;
           default:
             break;
@@ -489,14 +492,14 @@ app.post("/exit", (req, res, next) => {
             break;
           case 3:
             game.inventory.push("Chicken Leg");
-            result = "You open the third chest and find a Chicken Leg inside. You're not hungry so you save it for later. Then the room begins to shake and a hidden door opens up. You run to the door as the room collapses behind you. (+Chicken Leg)"
+            result = "You open the third chest and find a Chicken Leg inside. You're not hungry so you save it for later. Then the room begins to shake and a hidden door opens up. You run to the door as the room collapses behind you. (+ Chicken Leg)"
             break;
           case 4:
             game.gold += 15;
             game.health += 15;
             game.inventory.push("Chicken Leg");
             game.inventory.splice(game.inventory.indexOf("Rope"),1);
-            result = "You use the rope to tie all 3 of the chests together and then the room begins to shake and a hidden door opens up. You pull the chests through the door as the room collapses behind you and barely save them and more importantly yourself. The rope breaks in the process, but you find gold, a health potion, and a Chicken Leg. You're hungry after almost being crushed so you drink the health potion but save the Chicken Leg. (+15 Gold) (+15 Health) (+Chicken Leg)"
+            result = "You use the rope to tie all 3 of the chests together and then the room begins to shake and a hidden door opens up. You pull the chests through the door as the room collapses behind you and barely save them and more importantly yourself. The rope breaks in the process, but you find gold, a health potion, and a Chicken Leg. You're hungry after almost being crushed so you drink the health potion but save the Chicken Leg. (+ 15 Gold) (+15 Health) (+ Chicken Leg)"
           default:
             break;
         }
@@ -512,12 +515,16 @@ app.post("/exit", (req, res, next) => {
               case 2:
                 game.gold -= 15;
                 game.inventory.push("Rope");
-                result = "You purchased a Flashbang."
+                result = "You purchased a Flashbang. (+ Flashbang)"
                 break;
               case 3:
-                game.health +=15;
-                result = "You purchased a MedKit. Gain 15 health"
+                game.health += 15;
+                game.gold -= 15;
+                result = "You purchased a MedKit. (+15 Health)"
                 break;
+              case 4:
+                game.gold += 1;
+                result = "The merchant seems to take pity on you and flips you a coin. (+1 Gold) " 
               default:
                 break;
         }
@@ -526,14 +533,19 @@ app.post("/exit", (req, res, next) => {
     case 5:
         switch(optionID) {
                   case 1:
-                    result = "";
+                    result = "You quickly flip through the book before proclaiming, Everyone romaine calm, the plant stops for a moment before giggling with delight as you quickly exit the room.";
                     break;
                   case 2:
-                    result = ""
+                    game.health -= 5
+                    result = "The plant attempts to get you attention asking you to feed him, you quickly slink out of the room before becoming lunch, not before getting cut on a thorn. (-5 Health)";
                     break;
                   case 3:
-                    game.health -=15;
-                    result = "The plant ignores the Chicken Leg and attacks you. You lose 15 health."
+                    game.health -= 15;
+                    result = "The plant ignores the Chicken Leg and attacks you. (-15 Health)."
+                    break;
+                  case 4:
+                    game.health -= 25
+                    result = "You throw a nearby rock as hard as you can, and all it seems to do it make the plant angry as he takes a bite out of you. (-25 Health)";
                     break;
                   default:
                     break;
@@ -544,14 +556,14 @@ app.post("/exit", (req, res, next) => {
         switch(optionID) {
                   case 1:
                     game.health -= 10;
-                    result = "The woman unleashes a swarm of bats that scratch and scrape you. You lose 10 health.";
+                    result = "The woman unleashes a swarm of bats that scratch and scrape you. (-10 Health)";
                     break;
                   case 2:
                     game.gold -= 10;
                     if(game.gold < 0) {
                       game.gold = 0;
                     }
-                    result = "The woman pickpockets you and vanishes. You lose 10 gold"
+                    result = "The woman pickpockets you and vanishes. (-10 Gold)"
                     break;
                   case 3:
                     result = "Correct! The mysterious woman lets out an evil laugh and disappears."
@@ -565,10 +577,12 @@ app.post("/exit", (req, res, next) => {
         switch(optionID) {
                   case 1:
                     game.gold -= 10;
-                    if(game.gold < 0) {
+                    if(game.gold >= 0){
+                      result = "On closer inspection you find the grond is pretty slippery and you fall in, You hear some coins fall out"
+                    } else {
                       game.gold = 0;
+                      result = "On closer inspection you find the grond is pretty slippery and you fall in, may have lost some coin if you had some."
                     }
-                    result = "On closer inspection you find the grond is pretty slippery and you fall in, You hear some coins fall out"
                     break;
                   case 2:
                     game.health += -20;
@@ -584,20 +598,20 @@ app.post("/exit", (req, res, next) => {
         switch(optionID) {
                   case 1:
                     game.health += -15;
-                    result = "The food is rancide and rotten, what posses sed you to eat it (-15 Health)"
+                    result = "The food is rancid and rotten, what possessed you to eat it. (-15 Health)"
                     break;
                   case 2:
                     game.health += -5;
                     game.inventory.push("Key");
-                    result = "While the fluid is vile something interesting was at the bottom a key (Gain key)";
+                    result = "While the fluid is vile something interesting was at the bottom, a Key. (+ Key)";
                     break;
                   case 3:
                     game.gold += 25;
-                    result = "The food may have gone bad, but their coin has not"
+                    result = "The food may have gone bad, but their coin has not. (+25 Gold)"
                     break;
                   case 4:
                     game.inventory.splice(game.inventory.indexOf("Chicken Leg"),1);
-                    result = "A great fly with a crown appears and nods in thanks";
+                    result = "A great fly with a crown appears and nods in thanks. (- Chicken Leg)";
                     break;
         }
         break;
@@ -611,14 +625,33 @@ app.post("/exit", (req, res, next) => {
                   case 2:
                     game.gold --;
                     game.inventory.push("Sword");
-                    result = "as you throw the coin down you hear a yelp and a sword come flying up, maybe look before you wish";
+                    result = "as you throw the coin down you hear a yelp and a Sword come flying up, maybe look before you wish. (-1 Gold) (+ Sword)";
                     break;
                   case 3:
-                    result = "You decend down the well till you meet a large snail, he greets you kindly as he states his name Keven";
+                    result = "You descend down the well until you meet a large snail, he greets you kindly as he states his name Keven.";
                     break;
         }
         break;
     case 10:
+        switch(optionID) {
+          case 1:
+            game.inventory.push("Key");
+            result = "As you begin to sneak around the goblin notices you. He appreciates you being quiet in the library and points you toward a small box that contains a Key. (+ Key)";
+            break;
+          case 2:
+            result = "You jont up to the goblin and at first startle him. The goblin explains he's been reading a book about anti gravity saying \”It's impossible to put down\”.";
+            break;
+          case 3:
+            game.gold += 30;
+            game.health -= 10;
+            result = "You raise up your sword and rush the goblin, in his shock the goblin reaches for his books and begins to pelt you with them. You ultimately slay the goblin and take his coins but MAN to books bruse. (+30 Gold) (-10 Health)";
+            break;
+          case 4:
+            game.inventory.splice(game.inventory.indexOf("Flashbang"),1);
+            game.health -= 30;
+            result = "You pull the pin and the whole room goes white. The goblin panics, you panic, and the shadow monster in the corner panics. You quickly realize there is a shadow creature and run before he consumes too much of your soul. (-30 Health) (- Flashbang)";
+            break;
+      }
       break;
     default:
       break;
