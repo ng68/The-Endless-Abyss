@@ -502,7 +502,7 @@ describe('Test Game Logic', () => {
                     3,
                     5
                 ],
-                username: "Hello"
+                username: "testuser"
             },
             result: "As you lunge and attempt to punch the troll in the face, he swiftly dodges and then proceeds to call your mom ugly. Your pride is utterly destroyed. (-30 Health)",
             status: "Lose"
@@ -526,7 +526,7 @@ describe('Test Game Logic', () => {
                     roomID : 1,
                     recentRooms : [2, 3],
                     trophies : [3, 5],
-                    username : "Hello"
+                    username : "testuser"
                 },
                 status : "Win"
         }
@@ -534,7 +534,7 @@ describe('Test Game Logic', () => {
         let expect = 150;
       chai.request('https://stormy-journey-75510.herokuapp.com')
           .post('/endgame')
-          .send(user)
+          .send(data)
           .end((err, res) => {
                 res.should.have.status(200);
                 res.body.should.equal(expect);
