@@ -1,1 +1,0 @@
-const MainMenu = require('../components/MainMenu.vue');

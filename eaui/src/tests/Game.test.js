@@ -1,5 +1,7 @@
+import Vue from 'vue';
 import { mount } from '@vue/test-utils';
-import Game from '../components/Game.vue';
+
+Vue.component('Game', require('../components/Game.vue').default)
 
 describe('Game', () => {
   test('cycle room chooses room that is not the current room or in recentRooms array', () => {
