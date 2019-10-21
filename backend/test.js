@@ -436,16 +436,16 @@ describe('Test User Trophies', () => {
 //Testing Game Logic
 describe('Test Game Logic', () => {
     it('Create Game for User', (done) => {
-        let game = {
-            username : "testuser",
-            gold : 40,
-		    health : 30,
-		    inventory : ["Flashbang", "Chicken Leg"],
-            roomID : "1",
-		    recentRooms : [3,5,7],
-		    trophies : [3,5]   
+        let data = { game : {
+                username : "testuser",
+                gold : 40,
+                health : 30,
+                inventory : ["Flashbang", "Chicken Leg"],
+                roomID : 1,
+                recentRooms : [3,5,7],
+                trophies : [3,5]   
+            }
         }
-        
         let expect = {
             options : {
                 "1" : "Attack the troll.",
@@ -463,7 +463,7 @@ describe('Test Game Logic', () => {
         }
       chai.request('https://stormy-journey-75510.herokuapp.com')
           .post('/enter')
-          .send(game)
+          .send(data)
           .end((err, res) => {
                 res.should.have.status(200);
                 res.body.should.equal(expect);
