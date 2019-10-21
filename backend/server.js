@@ -393,8 +393,14 @@ app.post("/enter", (req, res, next) => {
         break;
     //Room 11
     case 11:
-        options[1] = "";
-        options[2] = "";
+        options[1] = "Turn back.";
+        options[2] = "Keep going.";
+        if (game.inventory.includes("Torch")){
+          options[3] = "Light your torch.";
+        }
+        if (game.inventory.includes("Key")){
+          options[3] = "Open the door.";
+        }
         break;
     //Room 12
     case 12:
@@ -421,7 +427,7 @@ app.post("/enter", (req, res, next) => {
           options[3] = "Swing your sword at the wall to try and break through it!";
         }
         if (game.inventory.includes("Rope") && game.inventory.includes("Chicken Leg") && game.inventory.includes("Flashbang")){
-          options[4] = "Use AAALLLLL the items.";
+          options[4] = "Use AAALLLLL the items. (You should probably choose this option.)";
         }
         break;
     default:
@@ -691,12 +697,19 @@ app.post("/exit", (req, res, next) => {
     case 11:
       switch(optionID) {
         case 1:
+          result = "You try to turn around, but somehow end up in a different room.";
           break;
         case 2:
+          result = "You continue forward and try to keep your lurking thoughts of dread at bay.";
           break;
         case 3:
+          game.inventory.splice(game.inventory.indexOf("Torch"),1);
+          result = "I never said the hallway was dark. You waste a torch. (-Torch)";
           break;
         case 4:
+          game.inventory.push("Diamond");
+          game.inventory.splice(game.inventory.indexOf("Key"),1);
+          result = "You turn the key and it breaks as you unlock the door, but you are still able to open it and find a shiny object inside. (+ Diamond)"
           break;
       }
       break;
