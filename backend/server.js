@@ -317,119 +317,134 @@ app.post("/enter", (req, res, next) => {
       break;
     //Room 3 Storage Room
     case 3:
-        options[1] = "Open the first chest.";
-        options[2] = "Open the second chest.";
-        options[3] = "Open the third chest.";
-        if(game.inventory.includes("Rope")) {
-          options[4] = "Use Rope to tie the chests together.";
-        }
-        break;
+      options[1] = "Open the first chest.";
+      options[2] = "Open the second chest.";
+      options[3] = "Open the third chest.";
+      if(game.inventory.includes("Rope")) {
+        options[4] = "Use Rope to tie the chests together.";
+      }
+      break;
     //Room 4 Hallway Merchant
     case 4:
-        if(game.gold >= 10){
-          options[1] = "Purchase Rope. (10 gold)";
-        }
-        if(game.gold >= 15){options[2] = "Purchase Flashbang. (15 gold)";}
-        if(game.gold >= 15){options[3] = "Purchase MedKit. (15 gold)";}
-        options[4] = "look into your rather empty pockets and sigh."
-        break;
+      if(game.gold >= 10){
+        options[1] = "Purchase Rope. (10 gold)";
+      }
+      if(game.gold >= 15){options[2] = "Purchase Flashbang. (15 gold)";}
+      if(game.gold >= 15){options[3] = "Purchase MedKit. (15 gold)";}
+      options[4] = "look into your rather empty pockets and sigh."
+      break;
     //Room 5 The Greenhouse
     case 5:
-        if(game.inventory.includes("Fun Puns")) {
-          options[1] = "Read aloud a funny pun from Fun Puns";
-        }
-        options[2] = "Walk around the plant";
-        if(game.inventory.includes("Chicken Leg")) {
-          options[3] = "Throw a Chicken Leg";
-        }
-        options[4] = "Throw a rock at the plant"
-        break;
+      if(game.inventory.includes("Fun Puns")) {
+        options[1] = "Read aloud a funny pun from Fun Puns";
+      }
+      options[2] = "Walk around the plant";
+      if(game.inventory.includes("Chicken Leg")) {
+        options[3] = "Throw a Chicken Leg";
+      }
+      options[4] = "Throw a rock at the plant"
+      break;
     //Room 6 The Mysterious Woman
     case 6:
-        options[1] = "A Scarecrow";
-        options[2] = "A Mountain";
-        options[3] = "A Tree";
-        if (game.inventory.includes("Fun Puns")) {
-          options[4] = "Offer \"Fun Puns\" to the woman";
-        }
-        break;
+      options[1] = "A Scarecrow";
+      options[2] = "A Mountain";
+      options[3] = "A Tree";
+      if (game.inventory.includes("Fun Puns")) {
+        options[4] = "Offer \"Fun Puns\" to the woman";
+      }
+      break;
     //Room 7 The Snow Caverns
     case 7:
-        options[1] = "Inspect the fissures";
-        options[2] = "Trudge through the ice and snow (-20 Health)";
-        if(game.inventory.includes("Torch")) {
-          options[3] = "Light the torch and continue"
-        }
-        break;
+      options[1] = "Inspect the fissures";
+      options[2] = "Trudge through the ice and snow (-20 Health)";
+      if(game.inventory.includes("Torch")) {
+        options[3] = "Light the torch and continue"
+      }
+      break;
     //Room 8 The Dining Chamber
     case 8:
-        options[1] = "Try the cuisine.";
-        options[2] = "Try the drinks.";
-        options[3] = "Survey the cutlery.";
-        if(game.inventory.includes("Chicken Leg")){
-          options[4] = "Leave an offering for the long lost feast (- Chicken Leg)"
-        }
-        break;
+      options[1] = "Try the cuisine.";
+      options[2] = "Try the drinks.";
+      options[3] = "Survey the cutlery.";
+      if(game.inventory.includes("Chicken Leg")){
+        options[4] = "Leave an offering for the long lost feast (- Chicken Leg)"
+      }
+      break;
     //Room 9 The Well
     case 9:
-        options[1] = "Get some water";//give 10 hp
-        if(game.gold >= 1){
-          options[2] = "Toss a coin in (- 1 coin)"// gives sword
-        }
-        if(game.inventory.includes("Rope")){
-          options[3] = "Travel down the well" // Meet keven, gives card, trophie meet keven
-        }
-        break;
+      options[1] = "Get some water";//give 10 hp
+      if(game.gold >= 1){
+        options[2] = "Toss a coin in (- 1 coin)"// gives sword
+      }
+      if(game.inventory.includes("Rope")){
+        options[3] = "Travel down the well" // Meet keven, gives card, trophie meet keven
+      }
+      break;
     //Room 10 The Library
     case 10:
-        options[1] = "Attempt to sneak past the goblin without disturbing him.";
-        options[2] = "Ask the goblin what he is reading.";
-        if (game.inventory.includes("Sword")){
-          options[3] = "Attack him, sword in hand.";
-        }
-        if (game.inventory.includes("Flashbang")){
-          options[4] = "Throw the flashbang."
-        }
-        break;
+      options[1] = "Attempt to sneak past the goblin without disturbing him.";
+      options[2] = "Ask the goblin what he is reading.";
+      if (game.inventory.includes("Sword")){
+        options[3] = "Attack him, sword in hand.";
+      }
+      if (game.inventory.includes("Flashbang")){
+        options[4] = "Throw the flashbang."
+      }
+      break;
     //Room 11
     case 11:
-        options[1] = "Turn back.";
-        options[2] = "Keep going.";
-        if (game.inventory.includes("Torch")){
-          options[3] = "Light your torch.";
-        }
-        if (game.inventory.includes("Key")){
-          options[3] = "Open the door.";
-        }
-        break;
+      options[1] = "Turn back.";
+      options[2] = "Keep going.";
+      if (game.inventory.includes("Torch")){
+        options[3] = "Light your torch.";
+      }
+      if (game.inventory.includes("Key")){
+        options[3] = "Open the door.";
+      }
+      break;
     //Room 12
     case 12:
-        options[1] = "";
-        options[2] = "";
-        break;
+      if(game.gold >= 10) {
+        options[1] = "Bet 10 gold on the green snail. (Consistent 3:1)";
+        options[2] = "Bet 10 gold on the blue snail. (Underdog 6:1)";
+        options[3] = "Bet 10 gold on the red snail. (Favorite 2:1)";
+      } else {
+        options[4] = "Leave and hope to come back when you have more coin."
+      }
+      break;
     //Room 13
     case 13:
-        options[1] = "";
-        options[2] = "";
-        break;
+      options[1] = "Walk into the pool";
+      if(game.gold > 0) {
+        options[2] = "Make a wish. (-1 coin)";
+      }
+      if (game.inventory.includes("Sword")){
+        options[3] = "Place your Sword in the pool.";
+      }
+      break;
     //Room 14
     case 14:
-        options[1] = "";
-        options[2] = "";
-        break;
+      options[1] = "Run away.";
+      if (game.inventory.includes("Sword")){
+        options[2] = "Swing your Sword at the beast.";
+      }
+      if (game.inventory.includes("Magic Sword")){
+        options[3] = "Swing your Magic Sword at the beast.";
+      }
+      break;
     //Room 15
     case 15:
-        options[1] = "Move on.";
-        if (game.inventory.includes("Torch")){
-          options[2] = "Light your torch.";
-        }
-        if (game.inventory.includes("Sword")){
-          options[3] = "Swing your sword at the wall to try and break through it!";
-        }
-        if (game.inventory.includes("Rope") && game.inventory.includes("Chicken Leg") && game.inventory.includes("Flashbang")){
-          options[4] = "Use AAALLLLL the items. (You should probably choose this option.)";
-        }
-        break;
+      options[1] = "Move on.";
+      if (game.inventory.includes("Torch")){
+        options[2] = "Light your torch.";
+      }
+      if (game.inventory.includes("Sword")){
+        options[3] = "Swing your sword at the wall to try and break through it!";
+      }
+      if (game.inventory.includes("Rope") && game.inventory.includes("Chicken Leg") && game.inventory.includes("Flashbang")){
+        options[4] = "Use AAALLLLL the items. (You should probably choose this option.)";
+      }
+      break;
     default:
       break;
   }
@@ -717,12 +732,31 @@ app.post("/exit", (req, res, next) => {
     case 12:
       switch(optionID) {
         case 1:
+          if(Math.random() < .4) {
+            result = "The green snail maintains a slow and steady pace, and after about 10 hours of waiting for it to finish the 10th lap you win your bet! (+30 Gold)"
+            game.gold += 30;
+          } else {
+            result = "You think you're about to win, but the blue snail pulls ahead at the last hour. (-10 Gold)";
+            game.gold -= 10;
+          }
           break;
         case 2:
+          if(Math.random() < .2) {
+            result = "Some of the other crowd members start to get rowdy when the race remains slow, and begin tohurl rocks at the racers, knocking out all but the blue snail. You win by default! (+60 Gold)"
+            game.gold += 60;
+          } else {
+            result = "Come on, wasn't it clear that red was going to win? (-10 Gold)";
+            game.gold -= 10;
+          }
           break;
         case 3:
-          break;
-        case 4:
+          if(Math.random() < .7) {0
+            result = "The red snail is clearly faster due to its color, and you make a small profit. (+20 Gold)"
+            game.gold += 20;
+          } else {
+            result = "You fall asleep soon after the race starts, and after a full night's sleep, wake up to see that green has won. (-10 Gold)";
+            game.gold -= 10;
+          }
           break;
       }
       break;
@@ -730,12 +764,17 @@ app.post("/exit", (req, res, next) => {
     case 13:
       switch(optionID) {
         case 1:
+          game.health += 10;
+          result = "You feel rested and refreshed. (+10 Health)";
           break;
         case 2:
+          game.trophies.push(1);
+          result = "You lost a coin, but you gained a trophy!";
           break;
         case 3:
-          break;
-        case 4:
+          game.inventory.splice(game.inventory.indexOf("Sword"),1);
+          game.inventory.push("Magic Sword");
+          result = "You place the sword in and watch for a few minutes as the water begins to whirl around it. It begins to change color and shape, and eventually the water stops moving. You pick it up and can tell that it has changed. (+ Magic Sword)";
           break;
       }
       break;
@@ -743,12 +782,17 @@ app.post("/exit", (req, res, next) => {
     case 14:
       switch(optionID) {
         case 1:
+          var loss = Math.floor(Math.random() * 10);
+          game.health -= loss;
+          result = "As you run away, the beast scratches at you, managing to scrape your back before you are able to squeeze through a crevice in the wall. (-" + loss + " Health)";
           break;
         case 2:
+          result = "You stab with your blade, wounding the beast, but it runs off with the sword still in its chest. You'll need something stronger to defeat it if you see it again.";
+          game.inventory.splice(game.inventory.indexOf("Sword"),1);
           break;
         case 3:
-          break;
-        case 4:
+          result = "As you swing your Magic Sword, beams of light burst out and blind the wolf, allowing you to swiftly cut through it. (+ Giant Wolf Claw)";
+          game.trophies.push(2);
           break;
       }
       break;
@@ -888,6 +932,12 @@ app.post("/endgame", (req, res, next) => {
       });
     }
     var overall = game.health + game.gold + game.inventory.length * 10 + game.trophies.length * 25;
+    if(game.inventory.includes("Diamond")) {
+      overall += 40;
+    }
+    if(game.inventory.includes("Giant Wolf Claw")) {
+      overall += 100;
+    }
     sql = "INSERT IGNORE INTO Scores (username, score) VALUES ('" + game.username + "', " + overall + ")";
     con.query(sql, function(err, result) { 
       if (err) throw err;
