@@ -329,9 +329,17 @@ app.post("/enter", (req, res, next) => {
       if(game.gold >= 10){
         options[1] = "Purchase Rope. (10 gold)";
       }
-      if(game.gold >= 15){options[2] = "Purchase Flashbang. (15 gold)";}
-      if(game.gold >= 15){options[3] = "Purchase MedKit. (15 gold)";}
-      options[4] = "look into your rather empty pockets and sigh."
+      if(game.gold >= 15) {
+        options[2] = "Purchase Flashbang. (15 gold)";
+      }
+      if(game.gold >= 15  && game.health < 100) {
+        options[3] = "Purchase MedKit. (15 gold)";
+      }
+      if(game.gold < 10) {
+        options[4] = "Look into your rather empty pockets and sigh."
+      } else {
+        options[5] = "Choose not to buy anything this time.";
+      }
       break;
     //Room 5 The Greenhouse
     case 5:
@@ -399,7 +407,7 @@ app.post("/enter", (req, res, next) => {
         options[3] = "Light your torch.";
       }
       if (game.inventory.includes("Key")){
-        options[3] = "Open the door.";
+        options[4] = "Open the door.";
       }
       break;
     //Room 12
@@ -495,8 +503,12 @@ app.post("/exit", (req, res, next) => {
     case 1:
       switch(optionID) {
         case 1:
-          game.health -= 30;
-          result = "As you lunge and attempt to punch the troll in the face, he swiftly dodges and then proceeds to call your mom ugly. Your pride is utterly destroyed. (-30 Health)";
+          if(game.inventory.includes("Sword") || game.inventory.includes("Magic Sword")) {
+            result = "You swing your sword at the troll and bring him down, ensuring he will never insult your family.";
+          } else {
+            game.health -= 30;
+            result = "As you lunge and attempt to punch the troll in the face, he swiftly dodges and then proceeds to call your mom ugly. Your pride is utterly destroyed. (-30 Health)";  
+          }
           break;
         case 2:
           game.health -= 10;
@@ -568,7 +580,7 @@ app.post("/exit", (req, res, next) => {
           break;
         case 2:
           game.gold -= 15;
-          game.inventory.push("Rope");
+          game.inventory.push("Flashbang");
           result = "You purchased a Flashbang. (+ Flashbang)"
           break;
         case 3:
@@ -578,7 +590,9 @@ app.post("/exit", (req, res, next) => {
           break;
         case 4:
           game.gold += 1;
-          result = "The merchant seems to take pity on you and flips you a coin. (+1 Gold) " 
+          result = "The merchant seems to take pity on you and flips you a coin. (+1 Gold)";
+        case 5:
+          result = "The merchant grumbles something about ungrateful customers and walks off.";
         default:
           break;
       }
@@ -758,6 +772,9 @@ app.post("/exit", (req, res, next) => {
             game.gold -= 10;
           }
           break;
+        case 3:
+          result = "You leave, wishing you had the time and money to partake in some good ol' snail racing wagers.";
+          break;
       }
       break;
     //room 13
@@ -769,6 +786,7 @@ app.post("/exit", (req, res, next) => {
           break;
         case 2:
           game.trophies.push(1);
+          game.gold -= 1;
           result = "You lost a coin, but you gained a trophy!";
           break;
         case 3:
@@ -792,6 +810,7 @@ app.post("/exit", (req, res, next) => {
           break;
         case 3:
           result = "As you swing your Magic Sword, beams of light burst out and blind the wolf, allowing you to swiftly cut through it. (+ Giant Wolf Claw)";
+          game.inventory.push("Giant Wolf Claw");
           game.trophies.push(2);
           break;
       }
