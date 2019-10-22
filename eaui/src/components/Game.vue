@@ -30,7 +30,7 @@
             <button class="player-option text-only" v-on:click="exitRoom(key)">{{ option }}</button>
           </li>
         </ul>
-        <button class="button mt50" v-if="options.length == 0" @click="cycleRoom()">Continue</button>
+        <button class="button mt50" v-if="betweenRooms" @click="cycleRoom()">Continue</button>
       </div>
       <div class="column inventory-box">
         <h2>Health</h2>
@@ -66,6 +66,7 @@ export default {
       outcome: "",
       trophyNum: 0,
       finalScore: 0,
+      betweenRooms: false,
     }
   },
   beforeMount: function() {
@@ -103,6 +104,7 @@ export default {
               this.exitMessage = "";
               this.enterMessage = response.data.result;
               this.options = response.data.options;
+              this.betweenRooms = false;
             }
           })
         } catch (e) {
@@ -151,6 +153,7 @@ export default {
                 this.exitMessage = response.data.result;
                 this.enterMessage = "";
                 this.options = [];
+                this.betweenRooms = true;
               }
             }
           })

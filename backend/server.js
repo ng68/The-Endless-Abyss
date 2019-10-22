@@ -591,8 +591,10 @@ app.post("/exit", (req, res, next) => {
         case 4:
           game.gold += 1;
           result = "The merchant seems to take pity on you and flips you a coin. (+1 Gold)";
+          break;
         case 5:
           result = "The merchant grumbles something about ungrateful customers and walks off.";
+          break;
         default:
           break;
       }
@@ -772,7 +774,7 @@ app.post("/exit", (req, res, next) => {
             game.gold -= 10;
           }
           break;
-        case 3:
+        case 4:
           result = "You leave, wishing you had the time and money to partake in some good ol' snail racing wagers.";
           break;
       }
