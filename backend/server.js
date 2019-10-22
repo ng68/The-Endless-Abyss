@@ -852,6 +852,15 @@ app.post("/exit", (req, res, next) => {
     }
   }
 
+  for (var i = 0; i < game.trophies.length; i++) {
+    for (var j = i+1; j < game.trophies.length; j++) {
+      if (game.trophies[i] == game.trophies[j]) {
+        var saved2 = game.trophies[i];
+        game.trophies.splice(game.trophies.indexOf(saved2),1);
+      }
+    }
+  }
+
   if (game.health > 100) {
     game.health = 100;
   }
