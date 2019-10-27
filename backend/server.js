@@ -104,7 +104,10 @@ app.post("/recovery", (req, res, next) => {
   var encryptPassword = cryptJS.SHA256(tempPassword);
   sql = "UPDATE User SET password = '" + encryptPassword + "' WHERE email = '" + email + "'";
   con.query(sql, function(err, result) {
-    if (err) throw err;
+    if (err) {
+      res.json("Failure");
+      throw err;
+    }
   });
 
   var mailOptions = {
@@ -116,12 +119,13 @@ app.post("/recovery", (req, res, next) => {
   
   transporter.sendMail(mailOptions, function(error, info){
     if (error) {
+      res.json("Failure");
       console.log(error);
     } else {
       console.log('Email sent: ' + info.response);
     }
   });
-  res.json(email);
+  res.json("Success");
 });
 
 //Giving high score info on entire leaderboard
