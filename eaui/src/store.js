@@ -13,10 +13,10 @@ export default new Vuex.Store({
         //dont delete
         game: {
             username: "",
-            roomID: 1,
-            recentRooms: [12,13,14,15],
-            health: 100,
-            gold: 20,
+            roomID: 0,
+            recentRooms: [],
+            health: 0,
+            gold: 0,
             inventory: [],
             trophies: [],
         }
@@ -45,7 +45,7 @@ export default new Vuex.Store({
             let game = {
                 username: "",
                 roomID: 15,
-                recentRooms: [2,3,4],
+                recentRooms: [1,11,12,13,14],
                 health: 100,
                 gold: 20,
                 inventory: [],
