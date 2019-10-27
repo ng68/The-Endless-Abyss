@@ -41,7 +41,7 @@ export default new Vuex.Store({
         newGame: (context) => {
             let game = {
                 username: "",
-                roomID: 1,
+                roomID: 15,
                 recentRooms: [2,3,4],
                 health: 100,
                 gold: 20,
