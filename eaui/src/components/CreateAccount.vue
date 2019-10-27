@@ -101,7 +101,7 @@ export default {
       async onSubmit(evt) {
         
         evt.preventDefault()
-        if (!this.username || !this.password || !this.email || !this.confirmPassword) {
+        if (!this.username && !this.password && !this.email && !this.confirmPassword) {
           this.$toast.open({
             duration: 5000,
             message: 'Please fill the form completely',

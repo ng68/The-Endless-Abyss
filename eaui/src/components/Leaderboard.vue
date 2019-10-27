@@ -63,7 +63,7 @@ export default {
                         username: this.getUsername()
                     }
                 }
-                axios(options2)
+                axios(options)
                     .then(response =>{
                         if(response.data !== null){
                             this.personalboard = response.data
