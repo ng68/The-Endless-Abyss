@@ -2,7 +2,7 @@
   <div>
       <h1>A LEADERBOARD</h1>
       <ul id="example-1">
-        <li v-for="item in activeboard" v-bind:key="item.username">
+        <li v-for="(item, index) in activeboard" v-bind:key="index">
             {{item.username}} - {{item.score}}
         </li>
       </ul>

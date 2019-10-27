@@ -13,16 +13,19 @@ export default new Vuex.Store({
         //dont delete
         game: {
             username: "",
-            roomID: 1,
-            recentRooms: [12,13,14,15],
+            roomID: 15,
+            recentRooms: [1,11,12,13,14],
             health: 100,
             gold: 20,
             inventory: [],
-            trophies: [],
+            trophies: [0],
         }
     },
     getters: {
         getUsername: state => {
+            if(state.user.username == ""){
+                state.user.username = localStorage.getItem("username")
+            }
             return state.user.username
         },
         getGame: state => {
@@ -41,12 +44,12 @@ export default new Vuex.Store({
         newGame: (context) => {
             let game = {
                 username: "",
-                roomID: 1,
-                recentRooms: [2,3,4],
+                roomID: 15,
+                recentRooms: [1,11,12,13,14],
                 health: 100,
                 gold: 20,
                 inventory: [],
-                trophies: [],
+                trophies: [0],
             }
             context.commit('UPDATE_GAME', game)
         },

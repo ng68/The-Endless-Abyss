@@ -87,11 +87,9 @@ export default {
         }
       },
       onTrophyRoom() {
-        //TODO: Retrieve trophy room data
         this.$router.push({ name: 'TrophyRoom' });
       },
       onLeaderboard() {
-        //TODO: Retrieve Leaderboard data
         this.$router.push({ name: 'Leaderboard' });
       },
     },
