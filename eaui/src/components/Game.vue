@@ -83,6 +83,31 @@ export default {
           description: "You defeated the feral wolf in the abyss.",
           image: "wolf",
         },
+        {
+          name: "On the Brink",
+          description: "You entered a room with exactly one health point.",
+          image: "one_hp",
+        },
+        {
+          name: "Dual Wield",
+          description: "You possessed the Sword and the Magic Sword at the same time.",
+          image: "dual_wield",
+        },
+        {
+          name: "Penniless",
+          description: "You managed to lose all your gold.",
+          image: "zero_gold",
+        },
+        {
+          name: "Clean Bill of Health",
+          description: "You won the game with maximum health.",
+          image: "max_hp",
+        },
+        {
+          name: "Heh",
+          description: "Nice.",
+          image: "nice",
+        },
       ],
     }
   },
