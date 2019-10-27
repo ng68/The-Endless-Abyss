@@ -652,7 +652,7 @@ app.post("/exit", (req, res, next) => {
         case 1:
           game.gold -= 10;
           if(game.gold >= 0){
-            result = "On closer inspection you find the grond is pretty slippery and you fall in, You hear some coins fall out"
+            result = "On closer inspection you find the grond is pretty slippery and you fall in. You hear some coins fall out. (-10 Gold)"
           } else {
             game.gold = 0;
             result = "On closer inspection you find the grond is pretty slippery and you fall in, may have lost some coin if you had some."
@@ -677,7 +677,7 @@ app.post("/exit", (req, res, next) => {
         case 2:
           game.health += -5;
           game.inventory.push("Key");
-          result = "While the fluid is vile something interesting was at the bottom, a Key. (+ Key)";
+          result = "While the fluid is vile, something interesting was at the bottom. (-5 Health) (+ Key)";
           break;
         case 3:
           game.gold += 25;
@@ -714,7 +714,7 @@ app.post("/exit", (req, res, next) => {
           result = "As you begin to sneak around the goblin notices you. He appreciates you being quiet in the library and points you toward a small box that contains a Key. (+ Key)";
           break;
         case 2:
-          result = "You jont up to the goblin and at first startle him. The goblin explains he's been reading a book about anti gravity saying \”It's impossible to put down\”.";
+          result = "You jont up to the goblin and at first startle him. The goblin explains he's been reading a book about anti-gravity, saying, \”It's impossible to put down\”.";
           break;
         case 3:
           game.gold += 30;
