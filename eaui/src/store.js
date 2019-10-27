@@ -23,6 +23,9 @@ export default new Vuex.Store({
     },
     getters: {
         getUsername: state => {
+            if(state.user.username == ""){
+                state.user.username = localStorage.getItem("username")
+            }
             return state.user.username
         },
         getGame: state => {
