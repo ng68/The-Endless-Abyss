@@ -13,12 +13,12 @@ export default new Vuex.Store({
         //dont delete
         game: {
             username: "",
-            roomID: 0,
-            recentRooms: [],
-            health: 0,
-            gold: 0,
+            roomID: 15,
+            recentRooms: [1,11,12,13,14],
+            health: 100,
+            gold: 20,
             inventory: [],
-            trophies: [],
+            trophies: [0],
         }
     },
     getters: {
