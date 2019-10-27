@@ -2,11 +2,11 @@
   <div>
     <div v-if="outcome=='Win'">
       <h2>Congratulations! You win!</h2>
-      <div v-if="trophyDetails.length > trophyNum">
+      <div v-if="game.trophies.length > trophyNum">
         <h3>You received the following trophies</h3>
-        <b>{{ trophyDetails[trophyNum].name }}</b>
-        <img :src="trophyDetails[trophyNum].image">
-        <span>{{ trophyDetails[trophyNum].description }}</span>
+        <b>{{ game.trophies[trophyNum].name }}</b><br>
+        <img :src="getImgUrl(game.trophies[trophyNum].image)"><br>
+        <span>{{ game.trophies[trophyNum].description }}</span><br>
         <button class="button mt50" @click="trophyNum++">Next Trophy</button>
       </div>
       <div v-else>
@@ -67,6 +67,48 @@ export default {
       trophyNum: 0,
       finalScore: 0,
       betweenRooms: false,
+      allTrophies: [
+        {
+          name: "The Participation Trophy",
+          description: "You played the game.",
+          image: "simple_trophy",
+        },
+        {
+          name: "The Wish Trophy",
+          description: "You made a wish, and got a trophy for it!",
+          image: "pool",
+        },
+        {
+          name: "The Beast-Slayer Trophy",
+          description: "You defeated the feral wolf in the abyss.",
+          image: "wolf",
+        },
+        {
+          name: "On the Brink",
+          description: "You entered a room with exactly one health point.",
+          image: "one_hp",
+        },
+        {
+          name: "Dual Wield",
+          description: "You possessed the Sword and the Magic Sword at the same time.",
+          image: "dual_wield",
+        },
+        {
+          name: "Penniless",
+          description: "You managed to lose all your gold.",
+          image: "zero_gold",
+        },
+        {
+          name: "Clean Bill of Health",
+          description: "You won the game with maximum health.",
+          image: "max_hp",
+        },
+        {
+          name: "Heh",
+          description: "Nice.",
+          image: "nice",
+        },
+      ],
     }
   },
   beforeMount: function() {
@@ -144,10 +186,8 @@ export default {
             } else {
               if(response.data.status == "Win") {
                 this.endGame("Win");
-                this.outcome = "Win";
               } else if (response.data.status == "Lose") {
                 this.endGame("Lose");
-                this.outcome = "Lose";
               } else {
                 this.game = response.data.game;
                 this.exitMessage = response.data.result;
@@ -211,7 +251,11 @@ export default {
                 type: 'is-danger'
               })
             } else {
+              this.outcome = result;
               this.finalScore = response.data;
+              for(var i in this.game.trophies) {
+                this.game.trophies[i] = this.allTrophies[this.game.trophies[i]];
+              }
             }
           })
         } catch (e) {
@@ -222,6 +266,10 @@ export default {
             type: 'is-danger'
           })
         }
+      },
+      getImgUrl(name) {
+        var images = require.context('../assets/', false, /\.png$/)
+        return images('./' + name + ".png")
       }
     },
     mapGetters(['getGame', 'getUsername'])

@@ -895,7 +895,21 @@ app.post("/exit", (req, res, next) => {
       if (err) throw err;
     });
   } 
-
+  if (game.health == 1) {
+    game.trophies.push(3);
+  }
+  if (game.inventory.includes("Sword") && game.inventory.includes("Magic Sword")) {
+    game.trophies.push(4);
+  }
+  if (game.gold == 0) {
+    game.trophies.push(5);
+  }
+  if (status == "Win" && game.health == 100) {
+    game.trophies.push(6);
+  }
+  if (status == "Win" && game.health == 69 && game.gold == 69) {
+    game.trophies.push(7);
+  }
   if (game.health <= 0) {
     status = "Lose";
   }
