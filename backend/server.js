@@ -102,30 +102,35 @@ app.post("/recovery", (req, res, next) => {
 
   //Save temp password
   var encryptPassword = cryptJS.SHA256(tempPassword);
-  sql = "UPDATE User SET password = '" + encryptPassword + "' WHERE email = '" + email + "'";
+  var sql = "UPDATE User SET password = '" + encryptPassword + "' WHERE email = '" + email + "'";
   con.query(sql, function(err, result) {
     if (err) {
       res.json("Failure");
       throw err;
     }
-  });
-
-  var mailOptions = {
-    from: 'theendlessabyss.noreply@gmail.com',
-    to: email,
-    subject: 'Recovery password for The Endless Abyss',
-    text: 'Here is your temporary password: ' + tempPassword
-  };
-  
-  transporter.sendMail(mailOptions, function(error, info){
-    if (error) {
+    if (result.affectedRows == 0) {
       res.json("Failure");
-      console.log(error);
     } else {
-      console.log('Email sent: ' + info.response);
+      var mailOptions = {
+        from: 'theendlessabyss.noreply@gmail.com',
+        to: email,
+        subject: 'Recovery password for The Endless Abyss',
+        text: 'Here is your temporary password: ' + tempPassword
+      };
+      
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          res.json("Failure");
+          console.log(error);
+        } else {
+          res.json("Success");
+          console.log('Email sent: ' + info.response);
+        }
+      });
     }
   });
-  res.json("Success");
+
+ 
 });
 
 //Giving high score info on entire leaderboard
