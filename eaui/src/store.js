@@ -46,7 +46,7 @@ export default new Vuex.Store({
                 health: 100,
                 gold: 20,
                 inventory: [],
-                trophies: [],
+                trophies: [0],
             }
             context.commit('UPDATE_GAME', game)
         },
