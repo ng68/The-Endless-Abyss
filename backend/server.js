@@ -1002,11 +1002,6 @@ app.post("/endgame", (req, res, next) => {
     });
 });
 
-//Host
-app.listen(process.env.PORT || 3000, () => {
- console.log("Server running");
-});
-
 app.post("/gametrophies", (req, res, next) => {
   var obj = req.body;
   var trophies = obj.trophies;
@@ -1022,3 +1017,9 @@ app.post("/gametrophies", (req, res, next) => {
   }
   res.json(data);
 });
+
+//Host
+app.listen(process.env.PORT || 3000, () => {
+ console.log("Server running");
+});
+
