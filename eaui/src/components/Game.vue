@@ -16,7 +16,6 @@
     <div v-else-if="outcome=='Lose'">
       <h2>You lose.</h2>
       <h3>Better luck next time!</h3>
-      <h3>Your score was {{ finalScore }}</h3>
     </div>
     <div class="row game-box" v-else>
       <div class="column room-box">
@@ -192,7 +191,6 @@ export default {
                 this.game = response.data.game;
                 this.exitMessage = response.data.result;
                 this.enterMessage = "";
-                this.options = [];
                 this.betweenRooms = true;
               }
             }

@@ -306,15 +306,9 @@ app.post("/enter", (req, res, next) => {
       break;
     //Room 4 Hallway Merchant
     case 4:
-      if(game.gold >= 10){
         options[1] = "Purchase Rope. (10 gold)";
-      }
-      if(game.gold >= 15) {
         options[2] = "Purchase Flashbang. (15 gold)";
-      }
-      if(game.gold >= 15  && game.health < 100) {
         options[3] = "Purchase MedKit. (15 gold)";
-      }
       if(game.gold < 10) {
         options[4] = "Look into your rather empty pockets and sigh."
       } else {
@@ -510,7 +504,6 @@ app.post("/exit", (req, res, next) => {
     case 2:
       switch(optionID) {
         case 1:
-          game.health -= 10;
           game.inventory.push("Torch");
           result = "You try to jump over the pit, but fall short of the other side. The pit isn't as deep as you thought, but you hurt your legs falling. Next to you lies an unlit torch. You pick it up and right after a stalactite comes crashing down where the torch previously lay. You then climb out of the pit and reach the other side. (-10 Health) (+Torch)";
           break;
@@ -652,7 +645,6 @@ app.post("/exit", (req, res, next) => {
           break;
         case 2:
           game.health += -5;
-          game.inventory.push("Key");
           result = "While the fluid is vile something interesting was at the bottom, a Key. (+ Key)";
           break;
         case 3:
