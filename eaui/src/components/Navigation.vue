@@ -24,6 +24,7 @@ export default {
       this.$router.push({ name: 'Leaderboard' })
     },
     async onLogOut() {
+      localStorage.setItem("username", "")
       this.$router.push({ name: 'Login' })
     },
   })
