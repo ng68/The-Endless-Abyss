@@ -740,7 +740,7 @@ app.post("/exit", (req, res, next) => {
         case 3:
           if(Math.random() < .7) {0
             result = "The red snail is clearly faster due to its color, and you make a small profit. (+20 Gold)"
-            game.gold += 20;
+            game.gold -= 20;
           } else {
             result = "You fall asleep soon after the race starts, and after a full night's sleep, wake up to see that green has won. (-10 Gold)";
             game.gold -= 10;
