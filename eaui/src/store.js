@@ -15,10 +15,10 @@ export default new Vuex.Store({
             username: "",
             roomID: 15,
             recentRooms: [1,11,12,13,14],
-            health: 100,
-            gold: 20,
+            health: 0,
+            gold: 0,
             inventory: [],
-            trophies: [0],
+            trophies: [],
         }
     },
     getters: {
