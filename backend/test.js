@@ -3,6 +3,8 @@ var chai = require('chai');
 var chaiHttp = require('chai-http');
 var should = chai.should();
 chai.use(chaiHttp);
+//const url = 'https://stormy-journey-75510.herokuapp.com';
+const url = 'http://localhost:3000';
 
 //Testing Basic Account Functions
 describe('Test Account Basic Functionality', () => {
@@ -12,7 +14,7 @@ describe('Test Account Basic Functionality', () => {
             password: "testpassword",
             email: "test@test.com"
         }
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/newuser')
           .send(user)
           .end((err, res) => {
@@ -27,7 +29,7 @@ describe('Test Account Basic Functionality', () => {
             password: "testpassword",
             email: "test@test.com"
         }
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/login')
           .send(user)
           .end((err, res) => {
@@ -40,7 +42,7 @@ describe('Test Account Basic Functionality', () => {
         let user = {
             username: "testuser",
         }
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/deletetest')
           .send(user)
           .end((err, res) => {
@@ -58,7 +60,7 @@ describe('Test Duplicate Username', () => {
             password: "testpassword",
             email: "test@test.com"
         }
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/newuser')
           .send(user)
           .end((err, res) => {
@@ -73,7 +75,7 @@ describe('Test Duplicate Username', () => {
             password: "testpassword",
             email: "testuser@testuser.com"
         }
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/newuser')
           .send(user)
           .end((err, res) => {
@@ -86,7 +88,7 @@ describe('Test Duplicate Username', () => {
         let user = {
             username: "testuser",
         }
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/deletetest')
           .send(user)
           .end((err, res) => {
@@ -104,7 +106,7 @@ describe('Test Account Basic Functionality', () => {
             password: "testpassword",
             email: "test@test.com"
         }
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/newuser')
           .send(user)
           .end((err, res) => {
@@ -119,7 +121,7 @@ describe('Test Account Basic Functionality', () => {
             password: "testpassword",
             email: "test@test.com"
         }
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/newuser')
           .send(user)
           .end((err, res) => {
@@ -132,7 +134,7 @@ describe('Test Account Basic Functionality', () => {
         let user = {
             username: "testuser",
         }
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/deletetest')
           .send(user)
           .end((err, res) => {
@@ -149,7 +151,7 @@ describe('Test Login Failure', () => {
             username: "mbjdueoslhyrue17560",
             password: "qngiekdughentk18573",
         }
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/login')
           .send(user)
           .end((err, res) => {
@@ -167,7 +169,7 @@ describe('Test User High Score', () => {
             password: "testpassword",
             email: "test@test.com"
         }
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/newuser')
           .send(user)
           .end((err, res) => {
@@ -181,7 +183,7 @@ describe('Test User High Score', () => {
             username: "testuser",
             score: 100
         }
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/addscoretest')
           .send(user)
           .end((err, res) => {
@@ -194,7 +196,7 @@ describe('Test User High Score', () => {
         let user = {
             username: "testuser",
         }
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/score')
           .send(user)
           .end((err, res) => {
@@ -210,7 +212,7 @@ describe('Test User High Score', () => {
         let user = {
             username: "testuser",
         }
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/deletetest')
           .send(user)
           .end((err, res) => {
@@ -228,7 +230,7 @@ describe('Test Change Username Module', () => {
             password: "testpassword",
             email: "test@test.com"
         }
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/newuser')
           .send(user)
           .end((err, res) => {
@@ -243,7 +245,7 @@ describe('Test Change Username Module', () => {
             password: "testpassword",
             newUsername: "changeusername"
         }
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/changeusername')
           .send(user)
           .end((err, res) => {
@@ -258,7 +260,7 @@ describe('Test Change Username Module', () => {
             password: "test",
             newUsername: "changeusername"
         }
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/changeusername')
           .send(user)
           .end((err, res) => {
@@ -273,7 +275,7 @@ describe('Test Change Username Module', () => {
             password: "testpassword",
             newUsername: "changeusername"
         }
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/changeusername')
           .send(user)
           .end((err, res) => {
@@ -286,7 +288,7 @@ describe('Test Change Username Module', () => {
         let user = {
             username: "changeusername",
         }
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/deletetest')
           .send(user)
           .end((err, res) => {
@@ -304,7 +306,7 @@ describe('Test Change Password Module', () => {
             password: "testpassword",
             email: "test@test.com"
         }
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/newuser')
           .send(user)
           .end((err, res) => {
@@ -319,7 +321,7 @@ describe('Test Change Password Module', () => {
             password: "testpassword",
             newPassword: "changepassword"
         }
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/changepassword')
           .send(user)
           .end((err, res) => {
@@ -334,7 +336,7 @@ describe('Test Change Password Module', () => {
             password: "test",
             newPassword: "changepassword"
         }
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/changepassword')
           .send(user)
           .end((err, res) => {
@@ -349,7 +351,7 @@ describe('Test Change Password Module', () => {
             password: "testpassword",
             newPassword: "changepassword"
         }
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/changepassword')
           .send(user)
           .end((err, res) => {
@@ -362,7 +364,7 @@ describe('Test Change Password Module', () => {
         let user = {
             username: "testuser",
         }
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/deletetest')
           .send(user)
           .end((err, res) => {
@@ -380,7 +382,7 @@ describe('Test User Trophies', () => {
             password: "testpassword",
             email: "test@test.com"
         }
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/newuser')
           .send(user)
           .end((err, res) => {
@@ -394,7 +396,7 @@ describe('Test User Trophies', () => {
             username: "testuser",
             trophyID: 1
         }
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/addtrophytest')
           .send(user)
           .end((err, res) => {
@@ -407,7 +409,7 @@ describe('Test User Trophies', () => {
         let user = {
             username: "testuser",
         }
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/trophies')
           .send(user)
           .end((err, res) => {
@@ -423,7 +425,7 @@ describe('Test User Trophies', () => {
         let user = {
             username: "testuser",
         }
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/deletetest')
           .send(user)
           .end((err, res) => {
@@ -462,7 +464,7 @@ describe('Test Game Logic', () => {
                 }
             ]
         }
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/enter')
           .send(data)
           .end((err, res) => {
@@ -508,7 +510,7 @@ describe('Test Game Logic', () => {
             result: "As you lunge and attempt to punch the troll in the face, he swiftly dodges and then proceeds to call your mom ugly. Your pride is utterly destroyed. (-30 Health)",
             status: "Lose"
         }
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/exit')
           .send(data)
           .end((err, res) => {
@@ -533,7 +535,7 @@ describe('Test Game Logic', () => {
         }
 
         let expect = 150;
-      chai.request('https://stormy-journey-75510.herokuapp.com')
+      chai.request(url)
           .post('/endgame')
           .send(data)
           .end((err, res) => {
