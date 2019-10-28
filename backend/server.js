@@ -667,7 +667,6 @@ app.post("/exit", (req, res, next) => {
           break;
         case 2:
           game.health += -5;
-          game.inventory.push("Key");
           result = "While the fluid is vile something interesting was at the bottom, a Key. (+ Key)";
           break;
         case 3:
