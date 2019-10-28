@@ -1,10 +1,10 @@
 <template>
   <div>
     <ul>
-      <li><a @click="onHome">Home</a></li>
-      <li><a @click="onTrophies">Trophies</a></li>
-      <li><a @click="onLeaderboard">Leaderboard</a></li>
-      <li><a @click="onLogOut">Log Out</a></li>
+      <li><a @click="onLogOut">Home</a></li>
+      <li><a @click="onHome">Trophies</a></li>
+      <li><a @click="onTrophies">Leaderboard</a></li>
+      <li><a @click="onLeaderboard">Log Out</a></li>
     </ul>
   </div>
 </template>
