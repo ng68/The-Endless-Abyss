@@ -146,7 +146,6 @@ export default {
               this.exitMessage = "";
               this.enterMessage = response.data.result;
               this.options = response.data.options;
-              this.betweenRooms = false;
             }
           })
         } catch (e) {
@@ -207,6 +206,7 @@ export default {
         }
       },
       cycleRoom() {
+        this.betweenRooms = false;
         let potentialRooms = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
         //Remove current and recent rooms from potential rooms
         for(var index in this.game.recentRooms) {
@@ -222,7 +222,6 @@ export default {
         this.game.roomID = potentialRooms[random];
         potentialRooms[random] = this.game.recentRooms.shift();
         this.game.recentRooms.push(temp);
-
         this.enterRoom();
       },
       endGame(result) {
