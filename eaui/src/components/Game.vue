@@ -191,7 +191,6 @@ export default {
                 this.game = response.data.game;
                 this.exitMessage = response.data.result;
                 this.enterMessage = "";
-                this.options = [];
                 this.betweenRooms = true;
               }
             }
