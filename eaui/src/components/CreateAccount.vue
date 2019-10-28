@@ -108,13 +108,6 @@ export default {
             position: 'is-bottom',
             type: 'is-danger'
           })
-        } else if (this.password !== this.confirmPassword) {
-            this.$toast.open({
-                duration: 5000,
-                message: 'Your passwords do not match',
-                position: 'is-bottom',
-                type: 'is-danger'
-            })
         } else { 
             try {
              let requestURL = url + '/newuser'
