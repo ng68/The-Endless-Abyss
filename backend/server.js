@@ -304,9 +304,7 @@ app.post("/enter", (req, res, next) => {
     case 1:
       options[1] = "Attack the troll.";
       options[2] = "Run around the troll.";
-      if (game.gold >= 20) {
-        options[3] = "Bribe the troll. (-20 Gold)";
-      }
+      options[3] = "Bribe the troll. (-20 Gold)";
       if (game.inventory.includes("Flashbang")) {
         options[4] = "Use the Flashbang.";
       }
