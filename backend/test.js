@@ -451,7 +451,7 @@ describe('Test Game Logic', () => {
             options : {
                 "1" : "Attack the troll.",
                 "2" : "Run around the troll.",
-                "3" : "Bribe the troll. (20 Gold)",
+                "3" : "Bribe the troll. (-20 Gold)",
                 "4" : "Use the Flashbang."
             },
             result : [
