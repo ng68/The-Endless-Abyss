@@ -665,7 +665,6 @@ app.post("/exit", (req, res, next) => {
           result = "The water is refreshing and fills you with strength";
           break;
         case 2:
-          game.gold --;
           game.inventory.push("Sword");
           result = "as you throw the coin down you hear a yelp and a Sword come flying up, maybe look before you wish. (-1 Gold) (+ Sword)";
           break;
