@@ -543,3 +543,121 @@ describe('Test Game Logic', () => {
           });
     });
 });
+//Testing Continue Game
+describe('Test Continue Game', () => {
+    it('Create Game for User', (done) => {
+        let data = { 
+                game : {
+                    username : "testuser",
+                    gold : 40,
+                    health : 40,
+                    inventory : ["Flashbang", "Chicken Leg"],
+                    roomID : 1,
+                    recentRooms : [3,5,7],
+                    trophies : [3,5]   
+                }
+        }
+        let expect = {
+            options : {
+                "1" : "Attack the troll.",
+                "2" : "Run around the troll.",
+                "3" : "Bribe the troll. (-20 Gold)",
+                "4" : "Use the Flashbang."
+            },
+            result : [
+                {
+                    roomID : 1,
+                    description : "This is a room with a troll. He is menacing.",
+                    name : "Cave of the Troll"
+                }
+            ]
+        }
+      chai.request('https://stormy-journey-75510.herokuapp.com')
+          .post('/enter')
+          .send(data)
+          .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.eql(expect);
+            done();
+          });
+    });
+    it('Change game object', (done) => {
+        let data = { 
+            game : {
+                username : "testuser",
+                gold : 40,
+                health : 40,
+                inventory : ["Flashbang", "Chicken Leg"],
+                roomID : 1,
+                recentRooms : [3,5,7],
+                trophies : [3,5]   
+            },
+            optionID : "1"
+        }
+        
+        let expect = {
+            game: {
+                username: "testuser",
+                gold: 40,
+                health: 10,
+                inventory: [
+                    "Flashbang",
+                    "Chicken Leg"
+                ],
+                roomID: 1,
+                recentRooms: [
+                    3,
+                    5,
+                    7
+                ],
+                trophies: [
+                    3,
+                    5
+                ]
+            },
+            result: "As you lunge and attempt to punch the troll in the face, he swiftly dodges and then proceeds to call your mom ugly. Your pride is utterly destroyed. (-30 Health)",
+            status: "Playing"
+        }
+      chai.request('https://stormy-journey-75510.herokuapp.com')
+          .post('/exit')
+          .send(data)
+          .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.eql(expect);
+            done();
+          });
+    });
+    it('Continue Game', (done) => {
+        let user = {
+            username: "testuser"
+        }
+        let expect = {
+                    username: "testuser",
+                    gold: 40,
+                    health: 10,
+                    inventory: [
+                        "Chicken Leg",
+                        "Flashbang"
+                        
+                    ],
+                    roomID: 1,
+                    recentRooms: [
+                        3,
+                        5,
+                        7
+                    ],
+                    trophies: [
+                        3,
+                        5
+                    ]
+        }
+      chai.request('https://stormy-journey-75510.herokuapp.com')
+          .post('/continue')
+          .send(user)
+          .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.eql(expect);
+            done();
+          });
+    });
+});
