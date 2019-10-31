@@ -118,14 +118,8 @@ app.post("/recovery", (req, res, next) => {
   };
   
   transporter.sendMail(mailOptions, function(error, info){
-    if (error) {
-      res.json("Failure");
-      console.log(error);
-    } else {
-      console.log('Email sent: ' + info.response);
-    }
+    res.json("Success");
   });
-  res.json("Success");
 });
 
 //Giving high score info on entire leaderboard
@@ -205,22 +199,6 @@ app.post("/changeusername", (req, res, next) => {
             sql = "UPDATE User SET username = '" + newUsername + "' WHERE username = '" + username + "'";
             con.query(sql, function(err, result) {
               if (err) throw err;
-              sql = "UPDATE UserTrophies SET username = '" + newUsername + "' WHERE username = '" + username + "'";
-              con.query(sql, function(err, result) {
-                if (err) throw err;
-                sql = "UPDATE Scores SET username = '" + newUsername + "' WHERE username = '" + username + "'";
-                con.query(sql, function(err, result) {
-                  if (err) throw err;
-                });
-                sql = "UPDATE UserGameInventory SET username = '" + newUsername + "' WHERE username = '" + username + "'";
-                con.query(sql, function(err, result) {});
-                sql = "UPDATE UserGames SET username = '" + newUsername + "' WHERE username = '" + username + "'";
-                con.query(sql, function(err, result) {});
-                sql = "UPDATE UserGameTrophies SET username = '" + newUsername + "' WHERE username = '" + username + "'";
-                con.query(sql, function(err, result) {});
-                sql = "UPDATE UserGameRecentRooms SET username = '" + newUsername + "' WHERE username = '" + username + "'";
-                con.query(sql, function(err, result) {});
-              });
               res.json("Success");
             });
           }
@@ -422,7 +400,7 @@ app.post("/enter", (req, res, next) => {
       if(game.gold > 0) {
         options[2] = "Make a wish. (-1 coin)";
       }
-      if (game.inventory.includes("Sword")){
+      if (true){
         options[3] = "Place your Sword in the pool.";
       }
       break;
@@ -571,7 +549,7 @@ app.post("/exit", (req, res, next) => {
         case 1:
           game.gold -= 10;
           game.inventory.push("Rope");
-          result = "You purchased Rope.";
+          result = "You purchased Rope. (+ Rope)";
           break;
         case 2:
           game.gold -= 15;
@@ -667,7 +645,6 @@ app.post("/exit", (req, res, next) => {
           break;
         case 2:
           game.health += -5;
-          game.inventory.push("Key");
           result = "While the fluid is vile something interesting was at the bottom, a Key. (+ Key)";
           break;
         case 3:
@@ -688,7 +665,6 @@ app.post("/exit", (req, res, next) => {
           result = "The water is refreshing and fills you with strength";
           break;
         case 2:
-          game.gold --;
           game.inventory.push("Sword");
           result = "as you throw the coin down you hear a yelp and a Sword come flying up, maybe look before you wish. (-1 Gold) (+ Sword)";
           break;
@@ -763,7 +739,7 @@ app.post("/exit", (req, res, next) => {
         case 3:
           if(Math.random() < .7) {0
             result = "The red snail is clearly faster due to its color, and you make a small profit. (+20 Gold)"
-            game.gold += 20;
+            game.gold -= 20;
           } else {
             result = "You fall asleep soon after the race starts, and after a full night's sleep, wake up to see that green has won. (-10 Gold)";
             game.gold -= 10;
@@ -807,7 +783,6 @@ app.post("/exit", (req, res, next) => {
           break;
         case 3:
           result = "As you swing your Magic Sword, beams of light burst out and blind the wolf, allowing you to swiftly cut through it. (+ Giant Wolf Claw)";
-          game.inventory.push("Giant Wolf Claw");
           game.trophies.push(2);
           break;
       }
@@ -820,11 +795,10 @@ app.post("/exit", (req, res, next) => {
           break;
         case 2:
           game.inventory.splice(game.inventory.indexOf("Torch"),1);
-          result = "After lighting the torch, you can see the inscription on the wall. It reads, \'Return here when you possess items of confusion, consumption, and climbing.\'";
+          result = "After lighting the torch, you can see the inscription on the wall. It reads, \'Return here when you possess items of confusion, consumption, and climbing.\' (- Torch)";
           break;
         case 3:
-          game.inventory.splice(game.inventory.indexOf("Sword"),1);
-          result = "You swing the sword at the wall and it breaks. In hindsight, you realize that there was no other possible outcome from such an action.";
+          result = "You swing the sword at the wall and it breaks. In hindsight, you realize that there was no other possible outcome from such an action. (- Sword)";
           break;
         case 4:
           result = "You somehow use this strange combination of items to complete an arbitrary quest designed by the 408 group. You win!";
@@ -983,10 +957,6 @@ app.post("/endgame", (req, res, next) => {
     });
   }
     //Cleanup time
-    sql = "DELETE FROM UserGameInventory WHERE username = '" + game.username + "'";
-    con.query(sql, function(err, result) { 
-      if (err) throw err;
-    });
     sql = "DELETE FROM UserGames WHERE username = '" + game.username + "'";
     con.query(sql, function(err, result) { 
       if (err) throw err;

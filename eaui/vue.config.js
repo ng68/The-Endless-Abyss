@@ -1,6 +1,6 @@
 // vue.config.js
 module.exports = {
     devServer: {
-        proxy: 'https://stormy-journey-75510.herokuapp.com'
+        proxy: 'https://shielded-citadel-08150.herokuapp.com'
     }
 }
