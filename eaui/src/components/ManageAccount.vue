@@ -99,7 +99,6 @@ export default {
           })
         } else {
           try {
-            console.log("in try")
             let requestURL = url + '/changepassword'
 
             var axios = require('axios')
@@ -182,7 +181,7 @@ export default {
                     position: 'is-bottom',
                     type: 'is-success'
                     })
-                  this.LOGIN_USER(this.login.username)
+                  this.LOGIN_USER(this.newUsername)
                   localStorage.setItem("username", this.login.username)
                 }else{
                     this.$toast.open({
