@@ -42,6 +42,9 @@
         <ul class="inventory" v-if="game.inventory.length > 0">
           <p class="row item" v-for="item in game.inventory" :key="item">{{ item }}</p>
         </ul>
+        <ul>
+          <button v-for="index in 15" @click="game.roomID = index; enterRoom()" :key="index">{{index}} {{roomNames[index-1]}}</button>
+        </ul>
       </div>
     </div>
   </div>
@@ -58,6 +61,7 @@ export default {
   name: "game",
   data() {
     return {
+      roomNames: ['Cave of the Troll', 'The Pit', 'The Storage Room', 'Hallway Merchant', 'The Greenhouse', 'The Mysterious Woman', 'The Snow Caverns', 'The Dining Chamber', 'The Well', 'The Library', 'The Corridor', 'Snail Racing', 'The Pool', 'The Monster', 'Mysterious Room'],
       game: {},
       options: [],
       enterMessage: "",
