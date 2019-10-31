@@ -42,6 +42,9 @@
         <ul class="inventory" v-if="game.inventory.length > 0">
           <p class="row item" v-for="item in game.inventory" :key="item">{{ item }}</p>
         </ul>
+        <ul>
+          <button v-for="index in 15" @click="game.roomID = index; enterRoom()" :key="index">{{index}}</button>
+        </ul>
       </div>
     </div>
   </div>
