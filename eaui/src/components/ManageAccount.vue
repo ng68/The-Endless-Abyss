@@ -33,12 +33,48 @@
             Change
         </button>
         </form>
+
+        <h2>Change Name</h2>
+        <form>
+        <!-- <label for="">Username</label> -->
+        <div class="field">
+            <div class="control">
+                <p>New Username</p>
+            <input
+                v-model="newUsername"
+                type="text"
+                class="username input"
+                autofocus
+                placeholder="Username"
+            />
+            </div>
+        </div>
+        <!-- <label for="">Password</label> -->
+        <div class="field">
+            <div class="control">
+            <p>Password</p>
+            <input
+                v-model="oldPassword"
+                type="password"
+                class="password input"
+                placeholder="New Password"
+            />
+            </div>
+        </div>
+        <button
+            class="button is-block is-info is-fullwidth mt50"
+            @click="onNewUsername"
+        >
+            Change
+        </button>
+        </form>
+
   </div>
 </template>
 
 <script>
 
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import axios from 'axios'
 import url from '../url'
 
@@ -47,7 +83,8 @@ export default {
 
   data: () => ({
     oldPassword: '',
-    newPassword: ''
+    newPassword: '',
+    newUsername: ''
   }),
 
   methods: Object.assign({
@@ -108,8 +145,68 @@ export default {
           }
         }
       },
+
+      async onNewUsername(evt) {
+        evt.preventDefault()
+        if (!this.oldPassword || !this.newUsername) {
+          this.$toast.open({
+            duration: 5000,
+            message: 'Please add a old and new password',
+            position: 'is-bottom',
+            type: 'is-danger'
+          })
+        } else {
+          try {
+            let requestURL = url + '/changeusername'
+
+            var axios = require('axios')
+
+            const options = {
+              url: requestURL,
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              data: {
+                username: this.getUsername(),
+                password: this.oldPassword,
+                newUsername: this.newUsername
+              }
+            }
+            axios(options)
+              .then(response =>{
+                if(response.data === "Success"){
+                    this.$toast.open({
+                    duration: 5000,
+                    message: 'Username Successfully Updated',
+                    position: 'is-bottom',
+                    type: 'is-success'
+                    })
+                  this.LOGIN_USER(this.login.username)
+                  localStorage.setItem("username", this.login.username)
+                }else{
+                    this.$toast.open({
+                    duration: 5000,
+                    message: 'That Username Has Already Been Taken',
+                    position: 'is-bottom',
+                    type: 'is-danger'
+                    }) 
+                }
+              })
+
+          } catch (e) {
+            this.$toast.open({
+              duration: 5000,
+              message: 'An Error has occured please try again',
+              position: 'is-bottom',
+              type: 'is-danger'
+            })
+          }
+        }
+      },
   },
-    mapGetters(['getUsername'])
+    mapGetters(['getUsername']),
+    mapMutations(['LOGIN_USER'])
   )
 }
 
