@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Navigation v-if="['Login', 'CreateAccount', 'RecoverAccount'].indexOf($route.name) == -1"></Navigation>
+    <Navigation v-if="['Login', 'CreateAccount'].indexOf($route.name) == -1"></Navigation>
     <router-view></router-view>
   </div>
 </template>
