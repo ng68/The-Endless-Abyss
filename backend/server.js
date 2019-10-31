@@ -124,7 +124,7 @@ app.post("/recovery", (req, res, next) => {
 
 //Giving high score info on entire leaderboard
 app.get("/score", (req, res, next) => {
-  var sql = "SELECT * FROM Scores ORDER BY score DESC";
+  var sql = "SELECT * FROM Scores";
   con.query(sql, function(err, result) {
     if (err) throw err;
     res.json(result);
@@ -486,7 +486,7 @@ app.post("/exit", (req, res, next) => {
           break;
         case 2:
           game.health -= 10;
-          result = "You sprint around the troll and avoid his immature insults, but you twist your ankle on a rock. (-10 Health)"
+          result = "You sprint around the troll and avoid his immature insults, but you twist your ankle on a rock. (-10 Health) (+Torch)"
           break;
         case 3:
           game.gold -= 20;
@@ -610,6 +610,7 @@ app.post("/exit", (req, res, next) => {
           break;
         case 3:
           result = "Correct! The mysterious woman lets out an evil laugh and disappears."
+          game.gold = 21;
           break;
         default:
           break;
@@ -620,12 +621,7 @@ app.post("/exit", (req, res, next) => {
       switch(optionID) {
         case 1:
           game.gold -= 10;
-          if(game.gold >= 0){
-            result = "On closer inspection you find the grond is pretty slippery and you fall in, You hear some coins fall out"
-          } else {
-            game.gold = 0;
-            result = "On closer inspection you find the grond is pretty slippery and you fall in, may have lost some coin if you had some."
-          }
+          result = "On closer inspection you find the grond is pretty slippery and you fall in, You hear some coins fall out"
           break;
         case 2:
           game.health += -20;
@@ -763,7 +759,9 @@ app.post("/exit", (req, res, next) => {
           result = "You lost a coin, but you gained a trophy!";
           break;
         case 3:
-          game.inventory.splice(game.inventory.indexOf("Sword"),1);
+          if (game.inventory.includes("Sword")) {
+            game.inventory.splice(game.inventory.indexOf("Sword"),1);
+          }
           game.inventory.push("Magic Sword");
           result = "You place the sword in and watch for a few minutes as the water begins to whirl around it. It begins to change color and shape, and eventually the water stops moving. You pick it up and can tell that it has changed. (+ Magic Sword)";
           break;

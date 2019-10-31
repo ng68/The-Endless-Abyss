@@ -4,8 +4,8 @@ var chaiHttp = require('chai-http');
 var should = chai.should();
 chai.use(chaiHttp);
 //const url = 'https://stormy-journey-75510.herokuapp.com';
-//const url = 'https://shielded-citadel-08150.herokuapp.com';
-const url = 'http://localhost:3000';
+const url = 'https://shielded-citadel-08150.herokuapp.com';
+//const url = 'http://localhost:3000';
 
 //Testing Basic Account Functions
 describe('Test Account Basic Functionality', () => {

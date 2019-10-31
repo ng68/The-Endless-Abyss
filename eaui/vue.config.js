@@ -1,6 +1,6 @@
 // vue.config.js
 module.exports = {
     devServer: {
-        proxy: 'http://localhost:3000'
+        proxy: 'https://shielded-citadel-08150.herokuapp.com'
     }
 }
