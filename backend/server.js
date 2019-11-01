@@ -442,15 +442,15 @@ app.post("/enter", (req, res, next) => {
       });
     }
   });
-  sql = "DELETE FROM UserGameRecentRooms WHERE username = '" + game.username + "'";
-  con.query(sql, function(err, result) { 
-  });
-  for(var i = 0; i < game.recentRooms.length; i++) {
-    sql = "INSERT INTO UserGameRecentRooms (username, roomID) VALUES ('" + game.username + "', '" + game.recentRooms[i]  + "')";
-    con.query(sql, function(err, result) {
-      if (err) throw err;
-    });
-  } 
+  // sql = "DELETE FROM UserGameRecentRooms WHERE username = '" + game.username + "'";
+  // con.query(sql, function(err, result) { 
+  // });
+  // for(var i = 0; i < game.recentRooms.length; i++) {
+  //   sql = "INSERT INTO UserGameRecentRooms (username, roomID) VALUES ('" + game.username + "', '" + game.recentRooms[i]  + "')";
+  //   con.query(sql, function(err, result) {
+  //     if (err) throw err;
+  //   });
+  // } 
   sql = "SELECT * FROM Rooms WHERE roomID = " + game.roomID;
   con.query(sql, function(err, result) {
     if (err) throw err;
