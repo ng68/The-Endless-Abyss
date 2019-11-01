@@ -65,17 +65,21 @@ export default {
           }
           axios(options).then(response =>{
             if(response.data === "Failure"){
-              this.$toast.open({
-                duration: 3000,
-                message: 'No saved game exists for this user.',
-                position: 'is-bottom',
-                type: 'is-danger'
-              })
+              let game = {
+                username: "",
+                roomID: 15,
+                recentRooms: [1,11,12,13,14],
+                health: 0,
+                gold: 0,
+                inventory: [],
+                trophies: [],
+              }
+              this.continueGame(game);
             } else {
               let game = response.data;
               this.continueGame(game);
-              this.$router.push({ name: 'Game' });
             }
+            this.$router.push({ name: 'Game' });
           })
         } catch (e) {
           this.$toast.open({
