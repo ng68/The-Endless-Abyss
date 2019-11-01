@@ -10,6 +10,7 @@ import MainMenu from './components/MainMenu'
 import TrophyRoom from './components/TrophyRoom'
 import Game from './components/Game'
 import Leaderboard from './components/Leaderboard'
+import ManageAccount from './components/ManageAccount'
 import Buefy from 'buefy'
 
 Vue.config.productionTip = false
@@ -24,6 +25,7 @@ const routes = [
   { path: '/trophyroom', name: 'TrophyRoom', component: TrophyRoom },
   { path: '/game', name: 'Game', component: Game},
   { path: '/leaderboard', name: 'Leaderboard', component: Leaderboard},
+  { path: '/account', name: 'ManageAccount', component: ManageAccount},
   { path: '/', redirect: Login},
 ]
 

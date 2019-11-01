@@ -4,6 +4,7 @@
       <li><a @click="onLogOut">Home</a></li>
       <li><a @click="onHome">Trophies</a></li>
       <li><a @click="onTrophies">Leaderboard</a></li>
+      <li><a @click="onAccount">Account</a></li>
       <li><a @click="onLeaderboard">Log Out</a></li>
     </ul>
   </div>
@@ -22,6 +23,9 @@ export default {
     },
     async onLeaderboard() {
       this.$router.push({ name: 'Leaderboard' })
+    },
+    async onAccount() {
+      this.$router.push({ name: 'ManageAccount' })
     },
     async onLogOut() {
       localStorage.setItem("username", "")
